@@ -8,7 +8,11 @@ var tile_last_placed_position: Vector2i
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	Creator.mode_changed.connect(func(old, new):
+		# Delete the button when the mode is changed.
+		if is_instance_valid(tile_texture_button):
+			tile_texture_button.queue_free()
+	)
 
 func start(texture: Texture2D) -> void:
 	if Creator.mode != Creator.Mode.PlacingTile:
@@ -45,7 +49,7 @@ func create_placed_tile() -> void:
 	tile.global_position = tile_texture_button.global_position
 	Creator.tiles.add_child(tile)
 	tile.owner = Creator.tiles
-	tile_last_placed_position = Vector2i(tile.global_position / 64)
+	tile_last_placed_position = Global.position_to_coords(tile.global_position)
 	
 	# Prepare new tile.
 	tile_texture_button.queue_free()
@@ -59,10 +63,8 @@ func _process(delta: float) -> void:
 		push_error("Placing tile without proper tile_texture_button")
 		return
 	
-	var mouse = tile_texture_button.get_global_mouse_position()
-	var pos = (mouse / 64).floor()
-	
-	tile_texture_button.global_position = pos * 64
+	var mouse = tile_texture_button.get_global_mouse_position()	
+	tile_texture_button.global_position = Global.align_to_grid(mouse)
 
 func _input(event: InputEvent) -> void:
 	if Creator.mode != Creator.Mode.PlacingTile:
@@ -71,10 +73,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and not event.relative.is_zero_approx():
 		if event.button_mask & MOUSE_BUTTON_LEFT == MOUSE_BUTTON_LEFT:
 			# When moving the mouse while the left mouse button is pressed down, place tiles.
-			var mouse: Vector2 = event.global_position
-			var pos: Vector2i = Vector2i((mouse / 64).floor())
+			var mouse: Vector2 = tile_texture_button.get_global_mouse_position()
+			var pos: Vector2i = Global.position_to_coords(mouse)
 			
 			if pos != tile_last_placed_position:
-				tile_texture_button.global_position = pos * 64
+				tile_texture_button.global_position = Global.coords_to_position(pos)
 				create_placed_tile()
 				create_tile_to_place()

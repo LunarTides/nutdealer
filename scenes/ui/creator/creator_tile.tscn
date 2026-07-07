@@ -7,13 +7,14 @@
 z_index = -1
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
 action_mode = 0
 texture_normal = ExtResource("1_xohw0")
 script = ExtResource("1_m4okp")
 actions = NodePath("Actions")
 
 [node name="Actions" type="PanelContainer" parent="." unique_id=1561472550]
-z_index = 1
+z_index = 3
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

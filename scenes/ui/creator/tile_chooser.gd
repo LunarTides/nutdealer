@@ -5,6 +5,14 @@ extends ItemList
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Creator.tiles = tiles
+	
+	# TODO: Collapse instead of hiding.
+	#Game.play_start.connect(func():
+		#hide()
+	#)
+	#Game.play_end.connect(func():
+		#show()
+	#)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
