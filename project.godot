@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Nutdealer"
+run/main_scene="uid://cidw2jv7myp3u"
+config/features=PackedStringArray("4.7", "Mobile")
+boot_splash/show_image=false
+config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*uid://df67rbjp0p3ad"
+Creator="*uid://chvghakr15sw0"
+
+[display]
+
+window/size/viewport_height=640
+window/size/mode=3
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
+window/size/mode.editor=0
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"
+2d/snap/snap_2d_transforms_to_pixel=true

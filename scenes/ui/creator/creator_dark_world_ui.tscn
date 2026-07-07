@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://cidw2jv7myp3u"]
+
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://sprites/tiles/debug/red.svg" id="1_30khk"]
+[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile_chooser.gd" id="1_iwfh1"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_nsoud"]
+[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://sprites/tiles/debug/green.svg" id="2_6x1od"]
+[ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://sprites/creator/tile_bg.svg" id="3_wvgay"]
+[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://sprites/tiles/debug/blue.svg" id="3_x6nf5"]
+
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1135847846]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TileChooser" type="ItemList" parent="." unique_id=849271151 node_paths=PackedStringArray("tiles")]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+auto_width = true
+auto_height = true
+item_count = 4
+item_0/icon = ExtResource("1_30khk")
+item_1/icon = ExtResource("2_6x1od")
+item_2/icon = ExtResource("3_x6nf5")
+item_3/icon = ExtResource("1_nsoud")
+script = ExtResource("1_iwfh1")
+tiles = NodePath("../Tiles")
+
+[node name="Tiles" type="Control" parent="." unique_id=1473777667]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
+modulate = Color(1, 1, 1, 0.25882354)
+z_index = -10
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 640.0
+mouse_filter = 2
+texture = ExtResource("3_wvgay")
+stretch_mode = 1
+
+[connection signal="empty_clicked" from="TileChooser" to="TileChooser" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="TileChooser" to="TileChooser" method="_on_item_clicked"]
