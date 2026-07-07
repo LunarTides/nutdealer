@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://cidw2jv7myp3u"]
 
-[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://sprites/tiles/debug/red.svg" id="1_30khk"]
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_30khk"]
 [ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/ui/creator/creator_dark_world_ui.gd" id="1_847bk"]
 [ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile_chooser.gd" id="1_iwfh1"]
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_nsoud"]
-[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://sprites/tiles/debug/green.svg" id="2_6x1od"]
-[ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://sprites/creator/tile_bg.svg" id="3_wvgay"]
-[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://sprites/tiles/debug/blue.svg" id="3_x6nf5"]
+[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="2_6x1od"]
+[ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://assets/sprites/creator/tile_bg.svg" id="3_wvgay"]
+[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="3_x6nf5"]
 [ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/creator/tiles.gd" id="6_6x1od"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
 
