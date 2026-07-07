@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Global="*uid://df67rbjp0p3ad"
 Creator="*uid://chvghakr15sw0"
+CreatorPlaceTiles="*uid://dvt5mkd8mu0gx"
 
 [display]
 

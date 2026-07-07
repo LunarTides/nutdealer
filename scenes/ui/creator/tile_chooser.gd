@@ -14,8 +14,7 @@ func _process(delta: float) -> void:
 
 func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	var texture = get_item_icon(index)
-	Creator.tile_texture = texture
-	Creator.mode = Creator.Mode.PlacingTile
+	Creator.start_tile_placing(texture)
 
 
 func _on_empty_clicked(at_position: Vector2, mouse_button_index: int) -> void:

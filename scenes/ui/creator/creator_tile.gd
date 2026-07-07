@@ -35,13 +35,11 @@ func _on_delete_button_pressed() -> void:
 
 func _on_copy_button_pressed() -> void:
 	# TODO: Actually copy the entire tile instead of the texture.
-	Creator.tile_texture = texture
-	Creator.mode = Creator.Mode.PlacingTile
+	Creator.start_tile_placing(texture)
 	actions.hide()
 
 
 func _on_move_button_pressed() -> void:
 	# TODO: Actually copy the entire tile instead of the texture.
-	Creator.tile_texture = texture
-	Creator.mode = Creator.Mode.PlacingTile
+	Creator.start_tile_placing(texture)
 	queue_free()
