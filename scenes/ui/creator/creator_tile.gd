@@ -4,6 +4,9 @@ class_name CreatorTile
 @export var actions: PanelContainer
 
 var texture: Texture2D
+var coords: Vector2i:
+	get:
+		return Vector2i(position / 64)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

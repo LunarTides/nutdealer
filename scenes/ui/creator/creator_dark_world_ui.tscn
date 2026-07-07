@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://sprites/tiles/debug/green.svg" id="2_6x1od"]
 [ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://sprites/creator/tile_bg.svg" id="3_wvgay"]
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://sprites/tiles/debug/blue.svg" id="3_x6nf5"]
+[ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/creator/tiles.gd" id="6_6x1od"]
 
 [node name="CreatorDarkWorldUI" type="Control" unique_id=1135847846]
 layout_mode = 3
@@ -33,6 +34,7 @@ tiles = NodePath("../Tiles")
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("6_6x1od")
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
 modulate = Color(1, 1, 1, 0.25882354)
