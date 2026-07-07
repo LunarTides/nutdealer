@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name ControllingCharacter
 
-@export var speed = 300.0
+@export var speed: float = 300.0
 
 @export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
@@ -9,7 +9,7 @@ class_name ControllingCharacter
 
 func _physics_process(delta: float) -> void:
 	# Get the input vector and handle the movement.
-	var vector := Input.get_vector(&"walk_left", &"walk_right", &"walk_up", &"walk_down")
+	var vector: Vector2 = Input.get_vector(&"walk_left", &"walk_right", &"walk_up", &"walk_down")
 	if vector:
 		velocity = vector * speed
 	else:

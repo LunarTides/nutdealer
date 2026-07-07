@@ -2,7 +2,7 @@ extends Node
 
 signal mode_changed(old: Mode, new: Mode)
 
-const CONTROLLING_CHARACTER = preload("uid://bvxdrb5d24bxx")
+const CONTROLLING_CHARACTER: PackedScene = preload("uid://bvxdrb5d24bxx")
 
 enum Mode {
 	None,
@@ -11,20 +11,20 @@ enum Mode {
 
 var mode: Mode = Mode.None:
 	set(value):
-		var old_mode = mode
+		var old_mode: Mode = mode
 		mode = value
 		mode_changed.emit(old_mode, mode)
 var tiles: CreatorTiles
 var enabled: bool = false
 
-@onready var dark_world_ui = $/root/CreatorDarkWorldUI
+@onready var dark_world_ui: CreatorDarkWorldUI = $/root/CreatorDarkWorldUI
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Start disabled. Only enable when going into create mode.
 	process_mode = Node.PROCESS_MODE_DISABLED
 	
-	Game.play_start.connect(func():
+	Game.play_start.connect(func() -> void:
 		# Set to normal mode on play.
 		mode = Mode.None
 	)
@@ -33,7 +33,7 @@ func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
 
-func start_tile_placing(texture: Texture2D):
+func start_tile_placing(texture: Texture2D) -> void:
 	mode = Mode.PlacingTile
 	CreatorPlaceTiles.start(texture)
 
@@ -53,12 +53,12 @@ func stop_playing() -> void:
 	Game.playing = false
 	Game.controlling_character.queue_free()
 
-func save_world():
+func save_world() -> void:
 	var packed_scene: PackedScene = PackedScene.new()
 	packed_scene.pack(get_tree().root.get_node("CreatorDarkWorldUI/Tiles"))
 	ResourceSaver.save(packed_scene, "user://test.tscn")
 
-func load_world():
+func load_world() -> void:
 	var packed_scene: PackedScene = load("user://test.tscn")
-	var scene = packed_scene.instantiate()
+	var scene: Node = packed_scene.instantiate()
 	get_tree().root.add_child(scene)

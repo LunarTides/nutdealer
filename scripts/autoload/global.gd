@@ -24,4 +24,4 @@ func coords_to_position(coords: Vector2i) -> Vector2:
 	return Vector2(coords * 64)
 
 func align_to_grid(pos: Vector2) -> Vector2:
-	return coords_to_position(position_to_coords(pos))
+	return (pos / 64).floor() * 64

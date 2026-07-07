@@ -1,4 +1,5 @@
 extends Control
+class_name CreatorDarkWorldUI
 
 @export var pan_speed: float = 300
 
@@ -18,11 +19,11 @@ func _ready() -> void:
 	grid_hint.position -= Vector2(64, 64)
 	grid_hint.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
 	
-	Game.play_start.connect(func():
+	Game.play_start.connect(func() -> void:
 		grid_hint.hide()
 		camera_2d.enabled = false
 	)
-	Game.play_end.connect(func():
+	Game.play_end.connect(func() -> void:
 		# Move the camera to the player's position.
 		camera_2d.global_position = Game.controlling_character.global_position
 		camera_2d.enabled = true
@@ -45,7 +46,7 @@ func _process(delta: float) -> void:
 		if Input.is_action_pressed(&"editor_pan_speed_up"):
 			true_pan_speed *= 5
 		
-		var vector = Input.get_vector(&"editor_pan_left", &"editor_pan_right", &"editor_pan_up", &"editor_pan_down")
+		var vector: Vector2 = Input.get_vector(&"editor_pan_left", &"editor_pan_right", &"editor_pan_up", &"editor_pan_down")
 		if vector:
 			camera_2d.position += vector * true_pan_speed * delta
 			
@@ -54,7 +55,7 @@ func _process(delta: float) -> void:
 				var new_coords: Vector2i = Global.position_to_coords(camera_2d.position)
 				var old_coords: Vector2i = Global.position_to_coords(old_camera_2d_position)
 				if new_coords != old_coords:
-					var difference: Vector2i = (new_coords - old_coords)
+					var difference: Vector2i = new_coords - old_coords
 					grid_hint.position += Global.coords_to_position(difference)
 			old_camera_2d_position = camera_2d.position
 			

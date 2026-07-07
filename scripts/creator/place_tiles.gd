@@ -1,6 +1,6 @@
 extends Node
 
-const CREATOR_TILE = preload("uid://cfme7hrx25bgv")
+const CREATOR_TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 
 var tile_texture: Texture2D
 var tile_texture_button: TextureButton
@@ -8,8 +8,8 @@ var tile_last_placed_position: Vector2i
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Creator.mode_changed.connect(func(old, new):
-		# Delete the button when the mode is changed.
+	Creator.mode_changed.connect(func(old: Creator.Mode, new: Creator.Mode) -> void:
+		# Delete the pending tile when the creator mode is changed.
 		if is_instance_valid(tile_texture_button):
 			tile_texture_button.queue_free()
 	)
@@ -29,12 +29,12 @@ func create_tile_to_place() -> void:
 	tile_texture_button = TextureButton.new()
 	tile_texture_button.texture_normal = tile_texture
 	
-	tile_texture_button.button_down.connect(func():
+	tile_texture_button.button_down.connect(func() -> void:
 		create_placed_tile()
 		create_tile_to_place()
 	, ConnectFlags.CONNECT_ONE_SHOT)
 	
-	tile_texture_button.gui_input.connect(func(event):
+	tile_texture_button.gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			Creator.mode = Creator.Mode.None
 			tile_texture_button.queue_free()
@@ -63,7 +63,7 @@ func _process(delta: float) -> void:
 		push_error("Placing tile without proper tile_texture_button")
 		return
 	
-	var mouse = tile_texture_button.get_global_mouse_position()	
+	var mouse: Vector2 = tile_texture_button.get_global_mouse_position()	
 	tile_texture_button.global_position = Global.align_to_grid(mouse)
 
 func _input(event: InputEvent) -> void:
