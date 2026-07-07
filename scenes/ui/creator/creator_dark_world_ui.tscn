@@ -10,13 +10,18 @@
 [ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/creator/tiles.gd" id="6_6x1od"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
 
-[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d")]
+[sub_resource type="LabelSettings" id="LabelSettings_847bk"]
+outline_size = 2
+outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
+
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_847bk")
 pan_speed = 500.0
 grid_hint = NodePath("GridHint")
 camera_2d = NodePath("Camera2D")
+mouse_coords_label = NodePath("CanvasLayer/MouseCoordsLabel")
 
 [node name="Tiles" type="Control" parent="." unique_id=1473777667]
 anchors_preset = 0
@@ -66,6 +71,18 @@ play_button = NodePath("PlayButton")
 [node name="PlayButton" type="Button" parent="CanvasLayer/Actions" unique_id=496142925]
 layout_mode = 2
 text = "Play"
+
+[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer" unique_id=252066373]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 39.0
+grow_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+text = "Mouse coords"
+label_settings = SubResource("LabelSettings_847bk")
 
 [connection signal="empty_clicked" from="CanvasLayer/TileChooser" to="CanvasLayer/TileChooser" method="_on_empty_clicked"]
 [connection signal="item_clicked" from="CanvasLayer/TileChooser" to="CanvasLayer/TileChooser" method="_on_item_clicked"]

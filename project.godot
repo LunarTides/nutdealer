@@ -37,6 +37,10 @@ window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 window/size/mode.editor=0
 
+[gui]
+
+theme/custom_font="uid://cmpyjbc4q4y8o"
+
 [input]
 
 walk_up={

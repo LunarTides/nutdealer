@@ -6,6 +6,7 @@ class_name CreatorDarkWorldUI
 @export_category("UI Nodes")
 @export var grid_hint: TextureRect
 @export var camera_2d: Camera2D
+@export var mouse_coords_label: Label
 
 var old_camera_2d_position: Vector2
 
@@ -40,6 +41,10 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	mouse_coords_label.text = "%d, %d (%d, %d)" % [mouse_coords.x, mouse_coords.y, mouse_pos.x, mouse_pos.y]
+	
 	if camera_2d.enabled:
 		# Camera panning
 		var true_pan_speed: float = pan_speed
