@@ -29,3 +29,23 @@ func _process(delta: float) -> void:
 func setup_tiles() -> void:
 	tiles = TILES.instantiate()
 	add_child(tiles)
+
+func switch_room(room_index: int, player_pos: Vector2) -> void:
+	# Get starting room from camera position.
+	if room_index == -1:
+		push_error("Must be a valid room.")
+		return
+	
+	# Disable tiles inside old room.
+	Game.tiles.call_inside_room(Game.current_room, func(tile: Tile) -> void:
+		tile.disable()
+	)
+	# Enable tiles inside new room.
+	Game.tiles.call_inside_room(room_index, func(tile: Tile) -> void:
+		tile.enable()
+	)
+	
+	Game.current_room = room_index
+	
+	# Move player.
+	Game.player.global_position = player_pos

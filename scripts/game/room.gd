@@ -5,6 +5,9 @@ signal room_updated(index: int, old: Rect2i, new: Rect2i)
 signal room_deleted(index: int)
 
 var bounds: Array[Rect2i]
+var amount: int:
+	get:
+		return bounds.size()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

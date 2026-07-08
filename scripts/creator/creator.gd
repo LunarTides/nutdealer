@@ -48,7 +48,17 @@ func start_tile_placing(texture: Texture2D) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if Input.is_action_just_pressed(&"creator_preview_next_room") and Game.playing:
+		# Switch to next room.
+		var new_room_index: int = Game.current_room + 1
+		if new_room_index >= Room.amount:
+			new_room_index = 0
+		
+		var bounds: Rect2i = Room.bounds[new_room_index]
+		
+		# Integer division is fine since we're working with multiples of 64.
+		@warning_ignore("integer_division")
+		Game.switch_room(new_room_index, Global.coords_to_position(bounds.position + bounds.size / 2))
 
 func start_playing() -> void:
 	# Get starting room from camera position.
