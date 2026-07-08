@@ -68,14 +68,14 @@ func _on_delete_button_pressed() -> void:
 
 
 func _on_copy_button_pressed() -> void:
-	var new_tile: Tile = clone(false)
+	var new_tile: Tile = clone()
 	Creator.start_tile_placing(new_tile)
 	self_modulate = Color.WHITE
 	actions.hide()
 
 
 func _on_move_button_pressed() -> void:
-	var new_tile: Tile = clone(false)
+	var new_tile: Tile = clone()
 	Creator.start_tile_placing(new_tile)
 	queue_free()
 
@@ -99,7 +99,7 @@ func enable() -> void:
 	show()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-func clone(new_id: bool = true) -> Tile:
+func clone(new_id: bool = false) -> Tile:
 	var new_tile: Tile = duplicate(DUPLICATE_DEFAULT | DUPLICATE_INTERNAL_STATE)
 	if new_id:
 		new_tile.regenerate_id()

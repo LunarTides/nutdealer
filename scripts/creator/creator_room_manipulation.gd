@@ -66,13 +66,18 @@ func handle_new_room(event: InputEventMouseMotion) -> void:
 	new_room_previous_pos = mouse_pos
 
 func cleanup_new_room() -> void:
+	if not new_room_created:
+		return
+	
 	# Delete room if it's invalid. (Too small.)
 	var start_coords: Vector2i = Global.position_to_coords(new_room_start_pos)
 	var end_coords: Vector2i = Global.position_to_coords(new_room_previous_pos)
 	var bounds: Rect2i = Room.bounds[new_room_index]
 	
 	if (start_coords - end_coords).abs() <= Vector2i(1, 1) or bounds.size.x <= 0 or bounds.size.y <= 0:
-		Room.delete_room(new_room_index)
+		# Don't delete invalid room.
+		if new_room_index != -1:
+			Room.delete_room(new_room_index)
 	
 	# Clear variables.
 	new_room_start_pos = Vector2.ZERO
