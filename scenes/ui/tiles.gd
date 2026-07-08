@@ -23,3 +23,13 @@ func get_tile_on(coords: Vector2i) -> Tile:
 			return tile
 	
 	return null
+
+func call_inside_room(room_index: int, callback: Callable) -> void:
+	for tile: Tile in get_children():
+		if Room.coords_to_room_index(tile.coords) == room_index:
+			callback.call(tile)
+
+func call_outside_room(room_index: int, callback: Callable) -> void:
+	for tile: Tile in get_children():
+		if Room.coords_to_room_index(tile.coords) != room_index:
+			callback.call(tile)

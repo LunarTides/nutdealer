@@ -35,7 +35,8 @@ func _input(event: InputEvent) -> void:
 					# If no room or creating new room.
 					handle_new_room(event)
 				else:
-					print("Room %d" % room_index)
+					# Existing room.
+					pass
 		else:
 			cleanup_new_room()
 

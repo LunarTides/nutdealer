@@ -51,14 +51,34 @@ func _process(delta: float) -> void:
 	pass
 
 func start_playing() -> void:
-	Game.playing = true
+	# Get starting room from camera position.
+	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
+	if room_index == -1:
+		push_warning("Must start in a room.")
+		return
 	
+	print_debug("Playing from Room %d" % room_index)
+	
+	# Disable tiles outside room.
+	Game.tiles.call_outside_room(room_index, func(tile: Tile) -> void:
+		tile.disable()
+	)
+	
+	Game.playing = true
+	Game.current_room = room_index
+	
+	# Create player.
 	var player: Player = PLAYER.instantiate()
 	dark_world_ui.add_child(player)
 	player.global_position = dark_world_ui.camera_2d.global_position
 	Game.player = player
 
 func stop_playing() -> void:
+	# Re-enable disabled tiles outside room.
+	Game.tiles.call_outside_room(Game.current_room, func(tile: Tile) -> void:
+		tile.enable()
+	)
+	
 	Game.playing = false
 	Game.player.queue_free()
 

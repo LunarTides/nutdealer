@@ -15,6 +15,7 @@ var playing: bool = false:
 			play_end.emit()
 var player: Player
 var tiles: Tiles
+var current_room: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

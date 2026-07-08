@@ -75,7 +75,7 @@ func _draw() -> void:
 		var bound: Rect2i = Room.bounds[i]
 		
 		var filled: bool = hovering == i
-		var width: int = 0 if filled else 3
+		var width: int = -1 if filled else 3
 		
 		draw_rect(Room.coords_to_position(bound), Color.SLATE_GRAY, filled, width, true)
 

@@ -53,3 +53,11 @@ func _on_move_button_pressed() -> void:
 func interact() -> void:
 	# TODO: Temp. Remove this.
 	self_modulate /= 1.25
+
+func disable() -> void:
+	hide()
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+func enable() -> void:
+	show()
+	process_mode = Node.PROCESS_MODE_ALWAYS

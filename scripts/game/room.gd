@@ -53,6 +53,9 @@ func position_to_room_index(pos: Vector2) -> int:
 	
 	return -1
 
+func coords_to_room_index(coords: Vector2i) -> int:
+	return position_to_room_index(Global.coords_to_position(coords))
+
 func coords_to_position(rect: Rect2i) -> Rect2i:
 	rect.position *= 64
 	rect.size *= 64

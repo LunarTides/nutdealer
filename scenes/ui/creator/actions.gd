@@ -5,7 +5,12 @@ extends HBoxContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	Game.play_start.connect(func() -> void:
+		play_button.text = "Stop"
+	)
+	Game.play_end.connect(func() -> void:
+		play_button.text = "Play"
+	)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,7 +21,5 @@ func _process(delta: float) -> void:
 func _on_play_button_pressed() -> void:
 	if Game.playing:
 		Creator.stop_playing()
-		play_button.text = "Play"
 	else:
 		Creator.start_playing()
-		play_button.text = "Stop"
