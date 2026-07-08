@@ -1,8 +1,11 @@
-extends Node
+extends Node2D
 
 var screen_size: Vector2:
 	get:
 		return get_viewport().get_visible_rect().size
+var mouse_position: Vector2:
+	get:
+		return get_global_mouse_position()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

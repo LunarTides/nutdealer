@@ -1,5 +1,7 @@
 extends Node
 
+signal creator_enabled
+signal creator_disabled
 signal mode_changed(old: Mode, new: Mode)
 
 const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
@@ -14,7 +16,14 @@ var mode: Mode = Mode.None:
 		var old_mode: Mode = mode
 		mode = value
 		mode_changed.emit(old_mode, mode)
-var enabled: bool = false
+var enabled: bool = false:
+	set(value):
+		enabled = value
+		
+		if enabled:
+			creator_enabled.emit()
+		else:
+			creator_disabled.emit()
 
 @onready var dark_world_ui: CreatorDarkWorldUI = $/root/CreatorDarkWorldUI
 
@@ -31,6 +40,7 @@ func _ready() -> void:
 func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
+	CreatorRoomManipulation.start()
 
 func start_tile_placing(texture: Texture2D) -> void:
 	mode = Mode.PlacingTile
