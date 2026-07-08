@@ -25,8 +25,6 @@ mouse_coords_label = NodePath("CanvasLayer/MouseCoordsLabel")
 
 [node name="Tiles" type="Control" parent="." unique_id=1473777667]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 script = ExtResource("6_6x1od")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
@@ -80,7 +78,7 @@ offset_top = -23.0
 offset_right = 39.0
 grow_vertical = 0
 offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
+offset_transform_position = Vector2(4, 0)
 text = "Mouse coords"
 label_settings = SubResource("LabelSettings_847bk")
 

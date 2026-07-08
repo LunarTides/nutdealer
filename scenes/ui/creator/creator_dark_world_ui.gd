@@ -14,11 +14,7 @@ var old_camera_2d_position: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	camera_2d.global_position = Global.screen_size / 2
-	
-	# Move the grid hint a little left and make it a little bigger.
-	# This removes any gaps that would give away the illusion of an infinite plane.
-	grid_hint.position -= Vector2(64, 64)
-	grid_hint.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
+	init_grid_hint()
 	
 	Game.play_start.connect(func() -> void:
 		grid_hint.hide()
@@ -37,6 +33,9 @@ func _ready() -> void:
 		# grid hint too far away from the camera.
 		old_camera_2d_position = Vector2.ZERO
 	)
+	
+	# Move the grid when the window's size is changed.
+	get_tree().root.size_changed.connect(init_grid_hint)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -63,4 +62,10 @@ func _process(delta: float) -> void:
 					var difference: Vector2i = new_coords - old_coords
 					grid_hint.position += Global.coords_to_position(difference)
 			old_camera_2d_position = camera_2d.position
-			
+
+func init_grid_hint() -> void:
+	# Move the grid hint a little left and make it a little bigger.
+	# This removes any gaps that would give away the illusion of an infinite plane.
+	grid_hint.position -= Vector2(64, 64)
+	grid_hint.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
+	old_camera_2d_position = Vector2.ZERO

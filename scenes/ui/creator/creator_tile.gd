@@ -49,3 +49,7 @@ func _on_move_button_pressed() -> void:
 	# TODO: Actually copy the entire tile instead of the texture.
 	Creator.start_tile_placing(texture)
 	queue_free()
+
+func interact() -> void:
+	# TODO: Temp. Remove this.
+	self_modulate /= 1.25

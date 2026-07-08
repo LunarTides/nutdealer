@@ -12,8 +12,14 @@ func _process(delta: float) -> void:
 
 func is_tile_on(coords: Vector2i) -> bool:
 	for tile: CreatorTile in get_children():
-		print(coords, tile.coords)
 		if tile.coords == coords:
 			return true
 	
 	return false
+
+func get_tile_on(coords: Vector2i) -> CreatorTile:
+	for tile: CreatorTile in get_children():
+		if tile.coords == coords:
+			return tile
+	
+	return null
