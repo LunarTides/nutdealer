@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_nsoud"]
 [ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="2_6x1od"]
 [ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/ui/creator/room_outlines.gd" id="2_847bk"]
-[ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://assets/sprites/creator/tile_bg.svg" id="3_wvgay"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_847bk"]
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="3_x6nf5"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
 
@@ -30,13 +30,13 @@ z_index = -3
 script = ExtResource("2_847bk")
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
-modulate = Color(1, 1, 1, 0.25882354)
+modulate = Color(0.38000557, 0.3800056, 0.38000554, 1)
 z_index = -10
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 640.0
 mouse_filter = 2
-texture = ExtResource("3_wvgay")
+texture = ExtResource("3_847bk")
 stretch_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1833017583]

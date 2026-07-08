@@ -30,7 +30,26 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	# Handle hovering.
+	if Creator.mode != Creator.Mode.None:
+		# We're in some kind of mode. Remove hovering state.
+		if hovering != -1:
+			hovering = -1
+		return
+	
+	var mouse_pos: Vector2 = Global.mouse_position
+	
+	# Don't hover if the mouse is on a tile.
+	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	var is_on_tile: bool = Game.tiles.is_tile_on(mouse_coords)
+	if is_on_tile:
+		if hovering != -1:
+			hovering = -1
+		return
+	
+	var room_index: int = Room.position_to_room_index(mouse_pos)
+	if hovering != room_index:
+		hovering = room_index
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Creator.mode != Creator.Mode.None:
@@ -48,28 +67,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 				handle_click()
 
-func _input(event: InputEvent) -> void:
-	if Creator.mode != Creator.Mode.None:
-		# We're in some kind of mode. Remove hovering state.
-		if hovering != -1:
-			hovering = -1
-		return
-	
-	if event is InputEventMouseMotion:
-		var mouse_pos: Vector2 = Global.mouse_position
-		
-		# Don't hover if the mouse is on a tile.
-		var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
-		var is_on_tile: bool = Game.tiles.is_tile_on(mouse_coords)
-		if is_on_tile:
-			if hovering != -1:
-				hovering = -1
-			return
-		
-		var room_index: int = Room.position_to_room_index(mouse_pos)
-		if hovering != room_index:
-			hovering = room_index
-
 func _draw() -> void:
 	for i: int in range(Room.bounds.size()):
 		var bound: Rect2i = Room.bounds[i]
@@ -77,7 +74,7 @@ func _draw() -> void:
 		var filled: bool = hovering == i
 		var width: int = -1 if filled else 3
 		
-		draw_rect(Room.coords_to_position(bound), Color.SLATE_GRAY, filled, width, true)
+		draw_rect(Room.coords_to_position(bound), Color.SKY_BLUE, filled, width, true)
 
 func handle_click() -> void:
 	if is_instance_valid(actions):

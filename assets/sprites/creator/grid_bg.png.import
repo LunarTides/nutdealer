@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7y1s1plgtrt7"
-path="res://.godot/imported/tile_bg.svg-b41e8b55a6ec3b46563efcf157b68c21.ctex"
+uid="uid://dpct3ph6ypibi"
+path="res://.godot/imported/grid_bg.png-c77e6ec02fd24135744784427825b51e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/creator/tile_bg.svg"
-dest_files=["res://.godot/imported/tile_bg.svg-b41e8b55a6ec3b46563efcf157b68c21.ctex"]
+source_file="res://assets/sprites/creator/grid_bg.png"
+dest_files=["res://.godot/imported/grid_bg.png-c77e6ec02fd24135744784427825b51e.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
