@@ -14,7 +14,6 @@ var mode: Mode = Mode.None:
 		var old_mode: Mode = mode
 		mode = value
 		mode_changed.emit(old_mode, mode)
-var tiles: CreatorTiles
 var enabled: bool = false
 
 @onready var dark_world_ui: CreatorDarkWorldUI = $/root/CreatorDarkWorldUI

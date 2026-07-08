@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="2_6x1od"]
 [ext_resource type="Texture2D" uid="uid://c7y1s1plgtrt7" path="res://assets/sprites/creator/tile_bg.svg" id="3_wvgay"]
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="3_x6nf5"]
-[ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/creator/tiles.gd" id="6_6x1od"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
@@ -23,10 +22,6 @@ grid_hint = NodePath("GridHint")
 camera_2d = NodePath("Camera2D")
 mouse_coords_label = NodePath("CanvasLayer/MouseCoordsLabel")
 
-[node name="Tiles" type="Control" parent="." unique_id=1473777667]
-anchors_preset = 0
-script = ExtResource("6_6x1od")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
@@ -41,7 +36,7 @@ stretch_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1833017583]
 
-[node name="TileChooser" type="ItemList" parent="CanvasLayer" unique_id=849271151 node_paths=PackedStringArray("tiles")]
+[node name="TileChooser" type="ItemList" parent="CanvasLayer" unique_id=849271151]
 offset_right = 76.0
 offset_bottom = 280.0
 auto_width = true
@@ -52,7 +47,6 @@ item_1/icon = ExtResource("2_6x1od")
 item_2/icon = ExtResource("3_x6nf5")
 item_3/icon = ExtResource("1_nsoud")
 script = ExtResource("1_iwfh1")
-tiles = NodePath("../../Tiles")
 
 [node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("play_button")]
 anchors_preset = 1

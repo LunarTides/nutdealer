@@ -47,8 +47,8 @@ func create_placed_tile() -> void:
 	var tile: CreatorTile = CREATOR_TILE.instantiate()
 	tile.texture = tile_texture
 	tile.global_position = tile_texture_button.global_position
-	Creator.tiles.add_child(tile)
-	tile.owner = Creator.tiles
+	Game.tiles.add_child(tile)
+	tile.owner = Game.tiles
 	tile_last_placed_position = Global.position_to_coords(tile.global_position)
 	
 	# Prepare new tile.

@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 			pos += direction * 8
 		
 		var coords: Vector2i = Global.position_to_coords(pos)
-		var tile: CreatorTile = Creator.tiles.get_tile_on(coords)
+		var tile: CreatorTile = Game.tiles.get_tile_on(coords)
 		
 		if is_instance_valid(tile):
 			tile.interact()
