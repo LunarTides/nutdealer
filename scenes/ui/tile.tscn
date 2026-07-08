@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://cfme7hrx25bgv"]
 
-[ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/ui/creator/creator_tile.gd" id="1_m4okp"]
-[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_xohw0"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_hdp2l"]
+[ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/ui/tile.gd" id="2_78bva"]
 
-[node name="CreatorTile" type="TextureButton" unique_id=1898861619 node_paths=PackedStringArray("actions")]
+[node name="Tile" type="TextureButton" unique_id=1898861619 node_paths=PackedStringArray("actions")]
 z_index = -1
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 1
 action_mode = 0
-texture_normal = ExtResource("1_xohw0")
-script = ExtResource("1_m4okp")
+texture_normal = ExtResource("1_hdp2l")
+script = ExtResource("2_78bva")
 actions = NodePath("Actions")
 
 [node name="Actions" type="PanelContainer" parent="." unique_id=1561472550]

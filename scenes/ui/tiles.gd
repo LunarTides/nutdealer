@@ -1,5 +1,5 @@
 extends Control
-class_name CreatorTiles
+class_name Tiles
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,14 +11,14 @@ func _process(delta: float) -> void:
 	pass
 
 func is_tile_on(coords: Vector2i) -> bool:
-	for tile: CreatorTile in get_children():
+	for tile: Tile in get_children():
 		if tile.coords == coords:
 			return true
 	
 	return false
 
-func get_tile_on(coords: Vector2i) -> CreatorTile:
-	for tile: CreatorTile in get_children():
+func get_tile_on(coords: Vector2i) -> Tile:
+	for tile: Tile in get_children():
 		if tile.coords == coords:
 			return tile
 	

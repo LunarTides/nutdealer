@@ -22,7 +22,7 @@ func _ready() -> void:
 	)
 	Game.play_end.connect(func() -> void:
 		# Move the camera to the player's position.
-		camera_2d.global_position = Game.controlling_character.global_position
+		camera_2d.global_position = Game.player.global_position
 		camera_2d.enabled = true
 		
 		# Move the grid hint to the camera's position.

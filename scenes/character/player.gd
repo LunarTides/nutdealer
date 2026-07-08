@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name ControllingCharacter
+class_name Player
 
 @export var speed: float = 300.0
 
@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 			pos += direction * 8
 		
 		var coords: Vector2i = Global.position_to_coords(pos)
-		var tile: CreatorTile = Game.tiles.get_tile_on(coords)
+		var tile: Tile = Game.tiles.get_tile_on(coords)
 		
 		if is_instance_valid(tile):
 			tile.interact()

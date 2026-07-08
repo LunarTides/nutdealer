@@ -1,6 +1,6 @@
 extends Node
 
-const CREATOR_TILE: PackedScene = preload("uid://cfme7hrx25bgv")
+const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 
 var tile_texture: Texture2D
 var tile_texture_button: TextureButton
@@ -43,8 +43,8 @@ func create_tile_to_place() -> void:
 	get_tree().root.add_child(tile_texture_button)
 
 func create_placed_tile() -> void:
-	# Create a CreatorTile
-	var tile: CreatorTile = CREATOR_TILE.instantiate()
+	# Create a Tile
+	var tile: Tile = TILE.instantiate()
 	tile.texture = tile_texture
 	tile.global_position = tile_texture_button.global_position
 	Game.tiles.add_child(tile)

@@ -13,8 +13,8 @@ var playing: bool = false:
 			play_start.emit()
 		else:
 			play_end.emit()
-var controlling_character: ControllingCharacter
-var tiles: CreatorTiles
+var player: Player
+var tiles: Tiles
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

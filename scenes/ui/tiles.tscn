@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c810cm35ke6y5"]
 
-[ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/creator/tiles.gd" id="1_f8tno"]
+[ext_resource type="Script" uid="uid://blw4xb5c07ylu" path="res://scenes/ui/tiles.gd" id="1_f8tno"]
 
 [node name="Tiles" type="Control" unique_id=1058796059]
 layout_mode = 3

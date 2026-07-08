@@ -2,7 +2,7 @@ extends Node
 
 signal mode_changed(old: Mode, new: Mode)
 
-const CONTROLLING_CHARACTER: PackedScene = preload("uid://bvxdrb5d24bxx")
+const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
 
 enum Mode {
 	None,
@@ -43,18 +43,18 @@ func _process(delta: float) -> void:
 func start_playing() -> void:
 	Game.playing = true
 	
-	var controlling_character: ControllingCharacter = CONTROLLING_CHARACTER.instantiate()
-	dark_world_ui.add_child(controlling_character)
-	controlling_character.global_position = dark_world_ui.camera_2d.global_position
-	Game.controlling_character = controlling_character
+	var player: Player = PLAYER.instantiate()
+	dark_world_ui.add_child(player)
+	player.global_position = dark_world_ui.camera_2d.global_position
+	Game.player = player
 
 func stop_playing() -> void:
 	Game.playing = false
-	Game.controlling_character.queue_free()
+	Game.player.queue_free()
 
 func save_world() -> void:
 	var packed_scene: PackedScene = PackedScene.new()
-	packed_scene.pack(get_tree().root.get_node("CreatorDarkWorldUI/Tiles"))
+	packed_scene.pack(get_tree().root.get_node(^"Game/Tiles"))
 	ResourceSaver.save(packed_scene, "user://test.tscn")
 
 func load_world() -> void:

@@ -1,5 +1,5 @@
 extends TextureButton
-class_name CreatorTile
+class_name Tile
 
 @export var actions: PanelContainer
 
