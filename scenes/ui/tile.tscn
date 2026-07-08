@@ -3,21 +3,33 @@
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_hdp2l"]
 [ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/ui/tile.gd" id="2_78bva"]
 
-[node name="Tile" type="TextureButton" unique_id=1898861619 node_paths=PackedStringArray("actions")]
-z_index = -1
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 1
-action_mode = 0
-texture_normal = ExtResource("1_hdp2l")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(64, 64)
+
+[node name="Tile" type="Node2D" unique_id=939431773 node_paths=PackedStringArray("static_body_2d", "sprite_2d", "collision_shape_2d", "actions")]
 script = ExtResource("2_78bva")
+static_body_2d = NodePath("StaticBody2D")
+sprite_2d = NodePath("StaticBody2D/Sprite2D")
+collision_shape_2d = NodePath("StaticBody2D/CollisionShape2D")
 actions = NodePath("Actions")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=406712904]
+collision_layer = 2
+input_pickable = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=240555624]
+texture = ExtResource("1_hdp2l")
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1227396779]
+position = Vector2(32, 32)
+shape = SubResource("RectangleShape2D_hakx0")
 
 [node name="Actions" type="PanelContainer" parent="." unique_id=1561472550]
 z_index = 3
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Actions" unique_id=1771184118]
 layout_mode = 2
@@ -34,6 +46,12 @@ text = "Copy"
 layout_mode = 2
 text = "Move"
 
+[node name="BehaviourButton" type="Button" parent="Actions/VBoxContainer" unique_id=1683294216]
+layout_mode = 2
+text = "Behaviour"
+
+[connection signal="input_event" from="StaticBody2D" to="." method="_on_static_body_2d_input_event"]
 [connection signal="pressed" from="Actions/VBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="pressed" from="Actions/VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
 [connection signal="pressed" from="Actions/VBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="Actions/VBoxContainer/BehaviourButton" to="." method="_on_behaviour_button_pressed"]
