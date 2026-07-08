@@ -42,9 +42,9 @@ func start() -> void:
 	enabled = true
 	CreatorRoomManipulation.start()
 
-func start_tile_placing(texture: Texture2D) -> void:
+func start_tile_placing(tile: Tile) -> void:
 	mode = Mode.PlacingTile
-	CreatorPlaceTiles.start(texture)
+	CreatorPlaceTiles.start(tile)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

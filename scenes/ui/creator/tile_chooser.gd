@@ -1,5 +1,7 @@
 extends ItemList
 
+const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:	
 	# TODO: Collapse instead of hiding.
@@ -19,7 +21,10 @@ func _process(delta: float) -> void:
 
 func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	var texture: Texture2D = get_item_icon(index)
-	Creator.start_tile_placing(texture)
+	var tile: Tile = TILE.instantiate()
+	tile.texture = texture
+	
+	Creator.start_tile_placing(tile)
 
 
 func _on_empty_clicked(at_position: Vector2, mouse_button_index: int) -> void:

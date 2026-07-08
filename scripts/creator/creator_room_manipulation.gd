@@ -37,7 +37,9 @@ func _input(event: InputEvent) -> void:
 				else:
 					# Existing room.
 					pass
-		else:
+	
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			cleanup_new_room()
 
 func handle_new_room(event: InputEventMouseMotion) -> void:
@@ -48,7 +50,7 @@ func handle_new_room(event: InputEventMouseMotion) -> void:
 	var start_coords: Vector2i = Global.position_to_coords(new_room_start_pos)
 	var previous_coords: Vector2i = Global.position_to_coords(new_room_previous_pos)
 	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
-	if start_coords == current_coords or (current_coords - start_coords).abs() < Vector2i(1, 1) or current_coords == previous_coords:
+	if start_coords == current_coords or current_coords == previous_coords:
 		# The mouse hasn't moved a coord space. Don't create/update the room yet.
 		return
 	
@@ -64,6 +66,16 @@ func handle_new_room(event: InputEventMouseMotion) -> void:
 	new_room_previous_pos = mouse_pos
 
 func cleanup_new_room() -> void:
+	# Delete room if it's invalid. (Too small.)
+	var start_coords: Vector2i = Global.position_to_coords(new_room_start_pos)
+	var end_coords: Vector2i = Global.position_to_coords(new_room_previous_pos)
+	var bounds: Rect2i = Room.bounds[new_room_index]
+	
+	if (start_coords - end_coords).abs() <= Vector2i(1, 1) or bounds.size.x <= 0 or bounds.size.y <= 0:
+		Room.delete_room(new_room_index)
+	
+	# Clear variables.
 	new_room_start_pos = Vector2.ZERO
+	new_room_previous_pos = Vector2.ZERO
 	new_room_created = false
 	new_room_index = -1

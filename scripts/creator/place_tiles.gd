@@ -2,7 +2,7 @@ extends Node
 
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 
-var tile_texture: Texture2D
+var tile: Tile
 var tile_texture_button: TextureButton
 var tile_last_placed_position: Vector2i
 
@@ -14,24 +14,24 @@ func _ready() -> void:
 			tile_texture_button.queue_free()
 	)
 
-func start(texture: Texture2D) -> void:
+func start(tile_to_place: Tile) -> void:
 	if Creator.mode != Creator.Mode.PlacingTile:
 		return
 	
-	if not is_instance_valid(texture):
-		push_error("Placing tile without proper texture")
+	if not is_instance_valid(tile_to_place):
+		push_error("Placing tile without proper tile")
 		return
 	
-	tile_texture = texture
-	create_tile_to_place()
+	tile = tile_to_place
+	create_hovering_tile()
 
-func create_tile_to_place() -> void:
+func create_hovering_tile() -> void:
 	tile_texture_button = TextureButton.new()
-	tile_texture_button.texture_normal = tile_texture
+	tile_texture_button.texture_normal = tile.texture
 	
 	tile_texture_button.button_down.connect(func() -> void:
-		create_placed_tile()
-		create_tile_to_place()
+		place_current_tile()
+		create_hovering_tile()
 	, ConnectFlags.CONNECT_ONE_SHOT)
 	
 	tile_texture_button.gui_input.connect(func(event: InputEvent) -> void:
@@ -42,14 +42,17 @@ func create_tile_to_place() -> void:
 	
 	get_tree().root.add_child(tile_texture_button)
 
-func create_placed_tile() -> void:
+func place_current_tile() -> void:
 	# Create a Tile
-	var tile: Tile = TILE.instantiate()
-	tile.texture = tile_texture
 	tile.global_position = tile_texture_button.global_position
 	Game.tiles.add_child(tile)
-	tile.owner = Game.tiles
 	tile_last_placed_position = Global.position_to_coords(tile.global_position)
+	
+	var new_tile: Tile = tile.clone()
+	
+	# Have to set owner after duplicating otherwise error.
+	tile.owner = Game.tiles
+	tile = new_tile
 	
 	# Prepare new tile.
 	tile_texture_button.queue_free()
@@ -61,22 +64,23 @@ func _process(delta: float) -> void:
 	
 	if not is_instance_valid(tile_texture_button):
 		push_error("Placing tile without proper tile_texture_button")
+		Creator.mode = Creator.Mode.None
 		return
 	
 	var mouse: Vector2 = tile_texture_button.get_global_mouse_position()	
 	tile_texture_button.global_position = Global.align_to_grid(mouse)
 
 func _input(event: InputEvent) -> void:
-	if Creator.mode != Creator.Mode.PlacingTile:
+	if Creator.mode != Creator.Mode.PlacingTile or not is_instance_valid(tile_texture_button):
 		return
 	
 	if event is InputEventMouseMotion and not event.relative.is_zero_approx():
 		if event.button_mask & MOUSE_BUTTON_LEFT == MOUSE_BUTTON_LEFT:
 			# When moving the mouse while the left mouse button is pressed down, place tiles.
-			var mouse: Vector2 = tile_texture_button.get_global_mouse_position()
+			var mouse: Vector2 = Global.mouse_position
 			var pos: Vector2i = Global.position_to_coords(mouse)
 			
 			if pos != tile_last_placed_position:
 				tile_texture_button.global_position = Global.coords_to_position(pos)
-				create_placed_tile()
-				create_tile_to_place()
+				place_current_tile()
+				create_hovering_tile()

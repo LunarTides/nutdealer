@@ -7,14 +7,21 @@ const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 @export var sprite_2d: Sprite2D
 @export var collision_shape_2d: CollisionShape2D
 @export var actions: PanelContainer
+@export var id_label: Label
 
 var texture: Texture2D:
 	set(value):
 		texture = value
 		sprite_2d.texture = texture
+		
+		regenerate_id()
 var coords: Vector2i:
 	get:
 		return Global.position_to_coords(global_position)
+var id: String = "null":
+	set(value):
+		id = value
+		id_label.text = id
 var is_solid: bool = false:
 	set(value):
 		is_solid = value
@@ -23,6 +30,8 @@ var is_solid: bool = false:
 			static_body_2d.collision_layer |= 1
 		elif static_body_2d.collision_layer & 1 == 1:
 			static_body_2d.collision_layer ^= 1
+		
+		regenerate_id()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,6 +43,9 @@ func _ready() -> void:
 	
 	static_body_2d.mouse_entered.connect(_on_mouse_entered)
 	static_body_2d.mouse_exited.connect(_on_mouse_exited)
+	
+	if id == "null":
+		regenerate_id()
 	
 	actions.hide()
 	if not Creator.enabled:
@@ -56,15 +68,15 @@ func _on_delete_button_pressed() -> void:
 
 
 func _on_copy_button_pressed() -> void:
-	# TODO: Actually copy the entire tile instead of the texture.
-	Creator.start_tile_placing(texture)
+	var new_tile: Tile = clone(false)
+	Creator.start_tile_placing(new_tile)
 	self_modulate = Color.WHITE
 	actions.hide()
 
 
 func _on_move_button_pressed() -> void:
-	# TODO: Actually copy the entire tile instead of the texture.
-	Creator.start_tile_placing(texture)
+	var new_tile: Tile = clone(false)
+	Creator.start_tile_placing(new_tile)
 	queue_free()
 
 func _on_behaviour_button_pressed() -> void:
@@ -87,6 +99,11 @@ func enable() -> void:
 	show()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+func clone(new_id: bool = true) -> Tile:
+	var new_tile: Tile = duplicate(DUPLICATE_DEFAULT | DUPLICATE_INTERNAL_STATE)
+	if new_id:
+		new_tile.regenerate_id()
+	return new_tile
 
 func _on_mouse_entered() -> void:
 	if Creator.enabled:
@@ -103,3 +120,11 @@ func _on_static_body_2d_input_event(viewport: Node, event: InputEvent, shape_idx
 		actions.global_position = Global.mouse_position
 		self_modulate *= 1.25
 		actions.show()
+
+func regenerate_id() -> void:
+	var chars: String = "abcdefghijklmnopqrstuvwxyz"
+	
+	var new_id: String = ""
+	for _i: int in range(8):
+		new_id += chars[randi_range(0, chars.length() - 1)]
+	id = new_id

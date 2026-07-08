@@ -6,12 +6,17 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(64, 64)
 
-[node name="Tile" type="Node2D" unique_id=939431773 node_paths=PackedStringArray("static_body_2d", "sprite_2d", "collision_shape_2d", "actions")]
+[sub_resource type="LabelSettings" id="LabelSettings_hdp2l"]
+outline_size = 2
+outline_color = Color(0.98354346, 0, 0.23551083, 1)
+
+[node name="Tile" type="Node2D" unique_id=939431773 node_paths=PackedStringArray("static_body_2d", "sprite_2d", "collision_shape_2d", "actions", "id_label")]
 script = ExtResource("2_78bva")
 static_body_2d = NodePath("StaticBody2D")
 sprite_2d = NodePath("StaticBody2D/Sprite2D")
 collision_shape_2d = NodePath("StaticBody2D/CollisionShape2D")
 actions = NodePath("Actions")
+id_label = NodePath("Actions/VBoxContainer/IDLabel")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=406712904]
 collision_layer = 2
@@ -33,6 +38,12 @@ mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Actions" unique_id=1771184118]
 layout_mode = 2
+
+[node name="IDLabel" type="Label" parent="Actions/VBoxContainer" unique_id=912559071]
+layout_mode = 2
+text = "id"
+label_settings = SubResource("LabelSettings_hdp2l")
+horizontal_alignment = 1
 
 [node name="DeleteButton" type="Button" parent="Actions/VBoxContainer" unique_id=255605921]
 layout_mode = 2
