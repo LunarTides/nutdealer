@@ -63,48 +63,38 @@ func switch_room(room_index: int, player_pos: Vector2) -> void:
 	constrain_player_to_current_room()
 
 func constrain_player_to_current_room() -> void:
-	# TODO: Fix 1 length corridors.
 	var bounds: Rect2i = Room.bounds[current_room]
 	
-	for i: int in range(bounds.size.x):
-		for v: int in range(bounds.size.y):
-			var coords: Vector2i = Vector2i(i + bounds.position.x, v + bounds.position.y)
-			var max_i: int = bounds.size.x - 1
-			var max_v: int = bounds.size.y - 1
+	for col: int in range(bounds.size.x):
+		for row: int in range(bounds.size.y):
+			var coords: Vector2i = Vector2i(bounds.position.x + col, bounds.position.y + row)
 			
-			if i == 0:
-				coords.x -= 1
-			elif v == 0:
-				coords.y -= 1
-			elif i >= max_i:
-				coords.x += 1
-			elif v >= max_v:
-				coords.y += 1
-			else:
-				continue
-			
-			create_border_tile(coords)
-			
-			# Add missing tiles in each corner.
-			if i == 0 and v == 0:
-				var new_coords: Vector2i = coords
-				new_coords.x += 1
-				new_coords.y -= 1
-				create_border_tile(new_coords)
-			elif i == 0 and v == max_v or i == max_i and v == 0:
-				var new_coords: Vector2i = coords
-				new_coords.x += 1
-				new_coords.y += 1
-				create_border_tile(new_coords)
-			elif i == max_i and v == max_v:
+			# Left-most column.
+			if col == 0:
 				var new_coords: Vector2i = coords
 				new_coords.x -= 1
+				create_border_tile(new_coords)
+			# Right-most column.
+			if col >= bounds.size.x - 1:
+				var new_coords: Vector2i = coords
+				new_coords.x += 1
+				create_border_tile(new_coords)
+			
+			# First row.
+			if row == 0:
+				var new_coords: Vector2i = coords
+				new_coords.y -= 1
+				create_border_tile(new_coords)
+			# Last row.
+			if row >= bounds.size.y - 1:
+				var new_coords: Vector2i = coords
 				new_coords.y += 1
 				create_border_tile(new_coords)
 
 func create_border_tile(coords: Vector2i) -> Tile:
 	var tile: Tile = TILE.instantiate()
 	tile.is_solid = true
+	#tile.texture = preload("res://icon.svg")
 	
 	# Delete tile when room changed, or play ended.
 	room_changed.connect(func(old: int, new: int) -> void:
