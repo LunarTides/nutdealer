@@ -2,6 +2,7 @@
 
 [node name="CreatorFirstSaveDialogue" type="ConfirmationDialog" unique_id=1819187575]
 oversampling_override = 1.0
+initial_position = 2
 visible = true
 ok_button_text = "Save"
 

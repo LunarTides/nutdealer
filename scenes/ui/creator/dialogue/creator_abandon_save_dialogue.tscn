@@ -9,4 +9,3 @@ ok_button_text = "Don't Save"
 dialog_text = "You haven't saved this world.
 Are you sure you want to abandon it?"
 dialog_autowrap = true
-cancel_button_text = "Back"

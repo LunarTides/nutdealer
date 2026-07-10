@@ -51,7 +51,9 @@ func _process(delta: float) -> void:
 			true_pan_speed *= 5
 		
 		var vector: Vector2 = Input.get_vector(&"editor_pan_left", &"editor_pan_right", &"editor_pan_up", &"editor_pan_down")
-		if vector:
+		var is_ctrl_pressed: bool = Input.is_key_pressed(KEY_CTRL)
+		
+		if vector and not is_ctrl_pressed:
 			camera_2d.position += vector * true_pan_speed * delta
 			
 			# Move the grid hint to give an illusion that it's an infinite plane.

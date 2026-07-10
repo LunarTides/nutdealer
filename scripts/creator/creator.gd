@@ -29,7 +29,7 @@ var enabled: bool = false:
 			creator_disabled.emit()
 var world_name: String
 # TODO: Show this dirty flag in-editor.
-var dirty: bool = true
+var dirty: bool = false
 
 @onready var dark_world_ui: CreatorDarkWorldUI = $/root/CreatorDarkWorldUI
 

@@ -3,6 +3,8 @@ extends Node
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
+const CREATOR_SAVE_DIALOGUE: PackedScene = preload("uid://ddvp7p0x0n6ov")
+const CREATOR_OVERWRITE_SAVE_DIALOGUE: PackedScene = preload("uid://dnkgm1j1jhd81")
 
 var has_saved_once: bool:
 	get:
@@ -27,49 +29,29 @@ func start() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if Game.playing:
+		return
+	
+	# Save
 	if Input.is_action_just_pressed(&"save"):
+		# Old world.
 		if world_name:
 			save_world()
-		else:
-			var dialogue: ConfirmationDialog = CREATOR_FIRST_SAVE_DIALOGUE.instantiate()
-			dialogue.confirmed.connect(func() -> void:
-				var new_world_name: String = dialogue.get_node(^"WorldName").text
-				if not new_world_name:
-					return
-				
-				world_name = new_world_name
-				save_world()
-				dialogue.queue_free()
-			)
-			dialogue.canceled.connect(func() -> void:
-				dialogue.queue_free()
-			)
-			add_child(dialogue)
-			dialogue.popup_centered_clamped()
+			return
+		
+		# New world.
+		create_first_save_dialogue()
 	
+	# Open World
 	if Input.is_action_just_pressed(&"editor_open_world"):
 		if has_saved_once and dirty:
-			# TODO: Implement
-			push_warning("Not implemented: Is dirty while opening world. Please save first.")
+			# Ask to save first.
+			create_save_dialogue(create_open_world_dialogue)
+			return
 		
-		var dialogue: FileDialog = CREATOR_OPEN_WORLD_DIALOGUE.instantiate()
-		dialogue.dir_selected.connect(func(dir: String) -> void:
-			dialogue.queue_free()
-			
-			if not dir.contains("/worlds/") or not FileAccess.file_exists("%s/world.cfg" % dir):
-				return
-			
-			new_world()
-			
-			var parts: PackedStringArray = dir.split("/")
-			world_name = parts[parts.size() - 1]
-			load_world()
-		)
-		dialogue.canceled.connect(func() -> void:
-			dialogue.queue_free()
-		)
-		add_child(dialogue)
+		create_open_world_dialogue()
 	
+	# New World
 	if Input.is_action_just_pressed(&"editor_new_world"):
 		if not dirty:
 			new_world()
@@ -90,15 +72,84 @@ func _process(delta: float) -> void:
 			dialogue.popup_centered_clamped()
 			return
 		
-		# TODO: Handle.
-		push_warning("Not implemented: Is dirty, but has already saved once.")
+		# Ask to save first.
+		create_save_dialogue(new_world)
+
+func create_save_dialogue(then: Callable) -> void:
+	var dialogue: ConfirmationDialog = CREATOR_SAVE_DIALOGUE.instantiate()
+	dialogue.confirmed.connect(func() -> void:
+		save_world()
+		dialogue.queue_free()
+		then.call()
+	)
+	dialogue.canceled.connect(func() -> void:
+		dialogue.queue_free()
+		then.call()
+	)
+	add_child(dialogue)
+	dialogue.popup_centered_clamped()
+
+func create_first_save_dialogue() -> void:
+	var dialogue: ConfirmationDialog = CREATOR_FIRST_SAVE_DIALOGUE.instantiate()
+	dialogue.confirmed.connect(func() -> void:
+		var new_world_name: String = dialogue.get_node(^"WorldName").text
+		if not new_world_name:
+			return
+		
+		# Check conflict. Ask before for overriding.
+		if DirAccess.dir_exists_absolute("user://worlds/%s" % new_world_name):
+			var overwrite_dialogue: ConfirmationDialog = CREATOR_OVERWRITE_SAVE_DIALOGUE.instantiate()
+			overwrite_dialogue.confirmed.connect(func() -> void:
+				# User chose to overwrite.
+				overwrite_dialogue.queue_free()
+				world_name = new_world_name
+				save_world()
+				dialogue.queue_free()
+			)
+			overwrite_dialogue.canceled.connect(func() -> void:
+				overwrite_dialogue.queue_free()
+			)
+			add_child(overwrite_dialogue)
+			overwrite_dialogue.popup_centered_clamped()
+		else:
+			# No conflict. Save.
+			world_name = new_world_name
+			save_world()
+			dialogue.queue_free()
+	)
+	dialogue.canceled.connect(func() -> void:
+		dialogue.queue_free()
+	)
+	add_child(dialogue)
+	dialogue.popup_centered_clamped()
+	# Place focus on the world name input.
+	dialogue.get_node(^"WorldName").grab_focus()
+
+func create_open_world_dialogue() -> void:
+	var dialogue: FileDialog = CREATOR_OPEN_WORLD_DIALOGUE.instantiate()
+	dialogue.dir_selected.connect(func(dir: String) -> void:
+		dialogue.queue_free()
+		
+		if not dir.contains("/worlds/") or not FileAccess.file_exists("%s/world.cfg" % dir):
+			return
+		
 		new_world()
+		
+		var parts: PackedStringArray = dir.split("/")
+		world_name = parts[parts.size() - 1]
+		load_world()
+	)
+	dialogue.canceled.connect(func() -> void:
+		dialogue.queue_free()
+	)
+	add_child(dialogue)
 
 func make_dirty() -> void:
 	Creator.make_dirty()
 
 func save_world() -> void:
 	if Game.playing:
+		# TODO: Show to the player.
 		push_error("You cannot save the world while previewing the game.")
 		return
 	
@@ -135,6 +186,7 @@ func load_world() -> void:
 		# Don't ask.
 		tile.owner = null
 		tile.reparent(Game.tiles)
+		tile.owner = Game.tiles
 	
 	# Config
 	var config: ConfigFile = ConfigFile.new()
@@ -154,4 +206,4 @@ func new_world() -> void:
 	
 	world_name = ""
 	has_saved_once = false
-	make_dirty()
+	dirty = false

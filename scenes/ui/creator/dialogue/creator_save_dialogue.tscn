@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ddvp7p0x0n6ov"]
+
+[node name="CreatorSaveDialogue" type="ConfirmationDialog" unique_id=196868981]
+oversampling_override = 1.0
+initial_position = 2
+size = Vector2i(320, 116)
+visible = true
+ok_button_text = "Save"
+dialog_text = "You haven't saved this world.
+Do you want to save it before you leave?"
+dialog_autowrap = true
+cancel_button_text = "Don't Save"
