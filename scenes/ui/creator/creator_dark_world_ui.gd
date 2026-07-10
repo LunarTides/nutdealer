@@ -13,8 +13,12 @@ var old_camera_2d_position: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Creator.start()
+	
 	camera_2d.global_position = Global.screen_size / 2
 	init_grid_hint()
+	
+	Creator.dark_world_ui = self
 	
 	Game.play_start.connect(func() -> void:
 		grid_hint.hide()

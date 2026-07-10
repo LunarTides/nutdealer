@@ -63,7 +63,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
-		if not actions.get_global_rect().has_point(Global.mouse_position):
+		if Creator.enabled and not actions.get_global_rect().has_point(Global.mouse_position):
 			# Clicked outside window.
 			self_modulate = Color.WHITE
 			actions.hide()
@@ -122,7 +122,7 @@ func _on_mouse_exited() -> void:
 
 
 func _on_static_body_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if not actions.visible and event is InputEventMouseButton and event.pressed:
+	if Creator.enabled and not actions.visible and event is InputEventMouseButton and event.pressed:
 		actions.global_position = Global.mouse_position
 		self_modulate *= 1.25
 		actions.show()

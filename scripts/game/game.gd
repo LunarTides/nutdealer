@@ -6,6 +6,7 @@ signal room_changed(old_room_index: int, new_room_index: int)
 
 const TILES: PackedScene = preload("uid://c810cm35ke6y5")
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
+const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
 
 var playing: bool = false:
 	set(value):
@@ -45,6 +46,29 @@ func setup_tiles() -> void:
 	
 	border_tiles = Node.new()
 	add_child(border_tiles)
+
+func play_from(room_index: int) -> void:
+	if room_index == -1:
+		push_error("Must start in a room.")
+		return
+	
+	# Disable tiles outside room.
+	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
+		tile.disable()
+	)
+	
+	playing = true
+	current_room = room_index
+	
+	# Create player.
+	player = PLAYER.instantiate()
+	add_child(player)
+	
+	var room_bounds: Rect2i = Room.bounds[current_room]
+	@warning_ignore("integer_division")
+	player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
+	Game.constrain_player_to_current_room()
+
 
 func switch_room(room_index: int, player_pos: Vector2) -> void:
 	# Get starting room from camera position.

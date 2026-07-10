@@ -1,5 +1,8 @@
 extends Node
 
+signal saved
+signal loaded
+
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
@@ -55,7 +58,7 @@ func _notification(what: int) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Game.playing:
+	if Game.playing or not Creator.enabled:
 		return
 	
 	# Save
@@ -101,7 +104,7 @@ func _process(delta: float) -> void:
 		# Ask to save first.
 		create_save_dialogue(new_world)
 
-func create_save_dialogue(then: Callable = func(saved: bool) -> void: pass) -> void:
+func create_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = CREATOR_SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
 		if world_name:
@@ -116,7 +119,7 @@ func create_save_dialogue(then: Callable = func(saved: bool) -> void: pass) -> v
 	add_child(dialogue)
 	dialogue.popup_centered_clamped()
 
-func create_first_save_dialogue(then: Callable = func(saved: bool) -> void: pass) -> void:
+func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = CREATOR_FIRST_SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
 		var new_world_name: String = dialogue.get_node(^"WorldName").text
@@ -203,6 +206,8 @@ func save_world() -> void:
 	
 	dirty = false
 	has_saved_once = true
+	
+	saved.emit()
 
 func load_world() -> void:
 	var path: String = "user://worlds/%s" % world_name
@@ -224,9 +229,12 @@ func load_world() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	config.load("%s/world.cfg" % path)
 	
-	for key: String in config.get_section_keys("rooms"):
-		var bounds: Rect2i = config.get_value("rooms", key)
-		Room.add_room(bounds)
+	if config.has_section("rooms"):
+		for key: String in config.get_section_keys("rooms"):
+			var bounds: Rect2i = config.get_value("rooms", key)
+			Room.add_room(bounds)
+	
+	loaded.emit()
 	
 	await get_tree().process_frame
 	dirty = false

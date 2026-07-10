@@ -30,8 +30,7 @@ var enabled: bool = false:
 var world_name: String
 # TODO: Show this dirty flag in-editor.
 var dirty: bool = false
-
-@onready var dark_world_ui: CreatorDarkWorldUI = $/root/CreatorDarkWorldUI
+var dark_world_ui: CreatorDarkWorldUI
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
