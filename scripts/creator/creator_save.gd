@@ -22,10 +22,36 @@ var dirty: bool:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	Creator.creator_enabled.connect(func() -> void:
+		get_tree().auto_accept_quit = false
+	)
+	Creator.creator_disabled.connect(func() -> void:
+		get_tree().auto_accept_quit = true
+	)
 
-func start() -> void:
-	pass
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if not dirty:
+			get_tree().quit()
+			return
+		
+		# Is dirty.
+		create_save_dialogue(func(confirmed: bool) -> void:
+			if has_saved_once:
+				get_tree().quit()
+				return
+			
+			# First save.
+			if not confirmed:
+				get_tree().quit()
+				return
+			
+			create_first_save_dialogue(func(first_saved: bool) -> void:
+				# Only actually quit if the user created the save.
+				if first_saved:
+					get_tree().quit()
+			)
+		)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -75,21 +101,22 @@ func _process(delta: float) -> void:
 		# Ask to save first.
 		create_save_dialogue(new_world)
 
-func create_save_dialogue(then: Callable) -> void:
+func create_save_dialogue(then: Callable = func(saved: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = CREATOR_SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
-		save_world()
+		if world_name:
+			save_world()
 		dialogue.queue_free()
-		then.call()
+		then.call(true)
 	)
 	dialogue.canceled.connect(func() -> void:
 		dialogue.queue_free()
-		then.call()
+		then.call(false)
 	)
 	add_child(dialogue)
 	dialogue.popup_centered_clamped()
 
-func create_first_save_dialogue() -> void:
+func create_first_save_dialogue(then: Callable = func(saved: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = CREATOR_FIRST_SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
 		var new_world_name: String = dialogue.get_node(^"WorldName").text
@@ -105,9 +132,12 @@ func create_first_save_dialogue() -> void:
 				world_name = new_world_name
 				save_world()
 				dialogue.queue_free()
+				
+				then.call(true)
 			)
 			overwrite_dialogue.canceled.connect(func() -> void:
 				overwrite_dialogue.queue_free()
+				then.call(false)
 			)
 			add_child(overwrite_dialogue)
 			overwrite_dialogue.popup_centered_clamped()
@@ -116,9 +146,11 @@ func create_first_save_dialogue() -> void:
 			world_name = new_world_name
 			save_world()
 			dialogue.queue_free()
+			then.call(true)
 	)
 	dialogue.canceled.connect(func() -> void:
 		dialogue.queue_free()
+		then.call(false)
 	)
 	add_child(dialogue)
 	dialogue.popup_centered_clamped()
