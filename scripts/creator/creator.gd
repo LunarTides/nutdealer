@@ -46,8 +46,6 @@ func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
 	CreatorRoomManipulation.start()
-	
-	dirty = false
 
 func stop() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED

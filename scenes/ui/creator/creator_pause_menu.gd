@@ -20,6 +20,7 @@ func _on_close_button_pressed() -> void:
 func _on_exit_button_pressed() -> void:
 	if not Creator.dirty:
 		exit()
+		return
 	
 	# Ask to save first.
 	if CreatorSave.has_saved_once:
@@ -27,7 +28,6 @@ func _on_exit_button_pressed() -> void:
 			exit()
 		)
 	else:
-		# FIXME: If you press don't save twice, this errors for some reason.
 		CreatorSave.create_save_dialogue(func(confirmed: bool) -> void:
 			if not confirmed:
 				exit()
