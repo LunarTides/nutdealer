@@ -3,35 +3,40 @@ class_name Tile
 
 const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 
-@export var static_body_2d: StaticBody2D
-@export var sprite_2d: Sprite2D
-@export var collision_shape_2d: CollisionShape2D
-@export var actions: PanelContainer
-@export var id_label: Label
-
-var texture: Texture2D:
+@export var texture: Texture2D:
 	set(value):
 		texture = value
-		sprite_2d.texture = texture
 		
-		regenerate_id()
-var coords: Vector2i:
-	get:
-		return Global.position_to_coords(global_position)
-var id: String = "null":
-	set(value):
-		id = value
-		id_label.text = id
-var is_solid: bool = false:
+		if is_inside_tree():
+			sprite_2d.texture = texture
+			regenerate_id()
+@export var is_solid: bool = false:
 	set(value):
 		is_solid = value
 		
-		if is_solid:
-			static_body_2d.collision_layer |= 1
-		elif static_body_2d.collision_layer & 1 == 1:
-			static_body_2d.collision_layer ^= 1
+		if is_inside_tree():
+			if is_solid:
+				static_body_2d.collision_layer |= 1
+			elif static_body_2d.collision_layer & 1 == 1:
+				static_body_2d.collision_layer ^= 1
+			
+			regenerate_id()
+
+var id: String = "null":
+	set(value):
+		id = value
 		
-		regenerate_id()
+		if is_inside_tree():
+			id_label.text = id
+var coords: Vector2i:
+	get:
+		return Global.position_to_coords(global_position)
+
+@onready var static_body_2d: StaticBody2D = $StaticBody2D
+@onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D
+@onready var collision_shape_2d: CollisionShape2D = $StaticBody2D/CollisionShape2D
+@onready var actions: PanelContainer = $Actions
+@onready var id_label: Label = $Actions/VBoxContainer/IDLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -46,6 +51,7 @@ func _ready() -> void:
 	
 	if id == "null":
 		regenerate_id()
+	id_label.text = id
 	
 	actions.hide()
 	if not Creator.enabled:
@@ -128,3 +134,6 @@ func regenerate_id() -> void:
 	for _i: int in range(8):
 		new_id += chars[randi_range(0, chars.length() - 1)]
 	id = new_id
+	
+	# Anything that causes the id to be regenerated is a dirty operation.
+	Creator.make_dirty()

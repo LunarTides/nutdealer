@@ -10,13 +10,8 @@ size = Vector2(64, 64)
 outline_size = 2
 outline_color = Color(0.98354346, 0, 0.23551083, 1)
 
-[node name="Tile" type="Node2D" unique_id=939431773 node_paths=PackedStringArray("static_body_2d", "sprite_2d", "collision_shape_2d", "actions", "id_label")]
+[node name="Tile" type="Node2D" unique_id=939431773]
 script = ExtResource("2_78bva")
-static_body_2d = NodePath("StaticBody2D")
-sprite_2d = NodePath("StaticBody2D/Sprite2D")
-collision_shape_2d = NodePath("StaticBody2D/CollisionShape2D")
-actions = NodePath("Actions")
-id_label = NodePath("Actions/VBoxContainer/IDLabel")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=406712904]
 collision_layer = 2

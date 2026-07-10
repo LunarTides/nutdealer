@@ -27,6 +27,9 @@ func _ready() -> void:
 	Room.room_deleted.connect(func(index: int) -> void:
 		queue_redraw()
 	)
+	Room.rooms_cleared.connect(func() -> void:
+		queue_redraw()
+	)
 	
 	Game.play_start.connect(func() -> void:
 		hide()

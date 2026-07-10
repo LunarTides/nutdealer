@@ -3,6 +3,7 @@ extends Node
 signal room_added(index: int)
 signal room_updated(index: int, old: Rect2i, new: Rect2i)
 signal room_deleted(index: int)
+signal rooms_cleared
 
 var bounds: Array[Rect2i]
 var amount: int:
@@ -22,6 +23,7 @@ func add_room(rect: Rect2i) -> int:
 	var index: int = bounds.size()
 	bounds.append(rect)
 	room_added.emit(index)
+	Creator.make_dirty()
 	return index
 
 func update_room(index: int, rect: Rect2i) -> void:
@@ -42,11 +44,18 @@ func update_room(index: int, rect: Rect2i) -> void:
 	
 	bounds[index] = rect
 	room_updated.emit(index, old, rect)
+	Creator.make_dirty()
 
 func delete_room(index: int) -> int:
 	bounds.remove_at(index)
 	room_deleted.emit(bounds.size())
+	Creator.make_dirty()
 	return bounds.size()
+
+func clear_rooms() -> void:
+	bounds = []
+	Creator.make_dirty()
+	rooms_cleared.emit()
 
 func position_to_room_index(pos: Vector2) -> int:
 	for i: int in range(bounds.size()):

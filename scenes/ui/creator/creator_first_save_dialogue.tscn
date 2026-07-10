@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://24k3h1cax05e"]
+
+[node name="CreatorFirstSaveDialogue" type="ConfirmationDialog" unique_id=1819187575]
+oversampling_override = 1.0
+visible = true
+ok_button_text = "Save"
+
+[node name="WorldName" type="LineEdit" parent="." unique_id=397780871]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 55.0
+placeholder_text = "World Name"

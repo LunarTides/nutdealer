@@ -35,6 +35,12 @@ func _process(delta: float) -> void:
 
 func setup_tiles() -> void:
 	tiles = TILES.instantiate()
+	tiles.child_entered_tree.connect(func(node: Node) -> void:
+		Creator.make_dirty()
+	)
+	tiles.child_exiting_tree.connect(func(node: Node) -> void:
+		Creator.make_dirty()
+	)
 	add_child(tiles)
 	
 	border_tiles = Node.new()

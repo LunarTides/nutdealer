@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://1xt5rpnm2slf"]
+
+[node name="CreatorOpenWorldDialogue" type="FileDialog" unique_id=483252642]
+oversampling_override = 1.0
+title = "Open a Directory"
+initial_position = 2
+visible = true
+file_mode = 2
+display_mode = 1
+access = 1
+root_subfolder = "worlds"
+folder_creation_enabled = false

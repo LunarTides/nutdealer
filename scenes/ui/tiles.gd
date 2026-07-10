@@ -10,6 +10,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+static func delete_all() -> void:
+	Game.tiles.queue_free()
+	Game.border_tiles.queue_free()
+	Game.setup_tiles()
+
 func is_tile_on(coords: Vector2i) -> bool:
 	for tile: Tile in get_children():
 		if tile.coords == coords:
