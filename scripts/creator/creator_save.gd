@@ -76,7 +76,9 @@ func _process(delta: float) -> void:
 		if dirty:
 			# Ask to save first.
 			if has_saved_once:
-				create_save_dialogue(create_open_world_dialogue)
+				create_save_dialogue(func(confirmed: bool) -> void:
+					create_open_world_dialogue()
+				)
 			else:
 				create_save_dialogue(func(confirmed: bool) -> void:
 					if not confirmed:
@@ -114,7 +116,9 @@ func _process(delta: float) -> void:
 			return
 		
 		# Ask to save first.
-		create_save_dialogue(new_world)
+		create_save_dialogue(func(confirmed: bool) -> void:
+			new_world()
+		)
 
 func create_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = CREATOR_SAVE_DIALOGUE.instantiate()
@@ -261,5 +265,7 @@ func new_world() -> void:
 	Room.clear_rooms()
 	
 	world_name = ""
+	
+	await get_tree().process_frame
 	has_saved_once = false
 	dirty = false
