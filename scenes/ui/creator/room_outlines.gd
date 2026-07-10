@@ -5,6 +5,14 @@ const ROOM_ACTIONS: PackedScene = preload("uid://cde6f8eqmtpcb")
 var hovering: int = -1:
 	set(value):
 		hovering = value
+		
+		if hovering == -1:
+			# Not hovering. Show on top of tiles.
+			z_index = 0
+		else:
+			# Hovering. Show behind tiles.
+			z_index = -3
+		
 		queue_redraw()
 var actions: PanelContainer
 

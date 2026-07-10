@@ -82,6 +82,7 @@ func start_playing() -> void:
 	dark_world_ui.add_child(player)
 	player.global_position = dark_world_ui.camera_2d.global_position
 	Game.player = player
+	Game.constrain_player_to_current_room()
 
 func stop_playing() -> void:
 	# Re-enable disabled tiles outside room.
