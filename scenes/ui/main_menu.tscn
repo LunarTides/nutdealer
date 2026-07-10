@@ -173,6 +173,7 @@ _data = {
 }
 
 [node name="MainMenu" type="Control" unique_id=1928361223 node_paths=PackedStringArray("title_label")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

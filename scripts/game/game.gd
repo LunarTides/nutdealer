@@ -7,6 +7,7 @@ signal room_changed(old_room_index: int, new_room_index: int)
 const TILES: PackedScene = preload("uid://c810cm35ke6y5")
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
+const GAME_PAUSE_MENU: PackedScene = preload("uid://dic6f6j0grcf0")
 
 var playing: bool = false:
 	set(value):
@@ -24,10 +25,15 @@ var current_room: int = 0:
 		var old: int = current_room
 		current_room = value
 		room_changed.emit(old, current_room)
+var canvas_layer: CanvasLayer
+var pause_menu: Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	setup_tiles()
+	
+	canvas_layer = CanvasLayer.new()
+	add_child(canvas_layer)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -52,6 +58,10 @@ func play_from(room_index: int) -> void:
 		push_error("Must start in a room.")
 		return
 	
+	if Room.amount < 1:
+		push_error("This world has no rooms.")
+		return
+	
 	# Disable tiles outside room.
 	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
 		tile.disable()
@@ -60,7 +70,15 @@ func play_from(room_index: int) -> void:
 	playing = true
 	current_room = room_index
 	
+	# Create pause menu.
+	if is_instance_valid(pause_menu):
+		pause_menu.queue_free()
+	pause_menu = GAME_PAUSE_MENU.instantiate()
+	canvas_layer.add_child(pause_menu)
+	
 	# Create player.
+	if is_instance_valid(player):
+		player.queue_free()
 	player = PLAYER.instantiate()
 	add_child(player)
 	
@@ -69,6 +87,15 @@ func play_from(room_index: int) -> void:
 	player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	Game.constrain_player_to_current_room()
 
+func stop_playing() -> void:
+	playing = false
+	player.queue_free()
+	
+	if is_instance_valid(pause_menu):
+		pause_menu.queue_free()
+	
+	# Clear everything.
+	CreatorSave.new_world()
 
 func switch_room(room_index: int, player_pos: Vector2) -> void:
 	# Get starting room from camera position.

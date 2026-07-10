@@ -18,6 +18,11 @@ func _process(delta: float) -> void:
 
 func _on_play_button_pressed() -> void:
 	CreatorSave.loaded.connect(func() -> void:
+		if Room.amount < 1:
+			push_error("This world has no rooms.")
+			CreatorSave.new_world()
+			return
+		
 		queue_free()
 		Game.play_from(0)
 	)

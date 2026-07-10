@@ -46,6 +46,13 @@ func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
 	CreatorRoomManipulation.start()
+	
+	dirty = false
+
+func stop() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+	enabled = false
+	CreatorRoomManipulation.stop()
 
 func start_tile_placing(tile: Tile) -> void:
 	mode = Mode.PlacingTile
@@ -86,6 +93,8 @@ func start_playing() -> void:
 	Game.current_room = room_index
 	
 	# Create player.
+	if is_instance_valid(Game.player):
+		Game.player.queue_free()
 	var player: Player = PLAYER.instantiate()
 	dark_world_ui.add_child(player)
 	player.global_position = dark_world_ui.camera_2d.global_position

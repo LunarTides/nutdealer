@@ -10,12 +10,15 @@ var new_room_index: int = -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Start disabled. Only enable when going into create mode.
-	process_mode = Node.PROCESS_MODE_DISABLED
-	enabled = false
+	stop()
 
 func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
+
+func stop() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+	enabled = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

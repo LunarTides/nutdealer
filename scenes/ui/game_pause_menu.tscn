@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dic6f6j0grcf0"]
+
+[ext_resource type="Script" uid="uid://bxk3mqsqpxfrb" path="res://scenes/ui/game_pause_menu.gd" id="1_ps1fv"]
+
+[node name="GamePauseMenu" type="Control" unique_id=616339155]
+process_mode = 3
+z_index = 10
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_ps1fv")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=829615912]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=303183293]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=144461679]
+layout_mode = 2
+text = "Close"
+
+[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=411782081]
+layout_mode = 2
+text = "Exit to Menu"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

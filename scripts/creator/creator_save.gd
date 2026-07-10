@@ -73,9 +73,21 @@ func _process(delta: float) -> void:
 	
 	# Open World
 	if Input.is_action_just_pressed(&"editor_open_world"):
-		if has_saved_once and dirty:
+		if dirty:
 			# Ask to save first.
-			create_save_dialogue(create_open_world_dialogue)
+			if has_saved_once:
+				create_save_dialogue(create_open_world_dialogue)
+			else:
+				create_save_dialogue(func(confirmed: bool) -> void:
+					if not confirmed:
+						create_open_world_dialogue()
+						return
+					
+					create_first_save_dialogue(func(first_saved: bool) -> void:
+						if first_saved:
+							create_open_world_dialogue()
+					)
+				)
 			return
 		
 		create_open_world_dialogue()
@@ -161,6 +173,10 @@ func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: 
 	dialogue.get_node(^"WorldName").grab_focus()
 
 func create_open_world_dialogue() -> void:
+	# Create worlds folder if it doesn't already exist.
+	if not DirAccess.dir_exists_absolute("user://worlds"):
+		DirAccess.make_dir_recursive_absolute("user://worlds")
+	
 	var dialogue: FileDialog = CREATOR_OPEN_WORLD_DIALOGUE.instantiate()
 	dialogue.dir_selected.connect(func(dir: String) -> void:
 		dialogue.queue_free()

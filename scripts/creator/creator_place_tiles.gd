@@ -43,10 +43,18 @@ func create_hovering_tile() -> void:
 	get_tree().root.add_child(tile_texture_button)
 
 func place_current_tile() -> void:
+	var coords: Vector2i = Global.position_to_coords(tile_texture_button.global_position)
+	var existing_tile: Tile = Game.tiles.get_tile_on(coords)
+	if existing_tile and existing_tile.id == tile.id:
+		# We're about to place a duplicate tile on this coord.
+		# Don't do this.
+		tile_texture_button.queue_free()
+		return
+	
 	# Create a Tile
 	tile.global_position = tile_texture_button.global_position
 	Game.tiles.add_child(tile)
-	tile_last_placed_position = Global.position_to_coords(tile.global_position)
+	tile_last_placed_position = coords
 	
 	var new_tile: Tile = tile.clone()
 	

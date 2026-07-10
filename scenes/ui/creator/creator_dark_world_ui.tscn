@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/ui/creator/room_outlines.gd" id="2_847bk"]
 [ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_847bk"]
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="3_x6nf5"]
+[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/ui/creator/creator_pause_menu.tscn" id="4_vd02c"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
@@ -39,6 +40,14 @@ texture = ExtResource("3_847bk")
 stretch_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1833017583]
+
+[node name="CreatorPauseMenu" parent="CanvasLayer" unique_id=616339155 instance=ExtResource("4_vd02c")]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 
 [node name="TileChooser" type="ItemList" parent="CanvasLayer" unique_id=849271151]
 offset_right = 76.0
