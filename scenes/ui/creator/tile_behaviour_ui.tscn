@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://b7xjlu3flg8wu"]
 
 [ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile_behaviour_ui.gd" id="1_e3d2g"]
+[ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile_behaviour_check_box.gd" id="2_3nwos"]
 
-[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "solid_check_box", "hide_during_play_check_box", "room_start_position_check_box")]
+[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,9 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e3d2g")
 tab_container = NodePath("TabContainer")
-solid_check_box = NodePath("TabContainer/Properties/VBoxContainer/SolidCheckBox")
-hide_during_play_check_box = NodePath("TabContainer/Properties/VBoxContainer/HideDuringPlayCheckBox")
-room_start_position_check_box = NodePath("TabContainer/Properties/VBoxContainer/RoomStartPositionCheckBox")
+check_box_container = NodePath("TabContainer/Properties/CheckBoxContainer")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=1293620555]
 layout_mode = 1
@@ -26,29 +25,31 @@ clip_tabs = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Properties" unique_id=1490795824]
+[node name="CheckBoxContainer" type="VBoxContainer" parent="TabContainer/Properties" unique_id=1490795824]
 layout_mode = 2
 
-[node name="SolidCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=764964764]
+[node name="SolidCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=764964764]
 layout_mode = 2
 tooltip_text = "If you can collide with the tile."
 text = "Solid"
+script = ExtResource("2_3nwos")
+tile_property = &"is_solid"
 
-[node name="HideDuringPlayCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=537357001]
+[node name="HideDuringPlayCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=537357001]
 layout_mode = 2
 tooltip_text = "If the tile should be hidden when playing."
 text = "Hide During Play"
+script = ExtResource("2_3nwos")
+tile_property = &"should_hide_during_play"
 
-[node name="RoomStartPositionCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=1687671096]
+[node name="RoomStartPositionCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=1687671096]
 layout_mode = 2
 tooltip_text = "If the player should spawn at this tile when entering the room. (Ignored by room transitions.)"
 text = "Room Start Position"
+script = ExtResource("2_3nwos")
+tile_property = &"is_room_start_position"
 
 [node name="Code" type="PanelContainer" parent="TabContainer" unique_id=1875978336]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
-
-[connection signal="toggled" from="TabContainer/Properties/VBoxContainer/SolidCheckBox" to="." method="_on_solid_check_box_toggled"]
-[connection signal="toggled" from="TabContainer/Properties/VBoxContainer/HideDuringPlayCheckBox" to="." method="_on_hide_during_play_check_box_toggled"]
-[connection signal="toggled" from="TabContainer/Properties/VBoxContainer/RoomStartPositionCheckBox" to="." method="_on_room_start_position_check_box_toggled"]
