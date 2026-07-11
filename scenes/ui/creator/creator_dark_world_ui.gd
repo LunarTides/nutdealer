@@ -7,6 +7,7 @@ class_name CreatorDarkWorldUI
 @export var grid_hint: TextureRect
 @export var camera_2d: Camera2D
 @export var mouse_coords_label: Label
+@export var room_coords_label: Label
 
 var old_camera_2d_position: Vector2
 
@@ -48,6 +49,8 @@ func _process(delta: float) -> void:
 	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
 	mouse_coords_label.text = "%d, %d (%d, %d)" % [mouse_coords.x, mouse_coords.y, mouse_pos.x, mouse_pos.y]
 	
+	handle_room_coords_label()
+	
 	if camera_2d.enabled:
 		# Camera panning
 		var true_pan_speed: float = pan_speed
@@ -75,3 +78,43 @@ func init_grid_hint() -> void:
 	grid_hint.position -= Vector2(64, 64)
 	grid_hint.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
 	old_camera_2d_position = Vector2.ZERO
+
+func handle_room_coords_label() -> void:
+	var bounds: Rect2i
+	var mouse_room_index: int = Room.position_to_room_index(Global.mouse_position)
+	
+	# If we're creating a room.
+	if CreatorRoomManipulation.new_room_created:
+		bounds = Room.bounds[CreatorRoomManipulation.new_room_index]
+	# If we're hovering over a room.
+	elif mouse_room_index != -1:
+		bounds = Room.bounds[mouse_room_index]
+	
+	if not bounds:
+		room_coords_label.modulate.a = 0.0
+		return
+	
+	room_coords_label.modulate.a = 1.0
+	
+	var ssc: Vector2i = Global.screen_size_coords
+	var diff: Vector2i = bounds.size - ssc
+	@warning_ignore("integer_division")
+	var mult: Vector2i = bounds.size / ssc
+	
+	# If the size is more than the size of the screen,
+	# add a SCR to the label.
+	var size_str_x: String = str(bounds.size.x)
+	if diff.x > 0:
+		size_str_x = "SCR%s+%d" % [
+			("x%s" % mult.x) if mult.x > 0 else "",
+			bounds.size.x - ssc.x * mult.x
+		]
+	
+	var size_str_y: String = str(bounds.size.y)
+	if diff.y > 0:
+		size_str_y = "SCR%s+%d" % [
+			("x%s" % mult.y) if mult.y > 0 else "",
+			bounds.size.y - ssc.y * mult.y
+		]
+	
+	room_coords_label.text = "Room: %d, %d (%s x %s)" % [bounds.position.x, bounds.position.y, size_str_x, size_str_y]

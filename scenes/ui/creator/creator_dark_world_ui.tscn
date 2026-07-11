@@ -15,14 +15,15 @@
 outline_size = 2
 outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
 
-[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label")]
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_847bk")
 pan_speed = 500.0
 grid_hint = NodePath("GridHint")
 camera_2d = NodePath("Camera2D")
-mouse_coords_label = NodePath("CanvasLayer/MouseCoordsLabel")
+mouse_coords_label = NodePath("CanvasLayer/VBoxContainer/MouseCoordsLabel")
+room_coords_label = NodePath("CanvasLayer/VBoxContainer/RoomCoordsLabel")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
@@ -77,13 +78,29 @@ play_button = NodePath("PlayButton")
 layout_mode = 2
 text = "Play"
 
-[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer" unique_id=252066373]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1249468150]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 39.0
+offset_top = -40.0
+offset_right = 40.0
 grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="RoomCoordsLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=572939415]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+text = "Room coords"
+label_settings = SubResource("LabelSettings_847bk")
+
+[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=252066373]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
 offset_transform_enabled = true
 offset_transform_position = Vector2(4, 0)
 text = "Mouse coords"
