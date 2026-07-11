@@ -92,12 +92,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(10, 29)
 
-[node name="Player" type="CharacterBody2D" unique_id=741606682 node_paths=PackedStringArray("animated_sprite_2d")]
+[node name="Player" type="CharacterBody2D" unique_id=741606682 node_paths=PackedStringArray("animated_sprite_2d", "camera")]
 z_index = 1
 scale = Vector2(2, 2)
 script = ExtResource("1_jb4us")
 speed = 150.0
 animated_sprite_2d = NodePath("AnimatedSprite2D")
+camera = NodePath("Camera2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=609764124]
 sprite_frames = SubResource("SpriteFrames_actur")

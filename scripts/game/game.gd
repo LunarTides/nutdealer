@@ -91,6 +91,7 @@ func play_from(room_index: int) -> void:
 		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
 	constrain_player_to_current_room()
+	constrain_camera_to_current_room()
 
 func stop_playing() -> void:
 	playing = false
@@ -129,6 +130,7 @@ func switch_room(room_index: int) -> void:
 		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
 	constrain_player_to_current_room()
+	constrain_camera_to_current_room()
 
 func teleport_player_to_room_start_position() -> bool:
 	var old_position: Vector2 = player.global_position
@@ -167,6 +169,16 @@ func constrain_player_to_current_room() -> void:
 				var new_coords: Vector2i = coords
 				new_coords.y += 1
 				create_border_tile(new_coords)
+
+func constrain_camera_to_current_room() -> void:
+	var room_bounds: Rect2i = Room.bounds[current_room]
+	var room_position_px: Vector2 = Global.coords_to_position(room_bounds.position)
+	var room_size_px: Vector2 = Global.coords_to_position(room_bounds.size)
+	
+	player.camera.limit_left = int(room_position_px.x)
+	player.camera.limit_right = int(room_position_px.x + room_size_px.x)
+	player.camera.limit_top = int(room_position_px.y)
+	player.camera.limit_bottom = int(room_position_px.y + room_size_px.y)
 
 func create_border_tile(coords: Vector2i) -> Tile:
 	var tile: Tile = TILE.instantiate()

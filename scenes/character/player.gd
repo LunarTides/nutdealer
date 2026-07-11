@@ -5,6 +5,7 @@ class_name Player
 
 @export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
+@export var camera: Camera2D
 
 var direction: Vector2 = Vector2.ZERO
 
