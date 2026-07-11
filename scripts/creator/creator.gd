@@ -64,11 +64,9 @@ func _process(delta: float) -> void:
 		if new_room_index >= Room.amount:
 			new_room_index = 0
 		
-		var bounds: Rect2i = Room.bounds[new_room_index]
-		
 		# Integer division is fine since we're working with multiples of 64.
 		@warning_ignore("integer_division")
-		Game.switch_room(new_room_index, Global.coords_to_position(bounds.position + bounds.size / 2))
+		Game.switch_room(new_room_index)
 
 func make_dirty() -> void:
 	dirty = true

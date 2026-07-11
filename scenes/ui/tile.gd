@@ -21,6 +21,19 @@ const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 				static_body_2d.collision_layer ^= 1
 			
 			regenerate_id()
+@export var should_hide_during_play: bool = false:
+	set(value):
+		should_hide_during_play = value
+		
+		if is_inside_tree():
+			regenerate_id()
+# TODO: Handle
+@export var is_room_start_position: bool = false:
+	set(value):
+		is_room_start_position = value
+		
+		if is_inside_tree():
+			regenerate_id()
 
 var id: String = "null":
 	set(value):
@@ -56,6 +69,15 @@ func _ready() -> void:
 	actions.hide()
 	if not Creator.enabled:
 		actions.queue_free()
+	
+	Game.play_start.connect(func() -> void:
+		if should_hide_during_play:
+			hide()
+	)
+	Game.play_end.connect(func() -> void:
+		if should_hide_during_play and not visible:
+			show()
+	)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

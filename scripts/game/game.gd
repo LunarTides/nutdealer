@@ -83,9 +83,14 @@ func play_from(room_index: int) -> void:
 	add_child(player)
 	
 	var room_bounds: Rect2i = Room.bounds[current_room]
-	@warning_ignore("integer_division")
-	player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
-	Game.constrain_player_to_current_room()
+	
+	var success: bool = teleport_player_to_room_start_position()
+	if not success:
+		# No room start position. Position the player in the center of the room.
+		@warning_ignore("integer_division")
+		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
+	
+	constrain_player_to_current_room()
 
 func stop_playing() -> void:
 	playing = false
@@ -97,27 +102,42 @@ func stop_playing() -> void:
 	# Clear everything.
 	CreatorSave.new_world()
 
-func switch_room(room_index: int, player_pos: Vector2) -> void:
+func switch_room(room_index: int) -> void:
 	# Get starting room from camera position.
 	if room_index == -1:
 		push_error("Must be a valid room.")
 		return
 	
 	# Disable tiles inside old room.
-	Game.tiles.call_inside_room(Game.current_room, func(tile: Tile) -> void:
+	tiles.call_inside_room(current_room, func(tile: Tile) -> void:
 		tile.disable()
 	)
 	# Enable tiles inside new room.
-	Game.tiles.call_inside_room(room_index, func(tile: Tile) -> void:
+	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
 		tile.enable()
 	)
 	
-	Game.current_room = room_index
+	current_room = room_index
 	
 	# Move player.
-	Game.player.global_position = player_pos
+	var success: bool = teleport_player_to_room_start_position()
+	if not success:
+		# No room start position. Position the player in the center of the room.
+		var room_bounds: Rect2i = Room.bounds[current_room]
+		
+		@warning_ignore("integer_division")
+		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
 	constrain_player_to_current_room()
+
+func teleport_player_to_room_start_position() -> bool:
+	var old_position: Vector2 = player.global_position
+	
+	tiles.call_inside_room(current_room, func(tile: Tile) -> void:
+		if tile.is_room_start_position:
+			player.global_position = tile.global_position + Vector2(32, 32)
+	)
+	return player.global_position != old_position
 
 func constrain_player_to_current_room() -> void:
 	var bounds: Rect2i = Room.bounds[current_room]

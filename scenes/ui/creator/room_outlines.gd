@@ -82,10 +82,14 @@ func _draw() -> void:
 	for i: int in range(Room.bounds.size()):
 		var bound: Rect2i = Room.bounds[i]
 		
+		var color: Color = Color.SKY_BLUE
+		if bound.size.x >= Global.screen_size_coords.x and bound.size.y >= Global.screen_size_coords.y:
+			color = Color.YELLOW
+		
 		var filled: bool = hovering == i
 		var width: int = -1 if filled else 3
 		
-		draw_rect(Room.coords_to_position(bound), Color.SKY_BLUE, filled, width, true)
+		draw_rect(Room.coords_to_position(bound), color, filled, width, true)
 
 func handle_click() -> void:
 	if is_instance_valid(actions):
