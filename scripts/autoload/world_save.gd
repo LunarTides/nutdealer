@@ -3,11 +3,11 @@ extends Node
 signal saved
 signal loaded
 
-const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
-const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
-const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
-const CREATOR_SAVE_DIALOGUE: PackedScene = preload("uid://ddvp7p0x0n6ov")
-const CREATOR_OVERWRITE_SAVE_DIALOGUE: PackedScene = preload("uid://dnkgm1j1jhd81")
+const FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
+const OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
+const ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
+const SAVE_DIALOGUE: PackedScene = preload("uid://ddvp7p0x0n6ov")
+const OVERWRITE_SAVE_DIALOGUE: PackedScene = preload("uid://dnkgm1j1jhd81")
 
 var has_saved_once: bool:
 	get:
@@ -103,7 +103,7 @@ func _process(delta: float) -> void:
 		# Dirty. Ask for confirmation.
 		if not has_saved_once:
 			# Haven't saved once. Abandon save.
-			var dialogue: ConfirmationDialog = CREATOR_ABANDON_SAVE_DIALOGUE.instantiate()
+			var dialogue: ConfirmationDialog = ABANDON_SAVE_DIALOGUE.instantiate()
 			dialogue.confirmed.connect(func() -> void:
 				dialogue.queue_free()
 				new_world()
@@ -121,7 +121,7 @@ func _process(delta: float) -> void:
 		)
 
 func create_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
-	var dialogue: ConfirmationDialog = CREATOR_SAVE_DIALOGUE.instantiate()
+	var dialogue: ConfirmationDialog = SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
 		if world_name:
 			save_world()
@@ -136,7 +136,7 @@ func create_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) 
 	dialogue.popup_centered_clamped()
 
 func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
-	var dialogue: ConfirmationDialog = CREATOR_FIRST_SAVE_DIALOGUE.instantiate()
+	var dialogue: ConfirmationDialog = FIRST_SAVE_DIALOGUE.instantiate()
 	dialogue.confirmed.connect(func() -> void:
 		var new_world_name: String = dialogue.get_node(^"WorldName").text
 		if not new_world_name:
@@ -144,7 +144,7 @@ func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: 
 		
 		# Check conflict. Ask before for overriding.
 		if DirAccess.dir_exists_absolute("user://worlds/%s" % new_world_name):
-			var overwrite_dialogue: ConfirmationDialog = CREATOR_OVERWRITE_SAVE_DIALOGUE.instantiate()
+			var overwrite_dialogue: ConfirmationDialog = OVERWRITE_SAVE_DIALOGUE.instantiate()
 			overwrite_dialogue.confirmed.connect(func() -> void:
 				# User chose to overwrite.
 				overwrite_dialogue.queue_free()
@@ -181,7 +181,7 @@ func create_open_world_dialogue() -> void:
 	if not DirAccess.dir_exists_absolute("user://worlds"):
 		DirAccess.make_dir_recursive_absolute("user://worlds")
 	
-	var dialogue: FileDialog = CREATOR_OPEN_WORLD_DIALOGUE.instantiate()
+	var dialogue: FileDialog = OPEN_WORLD_DIALOGUE.instantiate()
 	dialogue.dir_selected.connect(func(dir: String) -> void:
 		dialogue.queue_free()
 		

@@ -15,13 +15,11 @@ func _ready() -> void:
 	)
 
 func start(tile_to_place: Tile) -> void:
-	if Creator.mode != Creator.Mode.PlacingTile:
-		return
-	
 	if not is_instance_valid(tile_to_place):
 		push_error("Placing tile without proper tile")
 		return
 	
+	Creator.mode = Creator.Mode.PlacingTile
 	tile = tile_to_place
 	create_hovering_tile()
 

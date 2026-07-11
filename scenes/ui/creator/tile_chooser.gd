@@ -24,7 +24,7 @@ func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int)
 	var tile: Tile = TILE.instantiate()
 	tile.texture = texture
 	
-	Creator.start_tile_placing(tile)
+	CreatorPlaceTiles.start(tile)
 
 
 func _on_empty_clicked(at_position: Vector2, mouse_button_index: int) -> void:

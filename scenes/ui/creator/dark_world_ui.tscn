@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://cidw2jv7myp3u"]
 
-[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_30khk"]
-[ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/ui/creator/creator_dark_world_ui.gd" id="1_847bk"]
-[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile_chooser.gd" id="1_iwfh1"]
-[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_nsoud"]
-[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="2_6x1od"]
-[ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/ui/creator/room_outlines.gd" id="2_847bk"]
-[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_847bk"]
-[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="3_x6nf5"]
-[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/ui/creator/creator_pause_menu.tscn" id="4_vd02c"]
-[ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="8_x6nf5"]
+[ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/ui/creator/dark_world_ui.gd" id="1_0wj4i"]
+[ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/ui/creator/room_outlines.gd" id="2_skldr"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_wyeqc"]
+[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/ui/creator/pause_menu.tscn" id="4_xy4lk"]
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="5_2sl0l"]
+[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="6_oboim"]
+[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="7_f3slr"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="8_ofl6s"]
+[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile_chooser.gd" id="9_o23ng"]
+[ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="10_evxai"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
 outline_size = 2
@@ -18,7 +18,7 @@ outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
 [node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label")]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_847bk")
+script = ExtResource("1_0wj4i")
 pan_speed = 500.0
 grid_hint = NodePath("GridHint")
 camera_2d = NodePath("Camera2D")
@@ -28,7 +28,7 @@ room_coords_label = NodePath("CanvasLayer/VBoxContainer/RoomCoordsLabel")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
 [node name="RoomOutlines" type="Node2D" parent="." unique_id=113025752]
-script = ExtResource("2_847bk")
+script = ExtResource("2_skldr")
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
 modulate = Color(0.38000557, 0.3800056, 0.38000554, 1)
@@ -37,12 +37,12 @@ layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 640.0
 mouse_filter = 2
-texture = ExtResource("3_847bk")
+texture = ExtResource("3_wyeqc")
 stretch_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1833017583]
 
-[node name="CreatorPauseMenu" parent="CanvasLayer" unique_id=616339155 instance=ExtResource("4_vd02c")]
+[node name="CreatorPauseMenu" parent="CanvasLayer" unique_id=616339155 instance=ExtResource("4_xy4lk")]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -56,13 +56,13 @@ offset_bottom = 280.0
 auto_width = true
 auto_height = true
 item_count = 4
-item_0/icon = ExtResource("1_30khk")
-item_1/icon = ExtResource("2_6x1od")
-item_2/icon = ExtResource("3_x6nf5")
-item_3/icon = ExtResource("1_nsoud")
-script = ExtResource("1_iwfh1")
+item_0/icon = ExtResource("5_2sl0l")
+item_1/icon = ExtResource("6_oboim")
+item_2/icon = ExtResource("7_f3slr")
+item_3/icon = ExtResource("8_ofl6s")
+script = ExtResource("9_o23ng")
 
-[node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("play_button")]
+[node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("preview_button")]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -71,12 +71,12 @@ offset_bottom = 40.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-script = ExtResource("8_x6nf5")
-play_button = NodePath("PlayButton")
+script = ExtResource("10_evxai")
+preview_button = NodePath("PreviewButton")
 
-[node name="PlayButton" type="Button" parent="CanvasLayer/Actions" unique_id=496142925]
+[node name="PreviewButton" type="Button" parent="CanvasLayer/Actions" unique_id=496142925]
 layout_mode = 2
-text = "Play"
+text = "Preview"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1249468150]
 anchors_preset = 2
@@ -108,4 +108,4 @@ label_settings = SubResource("LabelSettings_847bk")
 
 [connection signal="empty_clicked" from="CanvasLayer/TileChooser" to="CanvasLayer/TileChooser" method="_on_empty_clicked"]
 [connection signal="item_clicked" from="CanvasLayer/TileChooser" to="CanvasLayer/TileChooser" method="_on_item_clicked"]
-[connection signal="pressed" from="CanvasLayer/Actions/PlayButton" to="CanvasLayer/Actions" method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Actions/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]

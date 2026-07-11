@@ -1,15 +1,15 @@
 extends HBoxContainer
 
-@export var play_button: Button
+@export var preview_button: Button
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Game.play_start.connect(func() -> void:
-		play_button.text = "Stop"
+		preview_button.text = "Stop"
 	)
 	Game.play_end.connect(func() -> void:
-		play_button.text = "Play"
+		preview_button.text = "Preview"
 	)
 
 
@@ -18,8 +18,8 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_play_button_pressed() -> void:
+func _on_preview_button_pressed() -> void:
 	if Game.playing:
-		Creator.stop_playing()
+		Creator.stop_preview()
 	else:
-		Creator.start_playing()
+		Creator.start_preview()

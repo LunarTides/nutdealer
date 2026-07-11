@@ -66,27 +66,29 @@ func play_from(room_index: int) -> void:
 	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
 		tile.disable()
 	)
+	# Enable tiles inside room.
+	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
+		tile.enable()
+	)
 	
 	playing = true
 	current_room = room_index
 	
 	# Create pause menu.
-	if is_instance_valid(pause_menu):
-		pause_menu.queue_free()
-	pause_menu = GAME_PAUSE_MENU.instantiate()
-	canvas_layer.add_child(pause_menu)
+	if not is_instance_valid(pause_menu):
+		pause_menu = GAME_PAUSE_MENU.instantiate()
+		canvas_layer.add_child(pause_menu)
 	
 	# Create player.
-	if is_instance_valid(player):
-		player.queue_free()
-	player = PLAYER.instantiate()
-	add_child(player)
-	
-	var room_bounds: Rect2i = Room.bounds[current_room]
+	if not is_instance_valid(player):
+		player = PLAYER.instantiate()
+		add_child(player)
 	
 	var success: bool = teleport_player_to_room_start_position()
 	if not success:
 		# No room start position. Position the player in the center of the room.
+		var room_bounds: Rect2i = Room.bounds[current_room]
+		
 		@warning_ignore("integer_division")
 		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
@@ -101,36 +103,10 @@ func stop_playing() -> void:
 		pause_menu.queue_free()
 	
 	# Clear everything.
-	CreatorSave.new_world()
+	WorldSave.new_world()
 
 func switch_room(room_index: int) -> void:
-	# Get starting room from camera position.
-	if room_index == -1:
-		push_error("Must be a valid room.")
-		return
-	
-	# Disable tiles inside old room.
-	tiles.call_inside_room(current_room, func(tile: Tile) -> void:
-		tile.disable()
-	)
-	# Enable tiles inside new room.
-	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
-		tile.enable()
-	)
-	
-	current_room = room_index
-	
-	# Move player.
-	var success: bool = teleport_player_to_room_start_position()
-	if not success:
-		# No room start position. Position the player in the center of the room.
-		var room_bounds: Rect2i = Room.bounds[current_room]
-		
-		@warning_ignore("integer_division")
-		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
-	
-	constrain_player_to_current_room()
-	constrain_camera_to_current_room()
+	play_from(room_index)
 
 func teleport_player_to_room_start_position() -> bool:
 	var old_position: Vector2 = player.global_position

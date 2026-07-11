@@ -23,17 +23,17 @@ func _on_exit_button_pressed() -> void:
 		return
 	
 	# Ask to save first.
-	if CreatorSave.has_saved_once:
-		CreatorSave.create_save_dialogue(func(confirmed: bool) -> void:
+	if WorldSave.has_saved_once:
+		WorldSave.create_save_dialogue(func(confirmed: bool) -> void:
 			exit()
 		)
 	else:
-		CreatorSave.create_save_dialogue(func(confirmed: bool) -> void:
+		WorldSave.create_save_dialogue(func(confirmed: bool) -> void:
 			if not confirmed:
 				exit()
 				return
 			
-			CreatorSave.create_first_save_dialogue(func(first_saved: bool) -> void:
+			WorldSave.create_first_save_dialogue(func(first_saved: bool) -> void:
 				if first_saved:
 					exit()
 			)

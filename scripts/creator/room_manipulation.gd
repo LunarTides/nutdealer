@@ -9,6 +9,13 @@ var new_room_index: int = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Creator.creator_enabled.connect(func() -> void:
+		start()
+	)
+	Creator.creator_disabled.connect(func() -> void:
+		stop()
+	)
+	
 	# Start disabled. Only enable when going into create mode.
 	stop()
 

@@ -38,23 +38,17 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	
 	Game.play_start.connect(func() -> void:
-		# Set to normal mode on play.
+		# Set to normal mode on play/preview.
 		mode = Mode.None
 	)
 
 func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
-	CreatorRoomManipulation.start()
 
 func stop() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	enabled = false
-	CreatorRoomManipulation.stop()
-
-func start_tile_placing(tile: Tile) -> void:
-	mode = Mode.PlacingTile
-	CreatorPlaceTiles.start(tile)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -71,14 +65,14 @@ func _process(delta: float) -> void:
 func make_dirty() -> void:
 	dirty = true
 
-func start_playing() -> void:
+func start_preview() -> void:
 	# Get starting room from camera position.
 	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
 	if room_index == -1:
 		push_warning("Must start in a room.")
 		return
 	
-	print_debug("Playing from Room %d" % room_index)
+	print_debug("Previewing from Room %d" % room_index)
 	
 	# Disable tiles outside room.
 	Game.tiles.call_outside_room(room_index, func(tile: Tile) -> void:
@@ -95,10 +89,11 @@ func start_playing() -> void:
 	dark_world_ui.add_child(player)
 	player.global_position = dark_world_ui.camera_2d.global_position
 	Game.player = player
+	
 	Game.constrain_player_to_current_room()
 	Game.constrain_camera_to_current_room()
 
-func stop_playing() -> void:
+func stop_preview() -> void:
 	# Re-enable disabled tiles outside room.
 	Game.tiles.call_outside_room(Game.current_room, func(tile: Tile) -> void:
 		tile.enable()

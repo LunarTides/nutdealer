@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b7xjlu3flg8wu"]
 
-[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/creator_tile_behaviour_ui.gd" id="1_e3d2g"]
+[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile_behaviour_ui.gd" id="1_e3d2g"]
 
 [node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "solid_check_box", "hide_during_play_check_box", "room_start_position_check_box")]
 layout_mode = 3
@@ -31,14 +31,17 @@ layout_mode = 2
 
 [node name="SolidCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=764964764]
 layout_mode = 2
+tooltip_text = "If you can collide with the tile."
 text = "Solid"
 
 [node name="HideDuringPlayCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=537357001]
 layout_mode = 2
+tooltip_text = "If the tile should be hidden when playing."
 text = "Hide During Play"
 
 [node name="RoomStartPositionCheckBox" type="CheckBox" parent="TabContainer/Properties/VBoxContainer" unique_id=1687671096]
 layout_mode = 2
+tooltip_text = "If the player should spawn at this tile when entering the room. (Ignored by room transitions.)"
 text = "Room Start Position"
 
 [node name="Code" type="PanelContainer" parent="TabContainer" unique_id=1875978336]
