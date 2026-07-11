@@ -1,3 +1,4 @@
+@tool
 extends Control
 
 const CREATOR_DARK_WORLD_UI: PackedScene = preload("uid://cidw2jv7myp3u")
@@ -7,7 +8,15 @@ const CREATOR_DARK_WORLD_UI: PackedScene = preload("uid://cidw2jv7myp3u")
 
 @export_category("UI Nodes")
 @export var grid: TextureRect
+
+@export var idle_container: CenterContainer
 @export var title_label: Label
+@export var title_label_animation_player: AnimationPlayer
+@export var title_label_pulse: Label
+@export var title_label_pulse_animation_player: AnimationPlayer
+
+@export var intro_container: HBoxContainer
+
 
 var title_pulse_label: Label
 var old_grid_position: Vector2
@@ -15,11 +24,13 @@ var old_grid_position: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	init_grid()
+	
+	if not Engine.is_editor_hint():
+		idle_container.hide()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	title_label.offset_transform_rotation += 1 * delta
 	move_grid(delta)
 
 
@@ -43,8 +54,11 @@ func _on_create_button_pressed() -> void:
 func init_grid() -> void:
 	# Move the grid a little left and make it a little bigger.
 	# This removes any gaps that would give away the illusion of an infinite plane.
-	grid.position += Vector2(-64 * grid_move_repeat_frequency, 0)
-	grid.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
+	var screen_size: Vector2 = Vector2(1152, 640)
+	if not Engine.is_editor_hint():
+		screen_size = Global.screen_size
+	
+	grid.size = screen_size + Vector2(64 * 4, 64 * 4)
 	old_grid_position = Vector2.ZERO
 
 func move_grid(delta: float) -> void:
@@ -54,3 +68,15 @@ func move_grid(delta: float) -> void:
 	# Move the grid to give an illusion that it's an infinite plane.
 	if grid.position.x >= 0:
 		grid.position = Vector2(-64 * grid_move_repeat_frequency, 0)
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	if anim_name == &"intro":
+		title_label_animation_player.play(&"title")
+		title_label_pulse_animation_player.play(&"title_pulse")
+		
+		idle_container.show()
+		intro_container.queue_free()
