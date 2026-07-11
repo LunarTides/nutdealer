@@ -75,23 +75,6 @@ tracks/0/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.36666667, 0.18942569, 0.2, 0, -0.020671427, 0, 0, -2.2933818e-08, -0.70000005, 0.27153116, 0.27613404, -0.10711285, -0.2, -0.29999995, 0.022503734, 0, 0, 0, -0.5, -0.24447925, 0, 0),
 "times": PackedFloat32Array(0, 1, 2, 3, 4)
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../..")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1, 3),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"title_pulse"
-}, {
-"args": [],
-"method": &"title_pulse"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_1g8jr"]
 resource_name = "title_pulse"
@@ -108,61 +91,38 @@ tracks/0/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.36666667, 0.18942569, 0.2, 0, -0.020671427, 0, 0, -2.2933818e-08, -0.70000005, 0.27153116, 0.27613404, -0.10711285, -0.2, -0.29999995, 0.022503734, 0, 0, 0, -0.5, -0.24447925, 0, 0),
 "times": PackedFloat32Array(0, 1, 2, 3, 4)
 }
-tracks/1/type = "method"
+tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../..")
+tracks/1/path = NodePath(".:modulate:a")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1, 2, 3, 4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"values": [{
-"args": [],
-"method": &"title_pulse_delete"
-}, {
-"args": [],
-"method": &"title_pulse_delete"
-}, {
-"args": [],
-"method": &"title_pulse_delete"
-}, {
-"args": [],
-"method": &"title_pulse_delete"
-}]
+"handle_modes": PackedInt32Array(0, 0, 2, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.15555556, 0.15555556, 0.01111111, -0.01111111, 1, -0.16666667, 0, 0.0016666651, 0, 0, -0.01666665, 0, 0.15000002, 0, 0, -0.15555556, 0.15555556, 0.01111111, -0.01111111, 1, -0.17222223, 0, 0, 0, 0, -0.2925763, -0.58876044, 0, 0),
+"times": PackedFloat32Array(0, 0.99, 1, 2.01, 2.99, 3, 4)
 }
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate:a")
+tracks/2/path = NodePath(".:offset_transform_scale:x")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 2, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.16666667, 0, 0.0016666651, 0, 1, -0.07777779, 0.07777779, 0.08888888, -0.08888888, 0, -0.17777777, 0.16666667, 0, 0, 1, -0.01666665, 0, 0.15000002, 0, 0, -0.17222223, 0, 0, 0, 1, -0.04444444, 0, 0.12222223, 0, 0, -0.2925763, -0.58876044, 0, 0),
-"times": PackedFloat32Array(0, 1, 1.01, 2, 2.01, 3, 3.01, 4)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.038888894, 0.25000003, 0, 0, 1.5, -0.17055556, 0.16666667, 0, 0, 1, -0.01666665, 0.25, 0, 0, 1, -0.14833336, 0.16666667, 0, 0, 1.5, -0.15388891, 0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 1, 2, 2.01, 3, 4)
 }
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:offset_transform_scale:x")
+tracks/3/path = NodePath(".:offset_transform_scale:y")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1.5, -0.16111112, 0.16666669, 0, 0, 1, -0.038888894, 0.25000003, 0, 0, 1.5, -0.17055556, 0.16666667, 0, 0, 1, -0.01666665, 0.25, 0, 0, 1.5, -0.14833336, 0.16666667, 0, 0, 1, -0.033333343, 0.25, 0, 0, 1.5, -0.15388891, 0.16666667, 0, 0),
-"times": PackedFloat32Array(0, 1, 1.01, 2, 2.01, 3, 3.01, 4)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:offset_transform_scale:y")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1.5, -0.16111112, 0.16666669, 0, 0, 1, -0.038888894, 0.25000003, 0, 0, 1.5, -0.17055556, 0.16666667, 0, 0, 1, -0.01666665, 0.25, 0, 0, 1.5, -0.14833336, 0.16666667, 0, 0, 1, -0.033333343, 0.25, 0, 0, 1.5, -0.15388891, 0.16666667, 0, 0),
-"times": PackedFloat32Array(0, 1, 1.01, 2, 2.01, 3, 3.01, 4)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.038888894, 0.25000003, 0, 0, 1.5, -0.17055556, 0.16666667, 0, 0, 1, -0.01666665, 0.25, 0, 0, 1, -0.14833336, 0.16666667, 0, 0, 1.5, -0.15388891, 0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 1, 2, 2.01, 3, 4)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1g8jr"]
@@ -183,7 +143,7 @@ grow_vertical = 2
 script = ExtResource("1_sl1te")
 grid_move_speed = 25.0
 grid = NodePath("Grid")
-title_label = NodePath("VBoxContainer/TitleLabel")
+title_label = NodePath("VBoxContainer/CenterContainer/TitleLabel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1173272385]
 layout_mode = 1
@@ -199,7 +159,10 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=564738312]
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer" unique_id=1048597449]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/CenterContainer" unique_id=564738312]
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 4
@@ -208,8 +171,22 @@ offset_transform_position = Vector2(0, -12)
 text = "NUTDEALER"
 label_settings = SubResource("LabelSettings_hakx0")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/TitleLabel" unique_id=883555695]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/CenterContainer/TitleLabel" unique_id=883555695]
 libraries/ = SubResource("AnimationLibrary_1g8jr")
+autoplay = &"title"
+
+[node name="TitleLabelPulse" type="Label" parent="VBoxContainer/CenterContainer" unique_id=1481971674]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -12)
+text = "NUTDEALER"
+label_settings = SubResource("LabelSettings_hakx0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/CenterContainer/TitleLabelPulse" unique_id=1518826945]
+libraries/ = SubResource("AnimationLibrary_1g8jr")
+autoplay = &"title_pulse"
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=584903432]
 layout_mode = 2
