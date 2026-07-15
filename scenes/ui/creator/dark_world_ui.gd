@@ -9,6 +9,7 @@ class_name CreatorDarkWorldUI
 @export var mouse_coords_label: Label
 @export var room_coords_label: Label
 
+var can_pan_camera: bool = true
 var old_camera_2d_position: Vector2
 
 
@@ -51,7 +52,7 @@ func _process(delta: float) -> void:
 	
 	handle_room_coords_label()
 	
-	if camera_2d.enabled:
+	if camera_2d.enabled and can_pan_camera:
 		# Camera panning
 		var true_pan_speed: float = pan_speed
 		if Input.is_action_pressed(&"editor_pan_speed_up"):

@@ -71,23 +71,23 @@ text = "Save"
 custom_minimum_size = Vector2(640, 320)
 layout_mode = 2
 text = "# Called when the tile enters the scene tree for the first time.
-func _ready() -> void:
+func _ready():
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(delta):
 	pass
 
 # Called when the tile is interacted with.
-func _interact() -> void:
+func _interact():
 	pass
 
 # Called when the player enters the room this tile is in.
-func _room_enter() -> void:
+func _room_enter():
 	pass
 
 # Called when the player exits the room this tile is in.
-func _room_exit() -> void:
+func _room_exit():
 	pass
 "
 

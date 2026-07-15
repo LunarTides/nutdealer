@@ -7,6 +7,13 @@ const SCRIPT_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://c243swkrxn171")
 @export var code_edit: CodeEdit
 
 var tile: Tile
+var code_intro: String = "extends Node2D
+
+var tile:
+	get:
+		return get_parent()
+
+"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,7 +24,7 @@ func _ready() -> void:
 		check_box.tile = tile
 	
 	if is_instance_valid(tile.logic_script):
-		code_edit.text = tile.logic_script.source_code.replace("extends Node2D\n\n", "")
+		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -29,9 +36,9 @@ func _input(event: InputEvent) -> void:
 			# Clicked outside window.
 			queue_free()
 
-
+# TODO: Add proper feedback.
 func _on_save_button_pressed() -> void:
-	var code: String = "extends Node2D\n\n%s" % code_edit.text
+	var code: String = "%s%s" % [code_intro, code_edit.text]
 	
 	if not tile.logic_script_path:
 		var dialogue: ConfirmationDialog = SCRIPT_FIRST_SAVE_DIALOGUE.instantiate()

@@ -70,3 +70,19 @@ func _request_code_completion(force: bool) -> void:
 	add_code_completion_option(CodeEdit.KIND_FUNCTION, "_interact", "func _interact():\n\t")
 	
 	update_code_completion_options(true)
+
+
+func _on_focus_entered() -> void:
+	Creator.dark_world_ui.can_pan_camera = false
+
+
+func _on_focus_exited() -> void:
+	Creator.dark_world_ui.can_pan_camera = true
+
+
+func _on_tree_exiting() -> void:
+	Creator.dark_world_ui.can_pan_camera = true
+
+
+func _on_hidden() -> void:
+	Creator.dark_world_ui.can_pan_camera = true

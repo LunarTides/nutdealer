@@ -4,6 +4,7 @@
 
 [sub_resource type="SystemFont" id="SystemFont_tughl"]
 font_names = PackedStringArray("MesloLGL Nerd Font Mono", "monospace")
+subpixel_positioning = 0
 
 [node name="CodeEdit" type="CodeEdit" unique_id=750926670]
 anchors_preset = 15
@@ -27,3 +28,8 @@ indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource("1_tughl")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="hidden" from="." to="." method="_on_hidden"]
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
