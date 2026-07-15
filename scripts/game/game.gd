@@ -6,7 +6,6 @@ signal room_changed(old_room_index: int, new_room_index: int)
 
 const TILES: PackedScene = preload("uid://c810cm35ke6y5")
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
-const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
 const GAME_PAUSE_MENU: PackedScene = preload("uid://dic6f6j0grcf0")
 
 var playing: bool = false:
@@ -81,7 +80,9 @@ func play_from(room_index: int) -> void:
 	
 	# Create player.
 	if not is_instance_valid(player):
-		player = PLAYER.instantiate()
+		# NOTE: For some reason, we can't preload the player scene. ???
+		var player_scene: PackedScene = load("uid://cbbmactdk1u14")
+		player = player_scene.instantiate()
 		add_child(player)
 	
 	var success: bool = teleport_player_to_room_start_position()

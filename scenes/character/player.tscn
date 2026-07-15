@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bvxdrb5d24bxx"]
+[gd_scene format=3 uid="uid://cbbmactdk1u14"]
 
 [ext_resource type="Script" uid="uid://cct2nog62hn36" path="res://scenes/character/player.gd" id="1_jb4us"]
 [ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="2_ux0ro"]

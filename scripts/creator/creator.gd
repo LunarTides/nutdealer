@@ -4,7 +4,7 @@ signal creator_enabled
 signal creator_disabled
 signal mode_changed(old: Mode, new: Mode)
 
-const PLAYER: PackedScene = preload("uid://bvxdrb5d24bxx")
+const PLAYER: PackedScene = preload("uid://cbbmactdk1u14")
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
