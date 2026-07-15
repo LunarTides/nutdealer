@@ -66,12 +66,12 @@ func _notification(what: int) -> void:
 		)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if Game.playing or not Creator.enabled:
 		return
 	
 	# Save
-	if Input.is_action_just_pressed(&"save"):
+	if event.is_action_pressed(&"save"):
 		# Old world.
 		if world_name:
 			save_world()
@@ -81,7 +81,7 @@ func _process(delta: float) -> void:
 		create_first_save_dialogue()
 	
 	# Open World
-	if Input.is_action_just_pressed(&"editor_open_world"):
+	if event.is_action_pressed(&"editor_open_world"):
 		if dirty:
 			# Ask to save first.
 			if has_saved_once:
@@ -104,7 +104,7 @@ func _process(delta: float) -> void:
 		create_open_world_dialogue()
 	
 	# New World
-	if Input.is_action_just_pressed(&"editor_new_world"):
+	if event.is_action_pressed(&"editor_new_world"):
 		if not dirty:
 			new_world()
 			return

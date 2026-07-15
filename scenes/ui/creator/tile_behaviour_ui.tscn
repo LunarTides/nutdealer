@@ -4,6 +4,13 @@
 [ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile_behaviour_check_box.gd" id="2_3nwos"]
 [ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/ui/creator/code_edit.tscn" id="3_7laq3"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_0dgii"]
+action = &"save"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_bou05"]
+events = [SubResource("InputEventAction_0dgii")]
+
 [node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit")]
 layout_mode = 3
 anchors_preset = 15
@@ -65,6 +72,7 @@ layout_mode = 2
 
 [node name="SaveButton" type="Button" parent="TabContainer/Code/VBoxContainer/HBoxContainer" unique_id=1567755948]
 layout_mode = 2
+shortcut = SubResource("Shortcut_bou05")
 text = "Save"
 
 [node name="CodeEdit" parent="TabContainer/Code/VBoxContainer" unique_id=750926670 instance=ExtResource("3_7laq3")]
