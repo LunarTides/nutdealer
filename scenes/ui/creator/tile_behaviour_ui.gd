@@ -1,6 +1,7 @@
 extends Control
 
 const SCRIPT_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://c243swkrxn171")
+const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 
 @export var tab_container: TabContainer
 @export var check_box_container: VBoxContainer
@@ -23,8 +24,7 @@ func _ready() -> void:
 		
 		check_box.tile = tile
 	
-	if is_instance_valid(tile.logic_script):
-		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
+	reload_ui()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -35,6 +35,10 @@ func _input(event: InputEvent) -> void:
 		if not tab_container.get_global_rect().has_point(get_global_mouse_position()):
 			# Clicked outside window.
 			queue_free()
+
+func reload_ui() -> void:
+	if is_instance_valid(tile.logic_script):
+		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
 
 # TODO: Add proper feedback.
 func _on_save_button_pressed() -> void:
@@ -69,3 +73,15 @@ func _on_save_button_pressed() -> void:
 		return
 	
 	tile.set_logic_script(code)
+
+
+func _on_load_button_pressed() -> void:
+	# FIXME: If we load a script, save then leave the world, then open the world again,
+	# the tiles have different scripts again.
+	var script_picker: TileScriptPicker = TILE_SCRIPT_PICKER.instantiate()
+	script_picker.chosen.connect(func(data: TileScriptData) -> void:
+		tile.logic_script = data.tile_script
+		tile.logic_script_path = data.path
+		reload_ui()
+	)
+	Game.canvas_layer.add_child(script_picker)

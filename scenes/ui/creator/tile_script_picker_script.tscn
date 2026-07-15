@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cwxrfwnkpdf8x"]
+
+[ext_resource type="Script" uid="uid://7xcw5drt5okq" path="res://scenes/ui/creator/tile_script_picker_script.gd" id="1_6vv75"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hakx0"]
+font_size = 12
+font_color = Color(0.669324, 0.669324, 0.669324, 1)
+
+[node name="Script" type="VBoxContainer" unique_id=966452384 node_paths=PackedStringArray("name_label", "instances_label")]
+offset_right = 119.0
+offset_bottom = 37.0
+script = ExtResource("1_6vv75")
+name_label = NodePath("NameLabel")
+instances_label = NodePath("InstancesLabel")
+
+[node name="NameLabel" type="Label" parent="." unique_id=729388402]
+layout_mode = 2
+text = "script_name"
+
+[node name="InstancesLabel" type="Label" parent="." unique_id=2068968908]
+layout_mode = 2
+text = "Instances: 0"
+label_settings = SubResource("LabelSettings_hakx0")
