@@ -1,7 +1,13 @@
 extends Node
 
-signal saved
-signal loaded
+signal save_begun
+signal save_ended
+
+signal load_begun
+signal load_ended
+
+signal first_save_begun
+signal first_save_ended
 
 const FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
@@ -17,6 +23,9 @@ var world_name: String:
 		return Creator.world_name
 	set(value):
 		Creator.world_name = value
+		
+		# Delete the temp folder if we set the world_name.
+		CreatorResourceSaver.delete_temp_folder()
 var dirty: bool:
 	get:
 		return Creator.dirty
@@ -149,10 +158,12 @@ func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: 
 				# User chose to overwrite.
 				overwrite_dialogue.queue_free()
 				world_name = new_world_name
+				first_save_begun.emit()
 				save_world()
 				dialogue.queue_free()
 				
 				then.call(true)
+				first_save_ended.emit()
 			)
 			overwrite_dialogue.canceled.connect(func() -> void:
 				overwrite_dialogue.queue_free()
@@ -163,9 +174,11 @@ func create_first_save_dialogue(then: Callable = func(confirmed: bool) -> void: 
 		else:
 			# No conflict. Save.
 			world_name = new_world_name
+			first_save_begun.emit()
 			save_world()
 			dialogue.queue_free()
 			then.call(true)
+			first_save_ended.emit()
 	)
 	dialogue.canceled.connect(func() -> void:
 		dialogue.queue_free()
@@ -208,13 +221,26 @@ func save_world() -> void:
 		push_error("You cannot save the world while previewing the game.")
 		return
 	
+	save_begun.emit()
 	var path: String = "user://worlds/%s" % world_name
 	DirAccess.make_dir_recursive_absolute(path)
 	
 	# Tiles
 	var tiles: PackedScene = PackedScene.new()
 	tiles.pack(Game.tiles)
-	ResourceSaver.save(tiles, "%s/tiles.tscn" % path)
+	DirAccess.make_dir_recursive_absolute("%s/tiles" % path)
+	ResourceSaver.save(tiles, "%s/tiles/tiles.tscn" % path)
+	
+	# Tile Scripts
+	for tile: Tile in Game.tiles.get_all():
+		if is_instance_valid(tile.logic_script):
+			DirAccess.make_dir_recursive_absolute("%s/tiles/scripts" % path)
+			
+			var script_path_split: PackedStringArray = tile.logic_script_path.split("/")
+			var script_name: String = script_path_split[script_path_split.size() - 1]
+			
+			var file: FileAccess = FileAccess.open("%s/tiles/scripts/%s" % [path, script_name], FileAccess.WRITE)
+			file.store_string(tile.logic_script.source_code)
 	
 	# Config
 	var config: ConfigFile = ConfigFile.new()
@@ -227,7 +253,7 @@ func save_world() -> void:
 	dirty = false
 	has_saved_once = true
 	
-	saved.emit()
+	save_ended.emit()
 
 func load_world() -> void:
 	var path: String = "user://worlds/%s" % world_name
@@ -235,8 +261,10 @@ func load_world() -> void:
 		push_error("That world ('%s') does not exist." % world_name)
 		return
 	
+	load_begun.emit()
+	
 	# Tiles
-	var packed_tiles: PackedScene = load("%s/tiles.tscn" % path)
+	var packed_tiles: PackedScene = load("%s/tiles/tiles.tscn" % path)
 	var tiles: Tiles = packed_tiles.instantiate()
 	
 	for tile: Tile in tiles.get_children():
@@ -254,7 +282,7 @@ func load_world() -> void:
 			var bounds: Rect2i = config.get_value("rooms", key)
 			Room.add_room(bounds)
 	
-	loaded.emit()
+	load_ended.emit()
 	
 	await get_tree().process_frame
 	dirty = false

@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile_behaviour_ui.gd" id="1_e3d2g"]
 [ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile_behaviour_check_box.gd" id="2_3nwos"]
+[ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/ui/creator/code_edit.tscn" id="3_7laq3"]
 
-[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container")]
+[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,15 +14,17 @@ grow_vertical = 2
 script = ExtResource("1_e3d2g")
 tab_container = NodePath("TabContainer")
 check_box_container = NodePath("TabContainer/Properties/CheckBoxContainer")
+code_edit = NodePath("TabContainer/Code/VBoxContainer/CodeEdit")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=1293620555]
 layout_mode = 1
 offset_right = 198.0
 offset_bottom = 54.0
-current_tab = 0
+current_tab = 1
 clip_tabs = false
 
 [node name="Properties" type="PanelContainer" parent="TabContainer" unique_id=2140960493]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -50,6 +53,42 @@ script = ExtResource("2_3nwos")
 tile_property = &"is_room_start_position"
 
 [node name="Code" type="PanelContainer" parent="TabContainer" unique_id=1875978336]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Code" unique_id=853556277]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Code/VBoxContainer" unique_id=254053186]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="TabContainer/Code/VBoxContainer/HBoxContainer" unique_id=1567755948]
+layout_mode = 2
+text = "Save"
+
+[node name="CodeEdit" parent="TabContainer/Code/VBoxContainer" unique_id=750926670 instance=ExtResource("3_7laq3")]
+custom_minimum_size = Vector2(640, 320)
+layout_mode = 2
+text = "# Called when the tile enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+# Called when the tile is interacted with.
+func _interact() -> void:
+	pass
+
+# Called when the player enters the room this tile is in.
+func _room_enter() -> void:
+	pass
+
+# Called when the player exits the room this tile is in.
+func _room_exit() -> void:
+	pass
+"
+
+[connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://24k3h1cax05e"]
 
-[node name="CreatorFirstSaveDialogue" type="ConfirmationDialog" unique_id=1819187575]
+[node name="FirstSaveDialogue" type="ConfirmationDialog" unique_id=1819187575]
 oversampling_override = 1.0
 initial_position = 2
 visible = true

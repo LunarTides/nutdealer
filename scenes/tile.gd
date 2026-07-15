@@ -27,13 +27,13 @@ const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 		
 		if is_inside_tree():
 			regenerate_id()
-# TODO: Handle
 @export var is_room_start_position: bool = false:
 	set(value):
 		is_room_start_position = value
 		
 		if is_inside_tree():
 			regenerate_id()
+@export_storage var logic_script_path: String
 
 var id: String = "null":
 	set(value):
@@ -44,12 +44,23 @@ var id: String = "null":
 var coords: Vector2i:
 	get:
 		return Global.position_to_coords(global_position)
+var logic_script: GDScript:
+	set(value):
+		logic_script = value
+		
+		if is_inside_tree():
+			if is_instance_valid(logic_script):
+				logic.set_script(logic_script)
+			
+			regenerate_id()
 
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D
 @onready var collision_shape_2d: CollisionShape2D = $StaticBody2D/CollisionShape2D
 @onready var actions: PanelContainer = $Actions
 @onready var id_label: Label = $Actions/VBoxContainer/IDLabel
+# TODO: Call _room_enter and _room_exit when entering / exiting room.
+@onready var logic: TileLogic = $Logic
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -70,13 +81,34 @@ func _ready() -> void:
 	if not Creator.enabled:
 		actions.queue_free()
 	
+	logic.process_mode = Node.PROCESS_MODE_DISABLED
 	Game.play_start.connect(func() -> void:
 		if should_hide_during_play:
 			hide()
+		
+		logic.process_mode = Node.PROCESS_MODE_PAUSABLE
 	)
 	Game.play_end.connect(func() -> void:
 		if should_hide_during_play and not visible:
 			show()
+		
+		logic.process_mode = Node.PROCESS_MODE_DISABLED
+	)
+	
+	# Load script.
+	if logic_script_path:
+		var script: GDScript = load(logic_script_path)
+		set_logic_script(script.source_code, logic_script_path)
+	
+	# Change script path to reflect new world folder location.
+	WorldSave.first_save_begun.connect(func() -> void:
+		if not logic_script_path:
+			return
+		
+		var relative_path: String = logic_script_path.split("/temp")[1]
+		logic_script_path = CreatorResourceSaver.get_full_path(relative_path)
+		logic_script.resource_path = logic_script_path
+		logic.script.resource_path = logic_script_path
 	)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -116,8 +148,7 @@ func _on_behaviour_button_pressed() -> void:
 	actions.hide()
 
 func interact() -> void:
-	# TODO: Temp. Remove this.
-	sprite_2d.self_modulate /= 1.25
+	logic._interact()
 
 func disable() -> void:
 	hide()
@@ -132,6 +163,31 @@ func clone(new_id: bool = false) -> Tile:
 	if new_id:
 		new_tile.regenerate_id()
 	return new_tile
+
+func set_logic_script(text: String, path: String = "") -> void:
+	if path:
+		# New script.
+		var script: GDScript = GDScript.new()
+		script.source_code = text
+		
+		CreatorResourceSaver.save(script, path)
+		# For some reason, we have to reload the script in order for it to work.
+		script.reload()
+		logic_script = script
+		if not logic_script_path:
+			logic_script_path = script.resource_path
+		
+		return
+	
+	# Update script.
+	if not is_instance_valid(logic_script):
+		push_error("No logic script. Please call set_logic_script with a path.")
+		return
+	
+	logic_script.source_code = text
+	CreatorResourceSaver.save(logic_script)
+	logic_script.reload(true)
+	logic.script = logic_script
 
 func _on_mouse_entered() -> void:
 	if Creator.enabled:

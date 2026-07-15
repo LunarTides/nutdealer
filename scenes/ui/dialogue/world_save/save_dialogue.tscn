@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddvp7p0x0n6ov"]
 
-[node name="CreatorSaveDialogue" type="ConfirmationDialog" unique_id=196868981]
+[node name="SaveDialogue" type="ConfirmationDialog" unique_id=196868981]
 oversampling_override = 1.0
 initial_position = 2
 size = Vector2i(320, 116)

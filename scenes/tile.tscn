@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cfme7hrx25bgv"]
 
-[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="1_hdp2l"]
-[ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/ui/tile.gd" id="2_78bva"]
+[ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/tile.gd" id="1_jy7pm"]
+[ext_resource type="Script" uid="uid://bdxm6dj448qpe" path="res://scenes/tile_logic.gd" id="2_q7utx"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="3_6p3j2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(64, 64)
@@ -11,14 +12,21 @@ outline_size = 2
 outline_color = Color(0.98354346, 0, 0.23551083, 1)
 
 [node name="Tile" type="Node2D" unique_id=939431773]
-script = ExtResource("2_78bva")
+script = ExtResource("1_jy7pm")
+is_solid = null
+should_hide_during_play = null
+is_room_start_position = null
+logic_script_path = null
+
+[node name="Logic" type="Node2D" parent="." unique_id=956117243]
+script = ExtResource("2_q7utx")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=406712904]
 collision_layer = 2
 input_pickable = true
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=240555624]
-texture = ExtResource("1_hdp2l")
+texture = ExtResource("3_6p3j2")
 centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1227396779]

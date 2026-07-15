@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://1xt5rpnm2slf"]
 
-[node name="CreatorOpenWorldDialogue" type="FileDialog" unique_id=483252642]
+[node name="OpenWorldDialogue" type="FileDialog" unique_id=483252642]
 oversampling_override = 1.0
 title = "Open a Directory"
 initial_position = 2

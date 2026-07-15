@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://qpikcm3h5lhc"]
+
+[ext_resource type="Script" uid="uid://cm2q6nub3iakg" path="res://scenes/ui/creator/code_edit.gd" id="1_tughl"]
+
+[sub_resource type="SystemFont" id="SystemFont_tughl"]
+font_names = PackedStringArray("MesloLGL Nerd Font Mono", "monospace")
+
+[node name="CodeEdit" type="CodeEdit" unique_id=750926670]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_tughl")
+text = "test test"
+minimap_draw = true
+draw_control_chars = true
+draw_tabs = true
+draw_spaces = true
+symbol_lookup_on_click = true
+symbol_tooltip_on_hover = true
+line_folding = true
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+code_completion_enabled = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource("1_tughl")

@@ -1,7 +1,10 @@
 extends Control
 
+const SCRIPT_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://c243swkrxn171")
+
 @export var tab_container: TabContainer
 @export var check_box_container: VBoxContainer
+@export var code_edit: CodeEdit
 
 var tile: Tile
 
@@ -12,6 +15,9 @@ func _ready() -> void:
 			return
 		
 		check_box.tile = tile
+	
+	if is_instance_valid(tile.logic_script):
+		code_edit.text = tile.logic_script.source_code.replace("extends Node2D\n\n", "")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -22,3 +28,37 @@ func _input(event: InputEvent) -> void:
 		if not tab_container.get_global_rect().has_point(get_global_mouse_position()):
 			# Clicked outside window.
 			queue_free()
+
+
+func _on_save_button_pressed() -> void:
+	var code: String = "extends Node2D\n\n%s" % code_edit.text
+	
+	if not tile.logic_script_path:
+		var dialogue: ConfirmationDialog = SCRIPT_FIRST_SAVE_DIALOGUE.instantiate()
+		dialogue.confirmed.connect(func() -> void:
+			var script_name: String = dialogue.get_node(^"ScriptName").text
+			if not script_name:
+				return
+			
+			var path: String = "/tiles/scripts/%s.gd" % script_name
+			
+			# Check conflict. Ask before for overriding.
+			if CreatorResourceSaver.exists(path):
+				# TODO: Show to user.
+				push_error("Conflict.")
+				return
+			
+			# No conflict. Save.
+			tile.set_logic_script(code, path)
+			dialogue.queue_free()
+		)
+		dialogue.canceled.connect(func() -> void:
+			dialogue.queue_free()
+		)
+		add_child(dialogue)
+		dialogue.popup_centered_clamped()
+		# Place focus on the world name input.
+		dialogue.get_node(^"ScriptName").grab_focus()
+		return
+	
+	tile.set_logic_script(code)
