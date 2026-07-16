@@ -2,6 +2,7 @@ extends Control
 class_name CreatorDarkWorldUI
 
 @export var pan_speed: float = 300
+@export var zoom_speed: float = 10
 
 @export_category("UI Nodes")
 @export var grid_hint: TextureRect
@@ -10,12 +11,15 @@ class_name CreatorDarkWorldUI
 @export var room_coords_label: Label
 
 var can_pan_camera: bool = true
+var actual_pan_speed: float = 0
 var old_camera_2d_position: Vector2
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Creator.start()
+	
+	actual_pan_speed = pan_speed
 	
 	camera_2d.global_position = Global.screen_size / 2
 	init_grid_hint()
@@ -34,10 +38,11 @@ func _ready() -> void:
 		# Move the grid hint to the camera's position.
 		grid_hint.show()
 		grid_hint.global_position = Global.align_to_grid(camera_2d.global_position) - Global.screen_size / 2
+		
 		# Reset the old camera position since, otherwise,
 		# the difference calculation would kick in and move the
 		# grid hint too far away from the camera.
-		old_camera_2d_position = Vector2.ZERO
+		init_grid_hint()
 	)
 	
 	# Move the grid when the window's size is changed.
@@ -54,7 +59,7 @@ func _process(delta: float) -> void:
 	
 	if camera_2d.enabled and can_pan_camera:
 		# Camera panning
-		var true_pan_speed: float = pan_speed
+		var true_pan_speed: float = actual_pan_speed
 		if Input.is_action_pressed(&"editor_pan_speed_up"):
 			true_pan_speed *= 5
 		
@@ -72,12 +77,29 @@ func _process(delta: float) -> void:
 					var difference: Vector2i = new_coords - old_coords
 					grid_hint.position += Global.coords_to_position(difference)
 			old_camera_2d_position = camera_2d.position
+		
+		# Zooming
+		if Input.is_action_pressed(&"editor_zoom_reset"):
+			camera_2d.zoom = Vector2.ONE
+		elif Input.is_action_pressed(&"editor_zoom_in"):
+			camera_2d.zoom += Vector2.ONE * zoom_speed * 0.1 * delta
+			if camera_2d.zoom > Vector2(2.0, 2.0):
+				camera_2d.zoom = Vector2(2.0, 2.0)
+		elif Input.is_action_pressed(&"editor_zoom_out"):
+			camera_2d.zoom -= Vector2.ONE * zoom_speed * 0.1 * delta
+			if camera_2d.zoom < Vector2(0.1, 0.1):
+				camera_2d.zoom = Vector2(0.1, 0.1)
+	
+	# Scale pan speed based on camera zoom.
+	actual_pan_speed = pan_speed * (1 / camera_2d.zoom.x)
+
 
 func init_grid_hint() -> void:
 	# Move the grid hint a little left and make it a little bigger.
 	# This removes any gaps that would give away the illusion of an infinite plane.
-	grid_hint.position -= Vector2(64, 64)
-	grid_hint.size = Global.screen_size + Vector2(64 * 4, 64 * 4)
+	var position_subtraction: Vector2 = Vector2(64 * 128, 64 * 64)
+	grid_hint.position -= position_subtraction
+	grid_hint.size = Global.screen_size + position_subtraction * 2
 	old_camera_2d_position = Vector2.ZERO
 
 func handle_room_coords_label() -> void:

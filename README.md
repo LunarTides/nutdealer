@@ -9,7 +9,7 @@ Here are some fundementals. There are still some bugs / small features that have
 - [x] Title Screen
 - [x] Dark World Creator
     - [x] Camera that can pan
-    - [ ] Camera that can zoom
+    - [x] Camera that can zoom
     - [x] Grid
     - [x] Place tiles on said grid
         - [x] Give them different textures
@@ -19,6 +19,11 @@ Here are some fundementals. There are still some bugs / small features that have
             - [x] Save/load scripts
     - [x] Save/load dark worlds
     - [x] Preview
+	- [ ] Encounters
+	- [ ] Dialogue
+	- [ ] Party Members
+		- [x] Lead (Kris)
+		- [ ] Follow (Susie, Ralsei, etc...)
 - [x] Play dark worlds
 ---
 
