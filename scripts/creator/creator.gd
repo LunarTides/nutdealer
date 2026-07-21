@@ -8,7 +8,7 @@ const PLAYER: PackedScene = preload("uid://cbbmactdk1u14")
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
-const ERROR_LABEL: PackedScene = preload("uid://u158p04d7v48")
+const FEEDBACK_LABEL: PackedScene = preload("uid://u158p04d7v48")
 
 enum Mode {
 	None,
@@ -32,7 +32,7 @@ var world_name: String
 # TODO: Show this dirty flag in-editor.
 var dirty: bool = false
 var dark_world_ui: CreatorDarkWorldUI
-var error_label: Label
+var feedback_label: Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -67,29 +67,45 @@ func _process(delta: float) -> void:
 func make_dirty() -> void:
 	dirty = true
 
-func error(message: String) -> void:
-	push_error(message)
+func _feedback(message: String, feedback_type: Game.FeedbackType) -> void:
+	if is_instance_valid(feedback_label):
+		feedback_label.queue_free()
 	
-	if is_instance_valid(error_label):
-		error_label.queue_free()
+	feedback_label = FEEDBACK_LABEL.instantiate()
+	dark_world_ui.bottom_center_container.add_child(feedback_label)
+	dark_world_ui.feedback_label = feedback_label
 	
-	error_label = ERROR_LABEL.instantiate()
-	dark_world_ui.bottom_center_container.add_child(error_label)
-	dark_world_ui.error_label = error_label
+	# Change label properties depending on the type of feedback.
+	var text_intro: String = ""
+	var color: Color = Color.WHITE
+	if feedback_type == Game.FeedbackType.Info:
+		pass
+	elif feedback_type == Game.FeedbackType.Success:
+		color = Color.GREEN
+	elif feedback_type == Game.FeedbackType.Warning:
+		push_warning(message)
+		text_intro = "WARNING: "
+		color = Color.YELLOW
+	elif feedback_type == Game.FeedbackType.Error:
+		push_error(message)
+		text_intro = "ERROR: "
+		color = Color.RED
 	
-	error_label.text = "ERROR: %s" % message
-	error_label.modulate.a = 1.0
+	feedback_label.text = "%s%s" % [text_intro, message]
+	feedback_label.modulate.a = 1.0
+	feedback_label.label_settings.font_color = color
 	
+	# Show on screen for 3 seconds, then fade out for 2 seconds.
 	var tween: Tween = create_tween()
 	tween.tween_interval(3.0)
-	tween.tween_property(error_label, ^"modulate:a", 0.0, 2.0)
-	tween.tween_callback(error_label.queue_free)
+	tween.tween_property(feedback_label, ^"modulate:a", 0.0, 2.0)
+	tween.tween_callback(feedback_label.queue_free)
 
 func start_preview() -> void:
 	# Get starting room from camera position.
 	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
 	if room_index == -1:
-		Game.error("Must start in a room.")
+		Game.feedback("Must start in a room.", Game.FeedbackType.Error)
 		return
 	
 	print_debug("Previewing from Room %d" % room_index)

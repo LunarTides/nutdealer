@@ -4,7 +4,7 @@
 font_size = 24
 font_color = Color(1, 0, 0, 1)
 
-[node name="ErrorLabel" type="Label" unique_id=344211520]
+[node name="FeedbackLabel" type="Label" unique_id=344211520]
 size_flags_horizontal = 4
 size_flags_vertical = 10
 text = "ERROR"

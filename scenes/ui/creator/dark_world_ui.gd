@@ -10,7 +10,7 @@ class_name CreatorDarkWorldUI
 @export var mouse_coords_label: Label
 @export var room_coords_label: Label
 @export var camera_zoom_label: Label
-@export var error_label: Label
+@export var feedback_label: Label
 @export var bottom_center_container: VBoxContainer
 
 var listen_for_keys: bool = true
@@ -28,7 +28,7 @@ func _ready() -> void:
 	camera_2d.global_position = Global.screen_size / 2
 	init_grid_hint()
 	
-	error_label.queue_free()
+	feedback_label.queue_free()
 	Creator.dark_world_ui = self
 	
 	Game.play_start.connect(func() -> void:

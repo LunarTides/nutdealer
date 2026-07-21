@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 		return
 	
 	if not is_instance_valid(tile_texture_button):
-		Game.error("Placing tile without proper tile_texture_button")
+		Game.feedback("Placing tile without proper tile_texture_button.", Game.FeedbackType.Error)
 		Creator.mode = Creator.Mode.None
 		return
 	
@@ -64,7 +64,7 @@ func _input(event: InputEvent) -> void:
 
 func start(tile_to_place: Tile) -> void:
 	if not is_instance_valid(tile_to_place):
-		Game.error("Placing tile without proper tile")
+		Game.feedback("Placing tile without proper tile.", Game.FeedbackType.Error)
 		return
 	
 	Creator.mode = Creator.Mode.PlacingTile

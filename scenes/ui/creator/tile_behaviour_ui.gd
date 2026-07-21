@@ -55,11 +55,12 @@ func _on_save_button_pressed() -> void:
 			
 			# Check conflict. Ask before for overriding.
 			if CreatorResourceSaver.exists(path):
-				Game.error("Save conflict.")
+				Game.feedback("Save conflict.", Game.FeedbackType.Error)
 				return
 			
 			# No conflict. Save.
 			tile.set_logic_script(code, path)
+			Game.feedback("Script saved.", Game.FeedbackType.Success)
 			dialogue.queue_free()
 		)
 		dialogue.canceled.connect(func() -> void:
@@ -72,6 +73,7 @@ func _on_save_button_pressed() -> void:
 		return
 	
 	tile.set_logic_script(code)
+	Game.feedback("Script saved.", Game.FeedbackType.Success)
 
 
 func _on_load_button_pressed() -> void:
@@ -88,3 +90,4 @@ func _on_load_button_pressed() -> void:
 
 func _on_ready_button_pressed() -> void:
 	tile.logic._ready()
+	Game.feedback("Armed.", Game.FeedbackType.Success)

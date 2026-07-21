@@ -50,8 +50,14 @@ func setup_menu_buttons() -> void:
 	edit_menu_button.get_popup().id_pressed.connect(func(id: int) -> void:
 		# All: _ready
 		if id == 0:
+			var amount: int = 0
 			for tile: Tile in Game.tiles.get_all():
 				tile.logic._ready()
+				if tile.logic_script_path:
+					amount += 1
+			
+			var is_plural: bool = amount != 1
+			Game.feedback("Armed %d tile%s." % [amount, "s" if is_plural else ""], Game.FeedbackType.Success)
 	)
 	
 	# Help
@@ -98,6 +104,7 @@ func setup_menu_buttons() -> void:
 	)
 	
 	# Preview Options
+	# Check the checkboxes when they're pressed.
 	var preview_options_popup: PopupMenu = preview_options_menu_button.get_popup()
 	preview_options_popup.hide_on_checkable_item_selection = false
 	preview_options_popup.id_pressed.connect(func(id: int) -> void:

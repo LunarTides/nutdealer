@@ -185,7 +185,7 @@ func set_logic_script(text: String, path: String = "") -> void:
 	
 	# Update script.
 	if not is_instance_valid(logic_script):
-		Game.error("No logic script. Please call set_logic_script with a path.")
+		Game.feedback("No logic script. Please call set_logic_script with a path.", Game.FeedbackType.Error)
 		return
 	
 	logic_script.source_code = text

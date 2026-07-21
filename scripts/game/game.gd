@@ -8,6 +8,13 @@ const TILES: PackedScene = preload("uid://c810cm35ke6y5")
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 const GAME_PAUSE_MENU: PackedScene = preload("uid://dic6f6j0grcf0")
 
+enum FeedbackType {
+	Info,
+	Success,
+	Warning,
+	Error,
+}
+
 var playing: bool = false:
 	set(value):
 		playing = value
@@ -52,20 +59,20 @@ func setup_tiles() -> void:
 	border_tiles = Node.new()
 	add_child(border_tiles)
 
-func error(message: String) -> void:
+func feedback(message: String, feedback_type: FeedbackType) -> void:
 	if Creator.enabled:
-		Creator.error(message)
+		Creator._feedback(message, feedback_type)
 		return
 	
 	# TODO: Handle error messages without creator.
 
 func play_from(room_index: int) -> void:
 	if room_index == -1:
-		error("Must start in a room.")
+		feedback("Must start in a room.", FeedbackType.Error)
 		return
 	
 	if Room.amount < 1:
-		error("This world has no rooms.")
+		feedback("This world has no rooms.", FeedbackType.Error)
 		return
 	
 	# Disable tiles outside room.
