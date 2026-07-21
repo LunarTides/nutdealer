@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://u158p04d7v48"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0wj4i"]
+font_size = 24
+font_color = Color(1, 0, 0, 1)
+
+[node name="ErrorLabel" type="Label" unique_id=344211520]
+size_flags_horizontal = 4
+size_flags_vertical = 10
+text = "ERROR"
+label_settings = SubResource("LabelSettings_0wj4i")

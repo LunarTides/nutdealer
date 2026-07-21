@@ -10,21 +10,24 @@
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="8_ofl6s"]
 [ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile_chooser.gd" id="9_o23ng"]
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="10_evxai"]
+[ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://scenes/ui/creator/error_label.tscn" id="11_skldr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
 outline_size = 2
 outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
 
-[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label")]
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label", "error_label", "bottom_center_container")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0wj4i")
 pan_speed = 500.0
 grid_hint = NodePath("GridHint")
 camera_2d = NodePath("Camera2D")
-mouse_coords_label = NodePath("CanvasLayer/BottomLeft/MouseCoordsLabel")
-room_coords_label = NodePath("CanvasLayer/BottomLeft/RoomCoordsLabel")
-camera_zoom_label = NodePath("CanvasLayer/BottomRight/CameraZoomLabel")
+mouse_coords_label = NodePath("CanvasLayer/Bottom/Left/MouseCoordsLabel")
+room_coords_label = NodePath("CanvasLayer/Bottom/Left/RoomCoordsLabel")
+camera_zoom_label = NodePath("CanvasLayer/Bottom/Right/CameraZoomLabel")
+error_label = NodePath("CanvasLayer/Bottom/Center/ErrorLabel")
+bottom_center_container = NodePath("CanvasLayer/Bottom/Center")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
@@ -141,17 +144,20 @@ item_2/icon = ExtResource("7_f3slr")
 item_3/icon = ExtResource("8_ofl6s")
 script = ExtResource("9_o23ng")
 
-[node name="BottomLeft" type="VBoxContainer" parent="CanvasLayer" unique_id=1249468150]
-anchors_preset = 2
+[node name="Bottom" type="HBoxContainer" parent="CanvasLayer" unique_id=670832984]
+anchors_preset = 12
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+grow_horizontal = 2
 grow_vertical = 0
-size_flags_horizontal = 0
+
+[node name="Left" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=1249468150]
+layout_mode = 2
+size_flags_horizontal = 2
 size_flags_vertical = 8
 
-[node name="RoomCoordsLabel" type="Label" parent="CanvasLayer/BottomLeft" unique_id=572939415]
+[node name="RoomCoordsLabel" type="Label" parent="CanvasLayer/Bottom/Left" unique_id=572939415]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -160,7 +166,7 @@ offset_transform_position = Vector2(4, 0)
 text = "Room coords"
 label_settings = SubResource("LabelSettings_847bk")
 
-[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer/BottomLeft" unique_id=252066373]
+[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer/Bottom/Left" unique_id=252066373]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -169,20 +175,19 @@ offset_transform_position = Vector2(4, 0)
 text = "Mouse coords"
 label_settings = SubResource("LabelSettings_847bk")
 
-[node name="BottomRight" type="VBoxContainer" parent="CanvasLayer" unique_id=1400618279]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -128.0
-offset_top = -42.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 0
+[node name="Center" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=59909838]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="ErrorLabel" parent="CanvasLayer/Bottom/Center" unique_id=344211520 instance=ExtResource("11_skldr")]
+layout_mode = 2
+
+[node name="Right" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=1400618279]
+layout_mode = 2
+size_flags_horizontal = 10
 size_flags_vertical = 8
 
-[node name="CameraZoomLabel" type="Label" parent="CanvasLayer/BottomRight" unique_id=1551493677]
+[node name="CameraZoomLabel" type="Label" parent="CanvasLayer/Bottom/Right" unique_id=1551493677]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10

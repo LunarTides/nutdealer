@@ -52,13 +52,20 @@ func setup_tiles() -> void:
 	border_tiles = Node.new()
 	add_child(border_tiles)
 
+func error(message: String) -> void:
+	if Creator.enabled:
+		Creator.error(message)
+		return
+	
+	# TODO: Handle error messages without creator.
+
 func play_from(room_index: int) -> void:
 	if room_index == -1:
-		push_error("Must start in a room.")
+		error("Must start in a room.")
 		return
 	
 	if Room.amount < 1:
-		push_error("This world has no rooms.")
+		error("This world has no rooms.")
 		return
 	
 	# Disable tiles outside room.

@@ -8,6 +8,7 @@ const PLAYER: PackedScene = preload("uid://cbbmactdk1u14")
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const CREATOR_OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
+const ERROR_LABEL: PackedScene = preload("uid://u158p04d7v48")
 
 enum Mode {
 	None,
@@ -31,6 +32,7 @@ var world_name: String
 # TODO: Show this dirty flag in-editor.
 var dirty: bool = false
 var dark_world_ui: CreatorDarkWorldUI
+var error_label: Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -65,11 +67,29 @@ func _process(delta: float) -> void:
 func make_dirty() -> void:
 	dirty = true
 
+func error(message: String) -> void:
+	push_error(message)
+	
+	if is_instance_valid(error_label):
+		error_label.queue_free()
+	
+	error_label = ERROR_LABEL.instantiate()
+	dark_world_ui.bottom_center_container.add_child(error_label)
+	dark_world_ui.error_label = error_label
+	
+	error_label.text = "ERROR: %s" % message
+	error_label.modulate.a = 1.0
+	
+	var tween: Tween = create_tween()
+	tween.tween_interval(3.0)
+	tween.tween_property(error_label, ^"modulate:a", 0.0, 2.0)
+	tween.tween_callback(error_label.queue_free)
+
 func start_preview() -> void:
 	# Get starting room from camera position.
 	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
 	if room_index == -1:
-		push_warning("Must start in a room.")
+		Game.error("Must start in a room.")
 		return
 	
 	print_debug("Previewing from Room %d" % room_index)

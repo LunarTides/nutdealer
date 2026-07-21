@@ -51,8 +51,7 @@ func setup_menu_buttons() -> void:
 		# All: _ready
 		if id == 0:
 			for tile: Tile in Game.tiles.get_all():
-				if is_instance_valid(tile.logic):
-					tile.logic._ready()
+				tile.logic._ready()
 	)
 	
 	# Help
@@ -117,5 +116,4 @@ func use_preview_options() -> void:
 		# All: _ready
 		if id == 0:
 			for tile: Tile in Game.tiles.get_all():
-				if is_instance_valid(tile.logic):
-					tile.logic._ready()
+				tile.logic._ready()

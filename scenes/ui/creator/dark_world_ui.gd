@@ -10,6 +10,8 @@ class_name CreatorDarkWorldUI
 @export var mouse_coords_label: Label
 @export var room_coords_label: Label
 @export var camera_zoom_label: Label
+@export var error_label: Label
+@export var bottom_center_container: VBoxContainer
 
 var listen_for_keys: bool = true
 var actual_pan_speed: float = 0
@@ -26,6 +28,7 @@ func _ready() -> void:
 	camera_2d.global_position = Global.screen_size / 2
 	init_grid_hint()
 	
+	error_label.queue_free()
 	Creator.dark_world_ui = self
 	
 	Game.play_start.connect(func() -> void:
@@ -80,21 +83,19 @@ func _process(delta: float) -> void:
 				move_grid_hint()
 		
 		# Pan using right mouse button.
-		var has_set_last_mouse_position: bool = false
+		var should_set_last_mouse_position: bool = true
 		
 		var is_rmb_pressed: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
 		if is_rmb_pressed and last_mouse_position:
 			var mouse_vector: Vector2 = last_mouse_position - Global.mouse_position
 			if not mouse_vector.is_zero_approx():
 				camera_2d.position += mouse_vector
-				last_mouse_position = Global.mouse_position + mouse_vector
+				should_set_last_mouse_position = false
 				# Move the grid hint to give an illusion that it's an infinite plane.
 				move_grid_hint()
-				has_set_last_mouse_position = true
 		
-		if not has_set_last_mouse_position:
+		if should_set_last_mouse_position:
 			last_mouse_position = Global.mouse_position
-			has_set_last_mouse_position = true
 			
 		old_camera_2d_position = camera_2d.position
 	

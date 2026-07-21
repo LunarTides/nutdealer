@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 func _on_play_button_pressed() -> void:
 	WorldSave.load_ended.connect(func() -> void:
 		if Room.amount < 1:
-			push_error("This world has no rooms.")
+			Game.error("This world has no rooms.")
 			WorldSave.new_world()
 			return
 		

@@ -55,8 +55,7 @@ func _on_save_button_pressed() -> void:
 			
 			# Check conflict. Ask before for overriding.
 			if CreatorResourceSaver.exists(path):
-				# TODO: Show to user.
-				push_error("Conflict.")
+				Game.error("Save conflict.")
 				return
 			
 			# No conflict. Save.
@@ -88,8 +87,4 @@ func _on_load_button_pressed() -> void:
 
 
 func _on_ready_button_pressed() -> void:
-	if not is_instance_valid(tile.logic):
-		push_error("This tile has no script attached.")
-		return
-	
 	tile.logic._ready()

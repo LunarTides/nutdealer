@@ -8,7 +8,7 @@ var tile: Tile:
 		tile = value
 		
 		if not is_instance_valid(tile):
-			push_error("Invalid tile")
+			Game.error("Invalid tile")
 			return
 		
 		button_pressed = tile.get(tile_property)

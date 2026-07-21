@@ -217,8 +217,7 @@ func make_dirty() -> void:
 
 func save_world() -> void:
 	if Game.playing:
-		# TODO: Show to the player.
-		push_error("You cannot save the world while previewing the game.")
+		Game.error("You cannot save the world while previewing the game.")
 		return
 	
 	if not world_name:
@@ -263,7 +262,7 @@ func save_world() -> void:
 func load_world() -> void:
 	var path: String = "user://worlds/%s" % world_name
 	if not FileAccess.file_exists("%s/world.cfg" % path):
-		push_error("That world ('%s') does not exist." % world_name)
+		Game.error("That world ('%s') does not exist." % world_name)
 		return
 	
 	load_begun.emit()
