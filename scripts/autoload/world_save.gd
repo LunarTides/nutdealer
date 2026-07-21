@@ -72,62 +72,40 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# Save
 	if event.is_action_pressed(&"save"):
-		# Old world.
-		if world_name:
-			save_world()
-			return
-		
-		# New world.
-		create_first_save_dialogue()
+		save_world()
 	
 	# Open World
 	if event.is_action_pressed(&"editor_open_world"):
-		if dirty:
-			# Ask to save first.
-			if has_saved_once:
-				create_save_dialogue(func(confirmed: bool) -> void:
-					create_open_world_dialogue()
-				)
-			else:
-				create_save_dialogue(func(confirmed: bool) -> void:
-					if not confirmed:
-						create_open_world_dialogue()
-						return
-					
-					create_first_save_dialogue(func(first_saved: bool) -> void:
-						if first_saved:
-							create_open_world_dialogue()
-					)
-				)
-			return
-		
-		create_open_world_dialogue()
+		open_world_or_save()
 	
 	# New World
 	if event.is_action_pressed(&"editor_new_world"):
-		if not dirty:
+		new_world_or_save()
+
+func new_world_or_save() -> void:
+	if not dirty:
 			new_world()
 			return
-		
-		# Dirty. Ask for confirmation.
-		if not has_saved_once:
-			# Haven't saved once. Abandon save.
-			var dialogue: ConfirmationDialog = ABANDON_SAVE_DIALOGUE.instantiate()
-			dialogue.confirmed.connect(func() -> void:
-				dialogue.queue_free()
-				new_world()
-			)
-			dialogue.canceled.connect(func() -> void:
-				dialogue.queue_free()
-			)
-			add_child(dialogue)
-			dialogue.popup_centered_clamped()
-			return
-		
-		# Ask to save first.
-		create_save_dialogue(func(confirmed: bool) -> void:
+	
+	# Dirty. Ask for confirmation.
+	if not has_saved_once:
+		# Haven't saved once. Ask to abandon save.
+		var dialogue: ConfirmationDialog = ABANDON_SAVE_DIALOGUE.instantiate()
+		dialogue.confirmed.connect(func() -> void:
+			dialogue.queue_free()
 			new_world()
 		)
+		dialogue.canceled.connect(func() -> void:
+			dialogue.queue_free()
+		)
+		add_child(dialogue)
+		dialogue.popup_centered_clamped()
+		return
+	
+	# Ask to save first.
+	create_save_dialogue(func(confirmed: bool) -> void:
+		new_world()
+	)
 
 func create_save_dialogue(then: Callable = func(confirmed: bool) -> void: pass) -> void:
 	var dialogue: ConfirmationDialog = SAVE_DIALOGUE.instantiate()
@@ -212,6 +190,28 @@ func create_open_world_dialogue() -> void:
 	)
 	add_child(dialogue)
 
+func open_world_or_save() -> void:
+	if dirty:
+		# Ask to save first.
+		if has_saved_once:
+			create_save_dialogue(func(confirmed: bool) -> void:
+				create_open_world_dialogue()
+			)
+		else:
+			create_save_dialogue(func(confirmed: bool) -> void:
+				if not confirmed:
+					create_open_world_dialogue()
+					return
+				
+				create_first_save_dialogue(func(first_saved: bool) -> void:
+					if first_saved:
+						create_open_world_dialogue()
+				)
+			)
+		return
+	
+	create_open_world_dialogue()
+
 func make_dirty() -> void:
 	Creator.make_dirty()
 
@@ -219,6 +219,11 @@ func save_world() -> void:
 	if Game.playing:
 		# TODO: Show to the player.
 		push_error("You cannot save the world while previewing the game.")
+		return
+	
+	if not world_name:
+		# New world.
+		create_first_save_dialogue()
 		return
 	
 	save_begun.emit()
