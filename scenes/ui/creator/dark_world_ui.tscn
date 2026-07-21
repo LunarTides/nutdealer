@@ -177,7 +177,7 @@ label_settings = SubResource("LabelSettings_847bk")
 
 [node name="Center" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=59909838]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 
 [node name="FeedbackLabel" parent="CanvasLayer/Bottom/Center" unique_id=344211520 instance=ExtResource("11_skldr")]
 custom_minimum_size = Vector2(890, 0)

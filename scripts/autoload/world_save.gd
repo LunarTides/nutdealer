@@ -84,8 +84,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func new_world_or_save() -> void:
 	if not dirty:
-			new_world()
-			return
+		new_world()
+		return
 	
 	# Dirty. Ask for confirmation.
 	if not has_saved_once:
@@ -299,6 +299,12 @@ func new_world() -> void:
 	
 	world_name = ""
 	
+	# NOTE: Clearing the tiles might take one additional frame
+	# since the queue_free operation makes the creator dirty,
+	# and it'll take a frame to process that operation.
+	# Two frames should be safe though.
 	await get_tree().process_frame
+	await get_tree().process_frame
+	
 	has_saved_once = false
 	dirty = false
