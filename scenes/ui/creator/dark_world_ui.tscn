@@ -15,7 +15,7 @@
 outline_size = 2
 outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
 
-[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label", "file_menu_button", "edit_menu_button", "help_menu_button")]
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0wj4i")
@@ -25,9 +25,6 @@ camera_2d = NodePath("Camera2D")
 mouse_coords_label = NodePath("CanvasLayer/BottomLeft/MouseCoordsLabel")
 room_coords_label = NodePath("CanvasLayer/BottomLeft/RoomCoordsLabel")
 camera_zoom_label = NodePath("CanvasLayer/BottomRight/CameraZoomLabel")
-file_menu_button = NodePath("CanvasLayer/Top/Actions/FileMenuButton")
-edit_menu_button = NodePath("CanvasLayer/Top/Actions/EditMenuButton")
-help_menu_button = NodePath("CanvasLayer/Top/Actions/HelpMenuButton")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
@@ -54,20 +51,20 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 
-[node name="Top" type="VBoxContainer" parent="CanvasLayer" unique_id=586552039]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 311.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-
-[node name="Actions" type="HBoxContainer" parent="CanvasLayer/Top" unique_id=1316105465 node_paths=PackedStringArray("preview_button")]
-layout_mode = 2
+[node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("file_menu_button", "edit_menu_button", "help_menu_button", "preview_options_menu_button", "preview_button")]
+offset_right = 153.0
+offset_bottom = 27.0
+grow_horizontal = 0
 size_flags_vertical = 0
+theme_override_constants/separation = 0
 script = ExtResource("10_evxai")
-preview_button = NodePath("PreviewButton")
+file_menu_button = NodePath("FileMenuButton")
+edit_menu_button = NodePath("EditMenuButton")
+help_menu_button = NodePath("HelpMenuButton")
+preview_options_menu_button = NodePath("CanvasLayer/HBoxContainer/PreviewOptionsMenuButton")
+preview_button = NodePath("CanvasLayer/HBoxContainer/PreviewButton")
 
-[node name="FileMenuButton" type="MenuButton" parent="CanvasLayer/Top/Actions" unique_id=1081868281]
+[node name="FileMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=1081868281]
 layout_mode = 2
 text = "File"
 flat = false
@@ -80,7 +77,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Save"
 popup/item_2/id = 2
 
-[node name="EditMenuButton" type="MenuButton" parent="CanvasLayer/Top/Actions" unique_id=2026654288]
+[node name="EditMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=2026654288]
 layout_mode = 2
 text = "Edit"
 flat = false
@@ -89,7 +86,7 @@ item_count = 1
 popup/item_0/text = "All: _ready()"
 popup/item_0/id = 0
 
-[node name="HelpMenuButton" type="MenuButton" parent="CanvasLayer/Top/Actions" unique_id=844898719]
+[node name="HelpMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=844898719]
 layout_mode = 2
 text = "Help"
 flat = false
@@ -100,14 +97,40 @@ popup/item_0/id = 0
 popup/item_1/text = "About..."
 popup/item_1/id = 1
 
-[node name="PreviewButton" type="Button" parent="CanvasLayer/Top/Actions" unique_id=496142925]
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasLayer/Actions" unique_id=889862257]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Actions/CanvasLayer" unique_id=496542397]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -107.0
+offset_bottom = 27.0
+grow_horizontal = 0
+theme_override_constants/separation = 0
+
+[node name="PreviewOptionsMenuButton" type="MenuButton" parent="CanvasLayer/Actions/CanvasLayer/HBoxContainer" unique_id=1485860441]
 layout_mode = 2
 size_flags_horizontal = 10
+text = "v"
+flat = false
+item_count = 1
+popup/item_0/text = "All: _ready"
+popup/item_0/checkable = 1
+popup/item_0/id = 0
+
+[node name="PreviewButton" type="Button" parent="CanvasLayer/Actions/CanvasLayer/HBoxContainer" unique_id=496142925]
+layout_mode = 2
+size_flags_horizontal = 8
 text = "Preview"
 
-[node name="TileChooser" type="ItemList" parent="CanvasLayer/Top" unique_id=849271151]
-layout_mode = 2
+[node name="CanvasLayer2" type="CanvasLayer" parent="CanvasLayer" unique_id=283158090]
+
+[node name="TileChooser" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151]
+offset_top = 32.0
+offset_right = 76.0
+offset_bottom = 312.0
 size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 1
 auto_width = true
 auto_height = true
@@ -168,6 +191,6 @@ offset_transform_position = Vector2(4, 0)
 text = "Camera Zoom"
 label_settings = SubResource("LabelSettings_847bk")
 
-[connection signal="pressed" from="CanvasLayer/Top/Actions/PreviewButton" to="CanvasLayer/Top/Actions" method="_on_preview_button_pressed"]
-[connection signal="empty_clicked" from="CanvasLayer/Top/TileChooser" to="CanvasLayer/Top/TileChooser" method="_on_empty_clicked"]
-[connection signal="item_clicked" from="CanvasLayer/Top/TileChooser" to="CanvasLayer/Top/TileChooser" method="_on_item_clicked"]
+[connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
+[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_item_clicked"]
