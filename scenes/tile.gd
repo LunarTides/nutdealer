@@ -116,7 +116,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if Creator.enabled and not actions.get_global_rect().has_point(Global.mouse_position):
 			# Clicked outside window.
 			self_modulate = Color.WHITE

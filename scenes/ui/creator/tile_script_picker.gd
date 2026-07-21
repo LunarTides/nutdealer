@@ -23,7 +23,7 @@ func _ready() -> void:
 		script_container.add_child(script_ui)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if not panel_container.get_global_rect().has_point(get_global_mouse_position()):
 			# Clicked outside window.
 			queue_free()

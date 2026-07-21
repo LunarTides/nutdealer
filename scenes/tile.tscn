@@ -13,10 +13,6 @@ outline_color = Color(0.98354346, 0, 0.23551083, 1)
 
 [node name="Tile" type="Node2D" unique_id=939431773]
 script = ExtResource("1_jy7pm")
-is_solid = null
-should_hide_during_play = null
-is_room_start_position = null
-logic_script_path = null
 
 [node name="Logic" type="Node2D" parent="." unique_id=956117243]
 script = ExtResource("2_q7utx")

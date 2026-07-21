@@ -71,7 +71,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton:
 		# If you click outside the action dropdown, remove it.
-		if is_instance_valid(actions) and not actions.get_global_rect().has_point(Global.mouse_position):
+		if event.button_index == MOUSE_BUTTON_LEFT and is_instance_valid(actions) and not actions.get_global_rect().has_point(Global.mouse_position):
 			actions.queue_free()
 		
 		if hovering != -1:

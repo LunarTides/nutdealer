@@ -9,10 +9,12 @@ class_name CreatorDarkWorldUI
 @export var camera_2d: Camera2D
 @export var mouse_coords_label: Label
 @export var room_coords_label: Label
+@export var camera_zoom_label: Label
 
-var can_pan_camera: bool = true
+var listen_for_keys: bool = true
 var actual_pan_speed: float = 0
 var old_camera_2d_position: Vector2
+var last_mouse_position: Vector2
 
 
 # Called when the node enters the scene tree for the first time.
@@ -55,44 +57,63 @@ func _process(delta: float) -> void:
 	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
 	mouse_coords_label.text = "%d, %d (%d, %d)" % [mouse_coords.x, mouse_coords.y, mouse_pos.x, mouse_pos.y]
 	
+	# Round because of inaccuracies. It can show 189% instead of 190% for some reason.
+	# Probably some floating-point accuracy issues, idk.
+	camera_zoom_label.text = "Zoom: %d%%" % roundi(camera_2d.zoom.x * 100)
+	
 	handle_room_coords_label()
 	
-	if camera_2d.enabled and can_pan_camera:
+	if camera_2d.enabled:
 		# Camera panning
 		var true_pan_speed: float = actual_pan_speed
 		if Input.is_action_pressed(&"editor_pan_speed_up"):
 			true_pan_speed *= 5
 		
-		var vector: Vector2 = Input.get_vector(&"editor_pan_left", &"editor_pan_right", &"editor_pan_up", &"editor_pan_down")
-		var is_ctrl_pressed: bool = Input.is_key_pressed(KEY_CTRL)
-		
-		if vector and not is_ctrl_pressed:
-			camera_2d.position += vector * true_pan_speed * delta
+		if listen_for_keys:
+			var vector: Vector2 = Input.get_vector(&"editor_pan_left", &"editor_pan_right", &"editor_pan_up", &"editor_pan_down")
+			var is_ctrl_pressed: bool = Input.is_key_pressed(KEY_CTRL)
 			
-			# Move the grid hint to give an illusion that it's an infinite plane.
-			if old_camera_2d_position:
-				var new_coords: Vector2i = Global.position_to_coords(camera_2d.position)
-				var old_coords: Vector2i = Global.position_to_coords(old_camera_2d_position)
-				if new_coords != old_coords:
-					var difference: Vector2i = new_coords - old_coords
-					grid_hint.position += Global.coords_to_position(difference)
-			old_camera_2d_position = camera_2d.position
+			# Pan using arrow keys.
+			if vector and not is_ctrl_pressed:
+				camera_2d.position += vector * true_pan_speed * delta
+				# Move the grid hint to give an illusion that it's an infinite plane.
+				move_grid_hint()
 		
-		# Zooming
-		if Input.is_action_pressed(&"editor_zoom_reset"):
-			camera_2d.zoom = Vector2.ONE
-		elif Input.is_action_pressed(&"editor_zoom_in"):
-			camera_2d.zoom += Vector2.ONE * zoom_speed * 0.1 * delta
-			if camera_2d.zoom > Vector2(2.0, 2.0):
-				camera_2d.zoom = Vector2(2.0, 2.0)
-		elif Input.is_action_pressed(&"editor_zoom_out"):
-			camera_2d.zoom -= Vector2.ONE * zoom_speed * 0.1 * delta
-			if camera_2d.zoom < Vector2(0.1, 0.1):
-				camera_2d.zoom = Vector2(0.1, 0.1)
+		# Pan using right mouse button.
+		var has_set_last_mouse_position: bool = false
+		
+		var is_rmb_pressed: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+		if is_rmb_pressed and last_mouse_position:
+			var mouse_vector: Vector2 = last_mouse_position - Global.mouse_position
+			if not mouse_vector.is_zero_approx():
+				camera_2d.position += mouse_vector
+				last_mouse_position = Global.mouse_position + mouse_vector
+				# Move the grid hint to give an illusion that it's an infinite plane.
+				move_grid_hint()
+				has_set_last_mouse_position = true
+		
+		if not has_set_last_mouse_position:
+			last_mouse_position = Global.mouse_position
+			has_set_last_mouse_position = true
+			
+			old_camera_2d_position = camera_2d.position
 	
 	# Scale pan speed based on camera zoom.
 	actual_pan_speed = pan_speed * (1 / camera_2d.zoom.x)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if camera_2d.enabled and listen_for_keys:
+		# Zooming
+		if Input.is_action_pressed(&"editor_zoom_reset"):
+			camera_2d.zoom = Vector2.ONE
+		elif Input.is_action_pressed(&"editor_zoom_in"):
+			camera_2d.zoom += Vector2.ONE * zoom_speed * 0.1 * 0.1
+			if camera_2d.zoom > Vector2(2.0, 2.0):
+				camera_2d.zoom = Vector2(2.0, 2.0)
+		elif Input.is_action_pressed(&"editor_zoom_out"):
+			camera_2d.zoom -= Vector2.ONE * zoom_speed * 0.1 * 0.1
+			if camera_2d.zoom < Vector2(0.1, 0.1):
+				camera_2d.zoom = Vector2(0.1, 0.1)
 
 func init_grid_hint() -> void:
 	# Move the grid hint a little left and make it a little bigger.
@@ -101,6 +122,15 @@ func init_grid_hint() -> void:
 	grid_hint.position -= position_subtraction
 	grid_hint.size = Global.screen_size + position_subtraction * 2
 	old_camera_2d_position = Vector2.ZERO
+
+func move_grid_hint() -> void:
+	# Move the grid hint to give an illusion that it's an infinite plane.
+	if old_camera_2d_position:
+		var new_coords: Vector2i = Global.position_to_coords(camera_2d.position)
+		var old_coords: Vector2i = Global.position_to_coords(old_camera_2d_position)
+		if new_coords != old_coords:
+			var difference: Vector2i = new_coords - old_coords
+			grid_hint.position += Global.coords_to_position(difference)
 
 func handle_room_coords_label() -> void:
 	var bounds: Rect2i
@@ -123,21 +153,22 @@ func handle_room_coords_label() -> void:
 	var diff: Vector2i = bounds.size - ssc
 	@warning_ignore("integer_division")
 	var mult: Vector2i = bounds.size / ssc
+	var add: Vector2i = bounds.size - ssc * mult
 	
 	# If the size is more than the size of the screen,
 	# add a SCR to the label.
 	var size_str_x: String = str(bounds.size.x)
-	if diff.x > 0:
-		size_str_x = "SCR%s+%d" % [
-			("x%s" % mult.x) if mult.x > 0 else "",
-			bounds.size.x - ssc.x * mult.x
+	if diff.x >= 0:
+		size_str_x = "SCR%s%s" % [
+			("x%d" % mult.x) if mult.x > 1 else "",
+			("+%d" % add.x) if add.x > 0 else "",
 		]
 	
 	var size_str_y: String = str(bounds.size.y)
-	if diff.y > 0:
-		size_str_y = "SCR%s+%d" % [
-			("x%s" % mult.y) if mult.y > 0 else "",
-			bounds.size.y - ssc.y * mult.y
+	if diff.y >= 0:
+		size_str_y = "SCR%s%s" % [
+			("x%s" % mult.y) if mult.y > 1 else "",
+			("+%d" % add.y) if add.y > 0 else "",
 		]
 	
 	room_coords_label.text = "Room: %d, %d (%s x %s)" % [bounds.position.x, bounds.position.y, size_str_x, size_str_y]

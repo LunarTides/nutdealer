@@ -73,16 +73,16 @@ func _request_code_completion(force: bool) -> void:
 
 
 func _on_focus_entered() -> void:
-	Creator.dark_world_ui.can_pan_camera = false
+	Creator.dark_world_ui.listen_for_keys = false
 
 
 func _on_focus_exited() -> void:
-	Creator.dark_world_ui.can_pan_camera = true
+	Creator.dark_world_ui.listen_for_keys = true
 
 
 func _on_tree_exiting() -> void:
-	Creator.dark_world_ui.can_pan_camera = true
+	Creator.dark_world_ui.listen_for_keys = true
 
 
 func _on_hidden() -> void:
-	Creator.dark_world_ui.can_pan_camera = true
+	Creator.dark_world_ui.listen_for_keys = true
