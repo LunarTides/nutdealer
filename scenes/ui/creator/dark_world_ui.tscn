@@ -55,10 +55,9 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 
 [node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("file_menu_button", "edit_menu_button", "help_menu_button", "preview_options_menu_button", "preview_button")]
-offset_right = 153.0
+offset_right = 131.0
 offset_bottom = 27.0
-grow_horizontal = 0
-size_flags_vertical = 0
+size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("10_evxai")
 file_menu_button = NodePath("FileMenuButton")
@@ -69,6 +68,7 @@ preview_button = NodePath("CanvasLayer/HBoxContainer/PreviewButton")
 
 [node name="FileMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=1081868281]
 layout_mode = 2
+size_flags_horizontal = 6
 text = "File"
 flat = false
 switch_on_hover = true

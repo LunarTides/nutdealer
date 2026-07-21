@@ -3,6 +3,7 @@ extends Node
 signal creator_enabled
 signal creator_disabled
 signal mode_changed(old: Mode, new: Mode)
+signal dirty_changed
 
 const PLAYER: PackedScene = preload("uid://cbbmactdk1u14")
 const CREATOR_FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
@@ -29,8 +30,11 @@ var enabled: bool = false:
 		else:
 			creator_disabled.emit()
 var world_name: String
-# TODO: Show this dirty flag in-editor.
-var dirty: bool = false
+var dirty: bool = false:
+	set(value):
+		if dirty != value:
+			dirty = value
+			dirty_changed.emit()
 var dark_world_ui: CreatorDarkWorldUI
 var feedback_label: Label
 

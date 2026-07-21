@@ -15,6 +15,13 @@ func _ready() -> void:
 	Game.play_end.connect(func() -> void:
 		preview_button.text = "Preview"
 	)
+	# If the creator becomes dirty, add a star next to the "File" menu button.
+	Creator.dirty_changed.connect(func() -> void:
+		if Creator.dirty:
+			file_menu_button.text = "File*"
+		else:
+			file_menu_button.text = "File"
+	)
 	
 	setup_menu_buttons()
 
