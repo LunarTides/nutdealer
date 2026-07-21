@@ -80,6 +80,10 @@ text = "Save"
 layout_mode = 2
 text = "Load"
 
+[node name="ReadyButton" type="Button" parent="TabContainer/Code/VBoxContainer/HBoxContainer" unique_id=2008483581]
+layout_mode = 2
+text = "_ready()"
+
 [node name="CodeEdit" parent="TabContainer/Code/VBoxContainer" unique_id=750926670 instance=ExtResource("3_7laq3")]
 custom_minimum_size = Vector2(640, 320)
 layout_mode = 2
@@ -106,3 +110,4 @@ func _room_exit():
 
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/ReadyButton" to="." method="_on_ready_button_pressed"]

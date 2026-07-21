@@ -85,3 +85,11 @@ func _on_load_button_pressed() -> void:
 		reload_ui()
 	)
 	Game.canvas_layer.add_child(script_picker)
+
+
+func _on_ready_button_pressed() -> void:
+	if not is_instance_valid(tile.logic):
+		push_error("This tile has no script attached.")
+		return
+	
+	tile.logic._ready()

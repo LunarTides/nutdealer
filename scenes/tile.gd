@@ -39,7 +39,7 @@ var id: String = "null":
 	set(value):
 		id = value
 		
-		if is_inside_tree():
+		if is_inside_tree() and is_instance_valid(id_label):
 			id_label.text = id
 var coords: Vector2i:
 	get:
@@ -110,6 +110,10 @@ func _ready() -> void:
 		logic_script.resource_path = logic_script_path
 		logic.script.resource_path = logic_script_path
 	)
+	
+	# Call the `_ready` function on the tile if we're actually playing. (Not creating.)
+	if not Creator.enabled:
+		logic._ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
