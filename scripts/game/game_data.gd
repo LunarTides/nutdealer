@@ -35,8 +35,12 @@ func all_tile_scripts() -> Array[TileScriptData]:
 				instances += 1
 				tile_script = tile.logic_script
 		data.instances = instances
-		data.tile_script = tile_script
 		
+		if not is_instance_valid(tile_script):
+			# There are no tiles with this script. Load the script instead.
+			tile_script = load(file_path)
+		
+		data.tile_script = tile_script
 		scripts.append(data)
 	
 	return scripts

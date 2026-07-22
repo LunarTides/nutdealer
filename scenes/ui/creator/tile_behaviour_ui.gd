@@ -45,6 +45,7 @@ func _on_save_button_pressed() -> void:
 	var code: String = "%s%s" % [code_intro, code_edit.text]
 	
 	if not tile.logic_script_path:
+		# First save
 		var dialogue: ConfirmationDialog = SCRIPT_FIRST_SAVE_DIALOGUE.instantiate()
 		dialogue.confirmed.connect(func() -> void:
 			var script_name: String = dialogue.get_node(^"ScriptName").text
@@ -59,7 +60,7 @@ func _on_save_button_pressed() -> void:
 				return
 			
 			# No conflict. Save.
-			tile.set_logic_script(code, path)
+			tile.create_logic_script(code, path)
 			Game.feedback("Script saved.", Game.FeedbackType.Success)
 			dialogue.queue_free()
 		)
@@ -72,17 +73,14 @@ func _on_save_button_pressed() -> void:
 		dialogue.get_node(^"ScriptName").grab_focus()
 		return
 	
-	tile.set_logic_script(code)
+	tile.update_logic_script(code)
 	Game.feedback("Script saved.", Game.FeedbackType.Success)
 
 
 func _on_load_button_pressed() -> void:
-	# FIXME: If we load a script, save then leave the world, then open the world again,
-	# the tiles have different scripts again.
 	var script_picker: TileScriptPicker = TILE_SCRIPT_PICKER.instantiate()
 	script_picker.chosen.connect(func(data: TileScriptData) -> void:
-		tile.logic_script = data.tile_script
-		tile.logic_script_path = data.path
+		tile.set_logic_script_to(data.tile_script)
 		reload_ui()
 	)
 	Game.canvas_layer.add_child(script_picker)

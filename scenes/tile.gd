@@ -98,7 +98,7 @@ func _ready() -> void:
 	# Load script.
 	if logic_script_path:
 		var script: GDScript = load(logic_script_path)
-		set_logic_script(script.source_code, logic_script_path)
+		set_logic_script_to(script)
 	
 	# Change script path to reflect new world folder location.
 	WorldSave.first_save_begun.connect(func() -> void:
@@ -168,30 +168,34 @@ func clone(new_id: bool = false) -> Tile:
 		new_tile.regenerate_id()
 	return new_tile
 
-func set_logic_script(text: String, path: String = "") -> void:
-	if path:
-		# New script.
-		var script: GDScript = GDScript.new()
-		script.source_code = text
-		
-		CreatorResourceSaver.save(script, path)
-		# For some reason, we have to reload the script in order for it to work.
-		script.reload()
-		logic_script = script
-		if not logic_script_path:
-			logic_script_path = script.resource_path
-		
-		return
+func create_logic_script(text: String, path: String) -> void:
+	# New script.
+	var script: GDScript = GDScript.new()
+	script.source_code = text
 	
+	CreatorResourceSaver.save(script, path)
+	# For some reason, we have to reload the script in order for it to work.
+	script.reload()
+	logic_script = script
+	if not logic_script_path:
+		logic_script_path = script.resource_path
+
+func update_logic_script(text: String) -> void:
 	# Update script.
 	if not is_instance_valid(logic_script):
-		Game.feedback("No logic script. Please call set_logic_script with a path.", Game.FeedbackType.Error)
+		Game.feedback("No logic script to update. Please call create_logic_script first.", Game.FeedbackType.Error)
 		return
 	
 	logic_script.source_code = text
 	CreatorResourceSaver.save(logic_script)
 	logic_script.reload(true)
 	logic.script = logic_script
+
+func set_logic_script_to(script: GDScript) -> void:
+	script.reload()
+	logic_script = script
+	if not logic_script_path and script.resource_path:
+		logic_script_path = script.resource_path
 
 func _on_mouse_entered() -> void:
 	if Creator.enabled:

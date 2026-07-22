@@ -304,6 +304,8 @@ func new_world() -> void:
 	# and it'll take a frame to process that operation.
 	# Two frames should be safe though.
 	await get_tree().process_frame
+	# Unset dirty flag so it won't show for one frame. (Room.clear_rooms sets the dirty flag)
+	dirty = false
 	await get_tree().process_frame
 	
 	has_saved_once = false
