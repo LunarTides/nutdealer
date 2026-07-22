@@ -485,13 +485,14 @@ text = "Create"
 modulate = Color(0.38851848, 0.38851848, 0.38851845, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -194.07031
-offset_top = -61.929344
-offset_right = 1213.9297
-offset_bottom = 834.0707
+offset_left = -43.44579
+offset_top = -212.55405
+offset_right = 1364.5542
+offset_bottom = 683.4459
 mouse_filter = 2
 texture = ExtResource("2_fe2o3")
 stretch_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=879311090]
 limit_left = 0

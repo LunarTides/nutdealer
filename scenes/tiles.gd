@@ -34,10 +34,10 @@ func get_all() -> Array[Tile]:
 
 func call_inside_room(room_index: int, callback: Callable) -> void:
 	for tile: Tile in get_children():
-		if Room.coords_to_room_index(tile.coords) == room_index:
+		if tile.room_index == room_index:
 			callback.call(tile)
 
 func call_outside_room(room_index: int, callback: Callable) -> void:
 	for tile: Tile in get_children():
-		if Room.coords_to_room_index(tile.coords) != room_index:
+		if tile.room_index != room_index:
 			callback.call(tile)

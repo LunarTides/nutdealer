@@ -44,6 +44,11 @@ var id: String = "null":
 var coords: Vector2i:
 	get:
 		return Global.position_to_coords(global_position)
+	set(value):
+		global_position = Global.coords_to_position(value)
+var room_index: int:
+	get:
+		return Room.position_to_room_index(global_position)
 var logic_script: GDScript:
 	set(value):
 		logic_script = value
