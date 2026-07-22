@@ -26,7 +26,7 @@ func add_room(rect: Rect2i) -> int:
 	Creator.make_dirty()
 	return index
 
-func update_room(index: int, rect: Rect2i) -> void:
+func update_room(index: int, rect: Rect2i, move_tiles: bool = false) -> void:
 	var old: Rect2i = bounds.get(index)
 	if not old:
 		return
@@ -45,6 +45,11 @@ func update_room(index: int, rect: Rect2i) -> void:
 	bounds[index] = rect
 	room_updated.emit(index, old, rect)
 	Creator.make_dirty()
+	
+	if move_tiles:
+		Game.tiles.call_inside_room(index, func(tile: Tile) -> void:
+			tile.coords += rect.size - old.size
+		)
 
 func delete_room(index: int) -> int:
 	bounds.remove_at(index)

@@ -135,14 +135,13 @@ func move_grid_hint() -> void:
 
 func handle_room_coords_label() -> void:
 	var bounds: Rect2i
-	var mouse_room_index: int = Room.position_to_room_index(Global.mouse_position)
 	
 	# If we're creating a room.
 	if CreatorRoomManipulation.new_room_created:
 		bounds = Room.bounds[CreatorRoomManipulation.new_room_index]
 	# If we're hovering over a room.
-	elif mouse_room_index != -1:
-		bounds = Room.bounds[mouse_room_index]
+	elif CreatorRoomManipulation.hovering != -1:
+		bounds = Room.bounds[CreatorRoomManipulation.hovering]
 	
 	if not bounds:
 		room_coords_label.modulate.a = 0.0
