@@ -50,7 +50,6 @@ func _input(event: InputEvent) -> void:
 func reload_ui() -> void:
 	if is_instance_valid(tile.logic_script):
 		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
-		code_container.name = "Code%s (%s)" % ["*" if not tile.logic_script_dirty else "", tile.logic_script_name]
 
 func update_name() -> void:
 	code_container.name = "Code%s%s" % [

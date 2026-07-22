@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b7xjlu3flg8wu"]
 
-[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile_behaviour_ui.gd" id="1_e3d2g"]
-[ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile_behaviour_check_box.gd" id="2_3nwos"]
-[ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/ui/creator/code_edit.tscn" id="3_7laq3"]
+[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile/behaviour_ui.gd" id="1_nbn28"]
+[ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile/behaviour_check_box.gd" id="2_nbn28"]
+[ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/ui/creator/code_edit.tscn" id="3_6f6pg"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_0dgii"]
 action = &"save"
@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_e3d2g")
+script = ExtResource("1_nbn28")
 tab_container = NodePath("TabContainer")
 check_box_container = NodePath("TabContainer/Properties/CheckBoxContainer")
 code_edit = NodePath("TabContainer/Code/VBoxContainer/CodeEdit")
@@ -43,21 +43,21 @@ theme_override_constants/separation = 0
 layout_mode = 2
 tooltip_text = "If you can collide with the tile."
 text = "Solid"
-script = ExtResource("2_3nwos")
+script = ExtResource("2_nbn28")
 tile_property = &"is_solid"
 
 [node name="HideDuringPlayCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=537357001]
 layout_mode = 2
 tooltip_text = "If the tile should be hidden when playing."
 text = "Hide During Play"
-script = ExtResource("2_3nwos")
+script = ExtResource("2_nbn28")
 tile_property = &"should_hide_during_play"
 
 [node name="RoomStartPositionCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=1687671096]
 layout_mode = 2
 tooltip_text = "If the player should spawn at this tile when entering the room. (Ignored by room transitions.)"
 text = "Room Start Position"
-script = ExtResource("2_3nwos")
+script = ExtResource("2_nbn28")
 tile_property = &"is_room_start_position"
 
 [node name="Code" type="PanelContainer" parent="TabContainer" unique_id=1875978336]
@@ -86,7 +86,7 @@ text = "Load"
 layout_mode = 2
 text = "_ready()"
 
-[node name="CodeEdit" parent="TabContainer/Code/VBoxContainer" unique_id=750926670 instance=ExtResource("3_7laq3")]
+[node name="CodeEdit" parent="TabContainer/Code/VBoxContainer" unique_id=750926670 instance=ExtResource("3_6f6pg")]
 custom_minimum_size = Vector2(640, 320)
 layout_mode = 2
 text = "# Called when the tile enters the scene tree for the first time.
