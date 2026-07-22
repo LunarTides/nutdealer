@@ -46,10 +46,15 @@ func create_temp_folder() -> void:
 func delete_temp_folder() -> void:
 	remove_recursive("user://temp")
 
-func remove_recursive(directory: String) -> void:
+func remove_recursive(directory: String) -> bool:
+	# If the directory doesn't exist, return.
+	if not DirAccess.dir_exists_absolute(directory):
+		return false
+	
 	for dir_name: String in DirAccess.get_directories_at(directory):
 		remove_recursive(directory.path_join(dir_name))
 	for file_name: String in DirAccess.get_files_at(directory):
 		DirAccess.remove_absolute(directory.path_join(file_name))
-
+	
 	DirAccess.remove_absolute(directory)
+	return true
