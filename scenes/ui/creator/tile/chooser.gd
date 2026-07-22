@@ -25,6 +25,10 @@ func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int)
 	tile.texture = texture
 	
 	CreatorPlaceTiles.start(tile)
+	
+	# Eraser
+	if index == item_count - 1:
+		CreatorPlaceTiles.should_erase = true
 
 
 func _on_empty_clicked(at_position: Vector2, mouse_button_index: int) -> void:

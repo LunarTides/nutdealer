@@ -6,7 +6,9 @@ var tile: Tile
 var tile_texture_button: TextureButton
 var tile_last_placed_position: Vector2i
 var cancel_mouse_position: Vector2
+var has_placed_tile: bool = false
 var dragging: bool = false
+var should_erase: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,7 +59,7 @@ func _input(event: InputEvent) -> void:
 			var mouse: Vector2 = Global.mouse_position
 			var pos: Vector2i = Global.position_to_coords(mouse)
 			
-			if pos != tile_last_placed_position:
+			if not has_placed_tile or pos != tile_last_placed_position:
 				tile_texture_button.global_position = Global.coords_to_position(pos)
 				place_current_tile()
 				create_hovering_tile()
@@ -69,6 +71,8 @@ func start(tile_to_place: Tile) -> void:
 	
 	Creator.mode = Creator.Mode.PlacingTile
 	tile = tile_to_place
+	has_placed_tile = false
+	should_erase = false
 	create_hovering_tile()
 
 func create_hovering_tile() -> void:
@@ -91,10 +95,19 @@ func place_current_tile() -> void:
 		tile_texture_button.queue_free()
 		return
 	
+	if should_erase:
+		# If we're in erase mode, delete the tile on the cursor.
+		if existing_tile:
+			existing_tile.queue_free()
+		
+		tile_texture_button.queue_free()
+		return
+	
 	# Create a Tile
 	tile.global_position = tile_texture_button.global_position
 	Game.tiles.add_child(tile)
 	tile_last_placed_position = coords
+	has_placed_tile = true
 	
 	var new_tile: Tile = tile.clone()
 	
