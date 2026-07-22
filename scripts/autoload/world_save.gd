@@ -240,10 +240,8 @@ func save_world() -> void:
 		if is_instance_valid(tile.logic_script):
 			DirAccess.make_dir_recursive_absolute("%s/tiles/scripts" % path)
 			
-			var script_path_split: PackedStringArray = tile.logic_script_path.split("/")
-			var script_name: String = script_path_split[script_path_split.size() - 1]
-			
-			var file: FileAccess = FileAccess.open("%s/tiles/scripts/%s" % [path, script_name], FileAccess.WRITE)
+			var script_name: String = tile.logic_script_name
+			var file: FileAccess = FileAccess.open("%s/tiles/scripts/%s.gd" % [path, script_name], FileAccess.WRITE)
 			file.store_string(tile.logic_script.source_code)
 	
 	# Config

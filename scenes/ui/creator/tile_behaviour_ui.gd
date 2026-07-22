@@ -6,6 +6,7 @@ const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 @export var tab_container: TabContainer
 @export var check_box_container: VBoxContainer
 @export var code_edit: CodeEdit
+@export var code_container: PanelContainer
 
 var tile: Tile
 var code_intro: String = "extends Node2D
@@ -24,7 +25,17 @@ func _ready() -> void:
 		
 		check_box.tile = tile
 	
+	code_edit.text_changed.connect(func() -> void:
+		var old_dirty: bool = tile.logic_script_dirty
+		tile.logic_script_dirty = true
+		
+		if old_dirty == false:
+			# The dirty flag has changed, update the name.
+			update_name()
+	)
+	
 	reload_ui()
+	update_name()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -39,8 +50,14 @@ func _input(event: InputEvent) -> void:
 func reload_ui() -> void:
 	if is_instance_valid(tile.logic_script):
 		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
+		code_container.name = "Code%s (%s)" % ["*" if not tile.logic_script_dirty else "", tile.logic_script_name]
 
-# TODO: Add proper feedback.
+func update_name() -> void:
+	code_container.name = "Code%s%s" % [
+		"*" if tile.logic_script_dirty else "",
+		" (%s)" % tile.logic_script_name if tile.logic_script_name else "",
+	]
+
 func _on_save_button_pressed() -> void:
 	var code: String = "%s%s" % [code_intro, code_edit.text]
 	
@@ -62,6 +79,8 @@ func _on_save_button_pressed() -> void:
 			# No conflict. Save.
 			tile.create_logic_script(code, path)
 			Game.feedback("Script saved.", Game.FeedbackType.Success)
+			tile.logic_script_dirty = false
+			update_name()
 			dialogue.queue_free()
 		)
 		dialogue.canceled.connect(func() -> void:
@@ -74,6 +93,8 @@ func _on_save_button_pressed() -> void:
 		return
 	
 	tile.update_logic_script(code)
+	tile.logic_script_dirty = false
+	update_name()
 	Game.feedback("Script saved.", Game.FeedbackType.Success)
 
 
@@ -82,6 +103,7 @@ func _on_load_button_pressed() -> void:
 	script_picker.chosen.connect(func(data: TileScriptData) -> void:
 		tile.set_logic_script_to(data.tile_script)
 		reload_ui()
+		update_name()
 	)
 	Game.canvas_layer.add_child(script_picker)
 

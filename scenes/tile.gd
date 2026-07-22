@@ -53,6 +53,10 @@ var logic_script: GDScript:
 				logic.set_script(logic_script)
 			
 			regenerate_id()
+var logic_script_name: String:
+	get:
+		return logic_script_path.split("/")[-1].replace(".gd", "")
+var logic_script_dirty: bool = false
 
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D

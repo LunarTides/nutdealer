@@ -11,7 +11,7 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_bou05"]
 events = [SubResource("InputEventAction_0dgii")]
 
-[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit")]
+[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit", "code_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,6 +22,7 @@ script = ExtResource("1_e3d2g")
 tab_container = NodePath("TabContainer")
 check_box_container = NodePath("TabContainer/Properties/CheckBoxContainer")
 code_edit = NodePath("TabContainer/Code/VBoxContainer/CodeEdit")
+code_container = NodePath("TabContainer/Code")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=1293620555]
 layout_mode = 1
