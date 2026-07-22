@@ -101,7 +101,8 @@ func _draw() -> void:
 		if bound.size.x >= Global.screen_size_coords.x and bound.size.y >= Global.screen_size_coords.y:
 			color = Color.YELLOW
 		
-		var filled: bool = hovering == i and not hovering_handle
+		#var filled: bool = hovering == i and not hovering_handle
+		var filled: bool = false
 		var width: int = -1 if filled else 3
 		
 		var rect: Rect2 = Room.coords_to_position(bound)
