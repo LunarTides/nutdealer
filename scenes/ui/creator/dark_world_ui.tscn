@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="10_evxai"]
 [ext_resource type="Texture2D" uid="uid://di1rwtjlgbxpq" path="res://assets/sprites/creator/eraser.png" id="10_wyeqc"]
 [ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://scenes/ui/creator/feedback_label.tscn" id="11_skldr"]
+[ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://scenes/ui/creator/preview_actions.gd" id="12_2sl0l"]
+[ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
 outline_size = 2
@@ -56,8 +58,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 
 [node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("file_menu_button", "edit_menu_button", "help_menu_button", "preview_options_menu_button", "preview_button")]
-offset_right = 131.0
-offset_bottom = 27.0
+offset_right = 117.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("10_evxai")
@@ -146,6 +148,38 @@ item_3/icon = ExtResource("8_ofl6s")
 item_4/icon = ExtResource("10_wyeqc")
 script = ExtResource("9_o23ng")
 
+[node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
+
+[node name="PreviewActions" type="VBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=145496121 node_paths=PackedStringArray("speed_button", "noclip_button")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 32.0
+offset_bottom = 72.0
+grow_horizontal = 0
+script = ExtResource("12_2sl0l")
+speed_button = NodePath("SpeedButton")
+noclip_button = NodePath("NoclipButton")
+
+[node name="SpeedButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=76935415]
+self_modulate = Color(0, 0, 1, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Speed Multiplier: 1x"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
+[node name="NoclipButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=2129661590]
+self_modulate = Color(0.39688927, 0.39688927, 0.39688924, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Noclip"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
 [node name="Bottom" type="HBoxContainer" parent="CanvasLayer" unique_id=670832984]
 anchors_preset = 12
 anchor_top = 1.0
@@ -204,3 +238,5 @@ label_settings = SubResource("LabelSettings_847bk")
 [connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
 [connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_empty_clicked"]
 [connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_item_clicked"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/SpeedButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_speed_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NoclipButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_noclip_button_pressed"]

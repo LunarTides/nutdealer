@@ -5,9 +5,18 @@ class_name Player
 
 @export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
+@export var collision_shape_2d: CollisionShape2D
 @export var camera: Camera2D
 
 var direction: Vector2 = Vector2.ZERO
+var noclip: bool = false:
+	set(value):
+		noclip = value
+		collision_shape_2d.disabled = noclip
+var default_speed: float
+
+func _ready() -> void:
+	default_speed = speed
 
 func _process(delta: float) -> void:
 	# Handle interacting with tiles.
