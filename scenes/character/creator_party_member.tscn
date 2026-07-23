@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://ckiqk3fmdeoko"]
+
+[ext_resource type="Script" uid="uid://c7cnv6xu4uro5" path="res://scenes/character/creator_party_member.gd" id="1_s7kwy"]
+[ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="2_s3saq"]
+[ext_resource type="Texture2D" uid="uid://dk45ppiaxq32b" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_1.png" id="3_bv7ib"]
+[ext_resource type="Texture2D" uid="uid://ocoqadvku7sa" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_2.png" id="4_67j2c"]
+[ext_resource type="Texture2D" uid="uid://b24ptoxmjlfld" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_3.png" id="5_q0pac"]
+[ext_resource type="Texture2D" uid="uid://dmrfirasbfeac" path="res://assets/sprites/characters/kris/movement/walk/left/kris_left_0.png" id="6_yqqqs"]
+[ext_resource type="Texture2D" uid="uid://iy24iqvnem2i" path="res://assets/sprites/characters/kris/movement/walk/left/kris_left_1.png" id="7_aogk0"]
+[ext_resource type="Texture2D" uid="uid://baxn4p8lawew6" path="res://assets/sprites/characters/kris/movement/walk/left/kris_left_2.png" id="8_nbdj8"]
+[ext_resource type="Texture2D" uid="uid://brmd02ghttj21" path="res://assets/sprites/characters/kris/movement/walk/left/kris_left_3.png" id="9_pq6bt"]
+[ext_resource type="Texture2D" uid="uid://cjle7eerk2uk5" path="res://assets/sprites/characters/kris/movement/walk/right/kris_right_0.png" id="10_1b1ol"]
+[ext_resource type="Texture2D" uid="uid://bp03nciwbyon4" path="res://assets/sprites/characters/kris/movement/walk/right/kris_right_1.png" id="11_eu4wi"]
+[ext_resource type="Texture2D" uid="uid://duq7dh6pkft2h" path="res://assets/sprites/characters/kris/movement/walk/right/kris_right_2.png" id="12_j8rfp"]
+[ext_resource type="Texture2D" uid="uid://cmv7hf23vicp0" path="res://assets/sprites/characters/kris/movement/walk/right/kris_right_3.png" id="13_aeu60"]
+[ext_resource type="Texture2D" uid="uid://bdd7355ngfews" path="res://assets/sprites/characters/kris/movement/walk/up/kris_up_0.png" id="14_y87ww"]
+[ext_resource type="Texture2D" uid="uid://ddg1fct626apu" path="res://assets/sprites/characters/kris/movement/walk/up/kris_up_1.png" id="15_sh8eq"]
+[ext_resource type="Texture2D" uid="uid://cupoee6oeylkx" path="res://assets/sprites/characters/kris/movement/walk/up/kris_up_2.png" id="16_vrau5"]
+[ext_resource type="Texture2D" uid="uid://cl5gd4wbu2bxf" path="res://assets/sprites/characters/kris/movement/walk/up/kris_up_3.png" id="17_unfr3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_actur"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_s3saq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bv7ib")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_67j2c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_q0pac")
+}],
+"loop": 1,
+"name": &"move_down",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_yqqqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_aogk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_nbdj8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_pq6bt")
+}],
+"loop": 1,
+"name": &"move_left",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_1b1ol")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_eu4wi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_j8rfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_aeu60")
+}],
+"loop": 1,
+"name": &"move_right",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_y87ww")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_sh8eq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_vrau5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_unfr3")
+}],
+"loop": 1,
+"name": &"move_up",
+"speed": 3.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(12, 32)
+
+[node name="CreatorPartyMember" type="CharacterBody2D" unique_id=672769638 node_paths=PackedStringArray("animated_sprite_2d")]
+z_index = 1
+scale = Vector2(2, 2)
+collision_mask = 0
+input_pickable = true
+script = ExtResource("1_s7kwy")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=609764124]
+sprite_frames = SubResource("SpriteFrames_actur")
+animation = &"move_right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=854557247]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
