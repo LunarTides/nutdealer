@@ -19,7 +19,7 @@
 outline_size = 2
 outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
 
-[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label", "feedback_label", "bottom_center_container")]
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label", "feedback_label", "bottom_center_container", "pause_menu")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0wj4i")
@@ -31,6 +31,7 @@ room_coords_label = NodePath("CanvasLayer/Bottom/Left/RoomCoordsLabel")
 camera_zoom_label = NodePath("CanvasLayer/Bottom/Right/CameraZoomLabel")
 feedback_label = NodePath("CanvasLayer/Bottom/Center/FeedbackLabel")
 bottom_center_container = NodePath("CanvasLayer/Bottom/Center")
+pause_menu = NodePath("CanvasLayer/CreatorPauseMenu")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
 
@@ -75,13 +76,20 @@ size_flags_horizontal = 6
 text = "File"
 flat = false
 switch_on_hover = true
-item_count = 3
-popup/item_0/text = "New"
+item_count = 6
+popup/item_0/text = "New  (CTRL+N)"
 popup/item_0/id = 0
-popup/item_1/text = "Open"
+popup/item_1/text = "Open (CTRL+O)"
 popup/item_1/id = 1
-popup/item_2/text = "Save"
+popup/item_2/text = "Save (CTRL+S)"
 popup/item_2/id = 2
+popup/item_3/text = "Exit"
+popup/item_3/id = 3
+popup/item_3/separator = true
+popup/item_4/text = "Exit to Menu"
+popup/item_4/id = 4
+popup/item_5/text = "Exit to Desktop"
+popup/item_5/id = 5
 
 [node name="EditMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=2026654288]
 layout_mode = 2

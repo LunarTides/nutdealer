@@ -51,6 +51,12 @@ func setup_menu_buttons() -> void:
 		# Save
 		elif id == 2:
 			WorldSave.save_world()
+		# Exit to Menu
+		elif id == 4:
+			Creator.dark_world_ui.pause_menu.exit_to_menu()
+		# Exit to Desktop
+		elif id == 5:
+			Creator.dark_world_ui.pause_menu.exit_to_desktop()
 	)
 	
 	# Edit

@@ -9,6 +9,9 @@ signal load_ended
 signal first_save_begun
 signal first_save_ended
 
+signal new_world_begun
+signal new_world_ended
+
 const FIRST_SAVE_DIALOGUE: PackedScene = preload("uid://24k3h1cax05e")
 const OPEN_WORLD_DIALOGUE: PackedScene = preload("uid://1xt5rpnm2slf")
 const ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif")
@@ -47,23 +50,8 @@ func _notification(what: int) -> void:
 			get_tree().quit()
 			return
 		
-		# Is dirty.
-		create_save_dialogue(func(confirmed: bool) -> void:
-			if has_saved_once:
-				get_tree().quit()
-				return
-			
-			# First save.
-			if not confirmed:
-				get_tree().quit()
-				return
-			
-			create_first_save_dialogue(func(first_saved: bool) -> void:
-				# Only actually quit if the user created the save.
-				if first_saved:
-					get_tree().quit()
-			)
-		)
+		# Save first
+		save_then(get_tree().quit)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _unhandled_input(event: InputEvent) -> void:
@@ -193,24 +181,24 @@ func create_open_world_dialogue() -> void:
 func open_world_or_save() -> void:
 	if dirty:
 		# Ask to save first.
-		if has_saved_once:
-			create_save_dialogue(func(confirmed: bool) -> void:
-				create_open_world_dialogue()
-			)
-		else:
-			create_save_dialogue(func(confirmed: bool) -> void:
-				if not confirmed:
-					create_open_world_dialogue()
-					return
-				
-				create_first_save_dialogue(func(first_saved: bool) -> void:
-					if first_saved:
-						create_open_world_dialogue()
-				)
-			)
+		save_then(create_open_world_dialogue)
 		return
 	
 	create_open_world_dialogue()
+
+func save_then(callback: Callable) -> void:
+	# Ask to save first.
+	create_save_dialogue(func(confirmed: bool) -> void:
+		if not confirmed or has_saved_once:
+			callback.call()
+			return
+		
+		# Create new save.
+		create_first_save_dialogue(func(first_saved: bool) -> void:
+			if first_saved:
+				callback.call()
+		)
+	)
 
 func make_dirty() -> void:
 	Creator.make_dirty()
@@ -292,6 +280,8 @@ func load_world() -> void:
 	has_saved_once = true
 
 func new_world() -> void:
+	new_world_begun.emit()
+	
 	Tiles.delete_all()
 	Room.clear_rooms()
 	
@@ -307,4 +297,5 @@ func new_world() -> void:
 	await get_tree().process_frame
 	
 	has_saved_once = false
+	new_world_ended.emit()
 	dirty = false

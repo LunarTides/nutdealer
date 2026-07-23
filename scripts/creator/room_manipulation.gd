@@ -31,6 +31,9 @@ func _ready() -> void:
 	Creator.creator_disabled.connect(func() -> void:
 		stop()
 	)
+	WorldSave.new_world_begun.connect(func() -> void:
+		handle_lock = false
+	)
 	
 	# Start disabled. Only enable when going into create mode.
 	stop()

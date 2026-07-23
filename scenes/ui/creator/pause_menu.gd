@@ -17,28 +17,32 @@ func _on_close_button_pressed() -> void:
 	hide()
 
 
-func _on_exit_button_pressed() -> void:
+func _on_exit_to_menu_button_pressed() -> void:
+	exit_to_menu()
+
+func _on_exit_to_desktop_button_pressed() -> void:
+	exit_to_desktop()
+
+func exit_to_menu() -> void:
 	if not Creator.dirty:
-		exit()
+		force_exit_to_menu()
 		return
 	
 	# Ask to save first.
-	if WorldSave.has_saved_once:
-		WorldSave.create_save_dialogue(func(confirmed: bool) -> void:
-			exit()
-		)
-	else:
-		WorldSave.create_save_dialogue(func(confirmed: bool) -> void:
-			if not confirmed:
-				exit()
-				return
-			
-			WorldSave.create_first_save_dialogue(func(first_saved: bool) -> void:
-				if first_saved:
-					exit()
-			)
-		)
+	WorldSave.save_then(force_exit_to_menu)
 
-func exit() -> void:
+func force_exit_to_menu() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	Creator.stop()
+	queue_free()
+
+func exit_to_desktop() -> void:
+	if not Creator.dirty:
+		force_exit_to_desktop()
+		return
+	
+	# Ask to save first.
+	WorldSave.save_then(force_exit_to_desktop)
+
+func force_exit_to_desktop() -> void:
+	get_tree().quit()

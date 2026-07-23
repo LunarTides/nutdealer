@@ -12,6 +12,7 @@ class_name CreatorDarkWorldUI
 @export var camera_zoom_label: Label
 @export var feedback_label: Label
 @export var bottom_center_container: VBoxContainer
+@export var pause_menu: Control
 
 var listen_for_keys: bool = true
 var actual_pan_speed: float = 0

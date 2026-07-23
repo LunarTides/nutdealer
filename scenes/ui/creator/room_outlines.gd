@@ -90,7 +90,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			actions.queue_free()
 		
 		if hovering != -1 and not hovering_handle:
-			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 				handle_click()
 
 func _draw() -> void:
