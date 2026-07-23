@@ -64,8 +64,6 @@ func _process(delta: float) -> void:
 		if new_room_index >= Room.amount:
 			new_room_index = 0
 		
-		# Integer division is fine since we're working with multiples of 64.
-		@warning_ignore("integer_division")
 		Game.switch_room(new_room_index)
 
 func make_dirty() -> void:

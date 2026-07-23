@@ -2,6 +2,7 @@ extends HBoxContainer
 
 @export var speed_button: TextureButton
 @export var noclip_button: TextureButton
+@export var next_room_button: TextureButton
 
 var noclip: bool = false:
 	set(value):
@@ -57,3 +58,18 @@ func _on_speed_button_pressed() -> void:
 
 func _on_noclip_button_pressed() -> void:
 	noclip = not noclip
+
+
+func _on_next_room_button_pressed() -> void:
+	# Switch to next room.
+	var new_room_index: int = Game.current_room + 1
+	if new_room_index >= Room.amount:
+		new_room_index = 0
+	
+	Game.switch_room(new_room_index)
+	
+	# Get the next room index.
+	new_room_index = Game.current_room + 1
+	if new_room_index >= Room.amount:
+		new_room_index = 0
+	next_room_button.tooltip_text = "Next Room (%d)" % new_room_index

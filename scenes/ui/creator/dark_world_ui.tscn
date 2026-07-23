@@ -158,7 +158,7 @@ script = ExtResource("9_o23ng")
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
 
-[node name="PreviewActions" type="HBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=1170853081 node_paths=PackedStringArray("speed_button", "noclip_button")]
+[node name="PreviewActions" type="HBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=1170853081 node_paths=PackedStringArray("speed_button", "noclip_button", "next_room_button")]
 custom_maximum_size = Vector2(-1, 64)
 anchors_preset = 1
 anchor_left = 1.0
@@ -171,6 +171,7 @@ size_flags_horizontal = 3
 script = ExtResource("12_2sl0l")
 speed_button = NodePath("SpeedButton")
 noclip_button = NodePath("NoclipButton")
+next_room_button = NodePath("NextRoomButton")
 
 [node name="SpeedButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=76935415]
 self_modulate = Color(0, 0, 1, 1)
@@ -187,6 +188,15 @@ custom_minimum_size = Vector2(32, 64)
 layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "Noclip"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
+[node name="NextRoomButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=1447597550]
+self_modulate = Color(0.8701601, 0.00043991505, 0.8356334, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Next Room (1)"
 texture_normal = ExtResource("12_xy4lk")
 stretch_mode = 0
 
@@ -250,3 +260,4 @@ label_settings = SubResource("LabelSettings_847bk")
 [connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_item_clicked"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/SpeedButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_speed_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NoclipButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_noclip_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NextRoomButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_next_room_button_pressed"]
