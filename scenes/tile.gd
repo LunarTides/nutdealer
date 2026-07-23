@@ -3,6 +3,8 @@ class_name Tile
 
 const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 
+signal id_changed
+
 @export var texture: Texture2D:
 	set(value):
 		texture = value
@@ -33,6 +35,13 @@ const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
 		
 		if is_inside_tree():
 			regenerate_id()
+# TODO: Remove this and replace it with more generic `encounter` property with different options.
+@export var encounter_on_interact: bool = false:
+	set(value):
+		encounter_on_interact = value
+		
+		if is_inside_tree():
+			regenerate_id()
 @export_storage var logic_script_path: String
 
 var id: String = "null":
@@ -41,6 +50,8 @@ var id: String = "null":
 		
 		if is_inside_tree() and is_instance_valid(id_label):
 			id_label.text = id
+		
+		id_changed.emit()
 var coords: Vector2i:
 	get:
 		return Global.position_to_coords(global_position)
@@ -62,6 +73,9 @@ var logic_script_name: String:
 	get:
 		return logic_script_path.split("/")[-1].replace(".gd", "")
 var logic_script_dirty: bool = false
+var is_encounter: bool:
+	get:
+		return encounter_on_interact
 
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D
@@ -120,6 +134,12 @@ func _ready() -> void:
 		logic.script.resource_path = logic_script_path
 	)
 	
+	# Keep invisible if it should hide during play.
+	visibility_changed.connect(func() -> void:
+		if Game.playing and should_hide_during_play:
+			hide()
+	)
+	
 	# Call the `_ready` function on the tile if we're actually playing. (Not creating.)
 	if not Creator.enabled:
 		logic._ready()
@@ -162,6 +182,9 @@ func _on_behaviour_button_pressed() -> void:
 
 func interact() -> void:
 	logic._interact()
+	
+	if encounter_on_interact:
+		Encounter.start(self)
 
 func disable() -> void:
 	hide()

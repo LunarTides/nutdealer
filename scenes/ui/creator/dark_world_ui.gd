@@ -50,6 +50,13 @@ func _ready() -> void:
 		# grid hint too far away from the camera.
 		init_grid_hint()
 	)
+	Game.mode_changed.connect(func(old: Game.Mode, new: Game.Mode) -> void:
+		var dark_world: bool = new == Game.Mode.DarkWorld
+		
+		room_coords_label.visible = dark_world
+		mouse_coords_label.visible = dark_world
+		camera_zoom_label.visible = dark_world
+	)
 	
 	# Move the grid when the window's size is changed.
 	get_tree().root.size_changed.connect(init_grid_hint)

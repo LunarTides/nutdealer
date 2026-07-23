@@ -3,10 +3,16 @@ extends Node
 signal play_start
 signal play_end
 signal room_changed(old_room_index: int, new_room_index: int)
+signal mode_changed(old: Mode, new: Mode)
 
 const TILES: PackedScene = preload("uid://c810cm35ke6y5")
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 const GAME_PAUSE_MENU: PackedScene = preload("uid://dic6f6j0grcf0")
+
+enum Mode {
+	DarkWorld,
+	Encounter,
+}
 
 enum FeedbackType {
 	Info,
@@ -23,6 +29,13 @@ var playing: bool = false:
 			play_start.emit()
 		else:
 			play_end.emit()
+var mode: Mode = Mode.DarkWorld:
+	set(value):
+		if mode != value:
+			var old: Mode = mode
+			mode = value
+			mode_changed.emit(old, mode)
+		
 var player: Player
 var tiles: Tiles
 var border_tiles: Node
@@ -88,7 +101,7 @@ func play_from(room_index: int) -> void:
 	current_room = room_index
 	
 	# Create pause menu.
-	if not is_instance_valid(pause_menu):
+	if not Creator.enabled and not is_instance_valid(pause_menu):
 		pause_menu = GAME_PAUSE_MENU.instantiate()
 		canvas_layer.add_child(pause_menu)
 	

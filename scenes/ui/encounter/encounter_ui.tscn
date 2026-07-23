@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dhefrdnkspjje"]
+
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="1_3ians"]
+[ext_resource type="Script" uid="uid://dlcbtmiuriwy2" path="res://scenes/ui/encounter/encounter_ui.gd" id="1_dd44b"]
+
+[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "end_encounter_button", "camera_2d")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dd44b")
+grid_move_speed = 25.0
+grid = NodePath("Grid")
+end_encounter_button = NodePath("EndEncounterButton")
+camera_2d = NodePath("Camera2D")
+
+[node name="Grid" type="TextureRect" parent="." unique_id=1906994448]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+z_index = -10
+layout_mode = 0
+offset_left = -87.503944
+offset_top = -168.49736
+offset_right = 1320.4961
+offset_bottom = 727.5026
+mouse_filter = 2
+texture = ExtResource("1_3ians")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="EndEncounterButton" type="Button" parent="." unique_id=1417115440]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+offset_right = 145.0
+grow_vertical = 0
+text = "End Encounter"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=589733589]
+limit_left = 0
+limit_top = 0
+limit_right = 1152
+limit_bottom = 640
+
+[connection signal="pressed" from="EndEncounterButton" to="." method="_on_end_encounter_button_pressed"]

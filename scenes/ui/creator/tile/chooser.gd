@@ -11,7 +11,10 @@ func _ready() -> void:
 	#Game.play_end.connect(func():
 		#show()
 	#)
-	pass
+	
+	Game.mode_changed.connect(func(old: Game.Mode, new: Game.Mode) -> void:
+		visible = new == Game.Mode.DarkWorld
+	)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -46,6 +46,13 @@ func _ready() -> void:
 	Game.play_end.connect(func() -> void:
 		hide()
 	)
+	Game.mode_changed.connect(func(old: Game.Mode, new: Game.Mode) -> void:
+		var dark_world: bool = new == Game.Mode.DarkWorld
+		
+		speed_button.visible = dark_world
+		noclip_button.visible = dark_world
+		next_room_button.visible = dark_world
+	)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

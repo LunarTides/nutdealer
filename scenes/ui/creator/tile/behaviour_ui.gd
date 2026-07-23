@@ -7,6 +7,7 @@ const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 @export var check_box_container: VBoxContainer
 @export var code_edit: CodeEdit
 @export var code_container: PanelContainer
+@export var encounter_container: PanelContainer
 
 var tile: Tile
 var code_intro: String = "extends Node2D
@@ -33,6 +34,7 @@ func _ready() -> void:
 			# The dirty flag has changed, update the name.
 			update_name()
 	)
+	tile.id_changed.connect(reload_ui)
 	
 	reload_ui()
 	update_name()
@@ -50,6 +52,9 @@ func _input(event: InputEvent) -> void:
 func reload_ui() -> void:
 	if is_instance_valid(tile.logic_script):
 		code_edit.text = tile.logic_script.source_code.replace(code_intro, "")
+	
+	#if tile.is_encounter:
+	tab_container.set_tab_hidden(1, not tile.is_encounter)
 
 func update_name() -> void:
 	code_container.name = "Code%s%s" % [

@@ -132,6 +132,8 @@ func start_preview() -> void:
 	Game.constrain_camera_to_current_room()
 
 func stop_preview() -> void:
+	Game.mode = Game.Mode.DarkWorld
+	
 	# Re-enable disabled tiles outside room.
 	Game.tiles.call_outside_room(Game.current_room, func(tile: Tile) -> void:
 		tile.enable()
