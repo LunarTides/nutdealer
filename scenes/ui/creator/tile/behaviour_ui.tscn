@@ -67,7 +67,7 @@ tile_property = &"is_room_start_position"
 
 [node name="EncounterOnInteractCheckBox" type="CheckBox" parent="TabContainer/Properties/CheckBoxContainer" unique_id=1764642405]
 layout_mode = 2
-tooltip_text = "If the player should spawn at this tile when entering the room. (Ignored by room transitions.)"
+tooltip_text = "If the tile should start an encounter on interact"
 text = "Encounter on interact (temp)"
 script = ExtResource("2_nbn28")
 tile_property = &"encounter_on_interact"
