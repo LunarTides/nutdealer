@@ -28,6 +28,15 @@ func _ready() -> void:
 	position.y = Global.screen_size.y - 32 - 6
 	position.x = randf_range(32, Global.screen_size.x - 32)
 	create_state_loop()
+	
+	Game.play_start.connect(func() -> void:
+		# TODO: Play animation of jumping through the veil.
+		hide()
+		target = Vector2.ZERO
+	)
+	Game.play_end.connect(func() -> void:
+		show()
+	)
 
 
 # Called every physics frame. 'delta' is the elapsed time since the previous frame.

@@ -5,12 +5,19 @@ var in_dialogue: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	create_dialogue_loop()
+	
+	Game.play_start.connect(func() -> void:
+		process_mode = Node.PROCESS_MODE_DISABLED
+	)
+	Game.play_end.connect(func() -> void:
+		process_mode = Node.PROCESS_MODE_INHERIT
+	)
 
 func create_dialogue_loop() -> void:
 	while true:
 		await get_tree().create_timer(randf_range(1, 30)).timeout
 		
-		if not in_dialogue:
+		if not in_dialogue and process_mode != Node.PROCESS_MODE_DISABLED:
 			do_random_dialogue()
 
 func say(text: String, speaker: String) -> void:
