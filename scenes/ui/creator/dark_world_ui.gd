@@ -135,21 +135,22 @@ func move_grid_hint() -> void:
 			grid_hint.position += Global.coords_to_position(difference)
 
 func handle_room_coords_label() -> void:
-	var bounds: Rect2i
+	var room_index: int = -1
 	
 	# If we're creating a room.
 	if CreatorRoomManipulation.new_room_created:
-		bounds = Room.bounds[CreatorRoomManipulation.new_room_index]
+		room_index = CreatorRoomManipulation.new_room_index
 	# If we're hovering over a room.
 	elif CreatorRoomManipulation.hovering != -1:
-		bounds = Room.bounds[CreatorRoomManipulation.hovering]
+		room_index = CreatorRoomManipulation.hovering
 	
-	if not bounds:
+	if room_index == -1:
 		room_coords_label.modulate.a = 0.0
 		return
 	
 	room_coords_label.modulate.a = 1.0
 	
+	var bounds: Rect2i = Room.bounds[room_index]
 	var ssc: Vector2i = Global.screen_size_coords
 	var diff: Vector2i = bounds.size - ssc
 	@warning_ignore("integer_division")
@@ -172,4 +173,4 @@ func handle_room_coords_label() -> void:
 			("+%d" % add.y) if add.y > 0 else "",
 		]
 	
-	room_coords_label.text = "Room: %d, %d (%s x %s)" % [bounds.position.x, bounds.position.y, size_str_x, size_str_y]
+	room_coords_label.text = "Room (%d): %d, %d (%s x %s)" % [room_index, bounds.position.x, bounds.position.y, size_str_x, size_str_y]
