@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends HBoxContainer
 
 @export var speed_button: TextureButton
 @export var noclip_button: TextureButton

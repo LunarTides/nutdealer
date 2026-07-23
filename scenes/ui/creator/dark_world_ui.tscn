@@ -150,14 +150,16 @@ script = ExtResource("9_o23ng")
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
 
-[node name="PreviewActions" type="VBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=145496121 node_paths=PackedStringArray("speed_button", "noclip_button")]
+[node name="PreviewActions" type="HBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=1170853081 node_paths=PackedStringArray("speed_button", "noclip_button")]
+custom_maximum_size = Vector2(-1, 64)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
+offset_left = -68.0
 offset_top = 32.0
-offset_bottom = 72.0
+offset_bottom = 164.0
 grow_horizontal = 0
+size_flags_horizontal = 3
 script = ExtResource("12_2sl0l")
 speed_button = NodePath("SpeedButton")
 noclip_button = NodePath("NoclipButton")
