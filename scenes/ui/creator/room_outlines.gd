@@ -27,6 +27,7 @@ var hovering_handle: Vector2 = Vector2.ZERO:
 		set_hovering_handle_cursor_shape()
 		
 		CreatorRoomManipulation.hovering_handle = hovering_handle
+var start_click_mouse_position: Vector2
 var actions: PanelContainer
 
 # Called when the node enters the scene tree for the first time.
@@ -85,13 +86,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event is InputEventMouseButton:
-		# If you click outside the action dropdown, remove it.
-		if event.button_index == MOUSE_BUTTON_LEFT and is_instance_valid(actions) and not actions.get_global_rect().has_point(Global.mouse_position):
-			actions.queue_free()
-		
-		if hovering != -1 and not hovering_handle:
-			if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-				handle_click()
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			# If you click outside the action dropdown, remove it.
+			if is_instance_valid(actions) and not actions.get_global_rect().has_point(Global.mouse_position):
+				actions.queue_free()
+			
+			# Only count as a click if you keep your mouse within 16 pixels the entire click.
+			# This is so that moving the room doesn't cause the actions to pop up.
+			if event.pressed:
+				start_click_mouse_position = Global.mouse_position
+			else:
+				if hovering != -1 and not hovering_handle and Global.mouse_position.distance_to(start_click_mouse_position) <= 16:
+					handle_click()
 
 func _draw() -> void:
 	for i: int in range(Room.bounds.size()):

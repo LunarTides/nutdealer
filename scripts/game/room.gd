@@ -42,14 +42,16 @@ func update_room(index: int, rect: Rect2i, move_tiles: bool = false) -> void:
 		rect.position.y = rect.position.y + rect.size.y
 		rect.size.y = abs(rect.size.y)
 	
+	# Move tiles. Do this before actually updating the room.
+	if move_tiles:
+		Game.tiles.call_inside_room(index, func(tile: Tile) -> void:
+			#tile.coords += rect.size - old.size
+			tile.coords += rect.position - old.position
+		)
+	
 	bounds[index] = rect
 	room_updated.emit(index, old, rect)
 	Creator.make_dirty()
-	
-	if move_tiles:
-		Game.tiles.call_inside_room(index, func(tile: Tile) -> void:
-			tile.coords += rect.size - old.size
-		)
 
 func delete_room(index: int) -> int:
 	bounds.remove_at(index)
