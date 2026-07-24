@@ -52,6 +52,13 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if not tab_container.get_global_rect().has_point(get_global_mouse_position()):
+			# If you click outside the window, but the script is dirty,
+			# release the focus from the code edit, but don't close the window.
+			if tile.logic_script_dirty:
+				#Game.feedback("You must save the script before you can close the behaviour window.", Game.FeedbackType.Info)
+				code_edit.release_focus()
+				return
+			
 			# Clicked outside window.
 			queue_free()
 

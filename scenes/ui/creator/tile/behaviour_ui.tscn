@@ -37,11 +37,10 @@ encounter_container = NodePath("TabContainer/Encounter")
 layout_mode = 1
 offset_right = 198.0
 offset_bottom = 54.0
-current_tab = 1
+current_tab = 0
 clip_tabs = false
 
 [node name="Properties" type="PanelContainer" parent="TabContainer" unique_id=2140960493]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -78,6 +77,7 @@ script = ExtResource("2_nbn28")
 tile_property = &"encounter_on_interact"
 
 [node name="Encounter" type="PanelContainer" parent="TabContainer" unique_id=1990021112 node_paths=PackedStringArray("name_input", "health_input")]
+visible = false
 layout_mode = 2
 script = ExtResource("3_x3iqa")
 name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
