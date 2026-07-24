@@ -234,6 +234,9 @@ func save_world() -> void:
 	
 	# Config
 	var config: ConfigFile = ConfigFile.new()
+	config.set_value("world", "engine_version", ProjectSettings.get_setting("application/config/version"))
+	
+	# Rooms
 	for i: int in range(Room.bounds.size()):
 		var bounds: Rect2i = Room.bounds[i]
 		config.set_value("rooms", str(i), bounds)
@@ -254,6 +257,23 @@ func load_world() -> void:
 	
 	load_begun.emit()
 	
+	# Config
+	var config: ConfigFile = ConfigFile.new()
+	config.load("%s/world.cfg" % path)
+	
+	# Check engine version
+	var engine_version: String = config.get_value("world", "engine_version")
+	if engine_version and engine_version != ProjectSettings.get_setting("application/config/version"):
+		if not handle_different_engine_version():
+			load_ended.emit()
+			return
+	
+	# Rooms
+	if config.has_section("rooms"):
+		for key: String in config.get_section_keys("rooms"):
+			var bounds: Rect2i = config.get_value("rooms", key)
+			Room.add_room(bounds)
+	
 	# Tiles
 	var packed_tiles: PackedScene = load("%s/tiles/tiles.tscn" % path)
 	var tiles: Tiles = packed_tiles.instantiate()
@@ -264,20 +284,14 @@ func load_world() -> void:
 		tile.reparent(Game.tiles)
 		tile.owner = Game.tiles
 	
-	# Config
-	var config: ConfigFile = ConfigFile.new()
-	config.load("%s/world.cfg" % path)
-	
-	if config.has_section("rooms"):
-		for key: String in config.get_section_keys("rooms"):
-			var bounds: Rect2i = config.get_value("rooms", key)
-			Room.add_room(bounds)
-	
 	load_ended.emit()
 	
 	await get_tree().process_frame
 	dirty = false
 	has_saved_once = true
+
+func handle_different_engine_version() -> bool:
+	return true
 
 func new_world() -> void:
 	new_world_begun.emit()
