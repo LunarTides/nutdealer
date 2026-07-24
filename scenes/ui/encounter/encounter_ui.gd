@@ -7,7 +7,6 @@ class_name EncounterUI
 
 @export_category("UI Nodes")
 @export var grid: TextureRect
-@export var end_encounter_button: Button
 @export var camera_2d: Camera2D
 
 
@@ -16,8 +15,6 @@ var old_grid_position: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	init_grid()
-	
-	end_encounter_button.visible = Creator.enabled
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,6 +38,3 @@ func move_grid(delta: float) -> void:
 	# Move the grid to give an illusion that it's an infinite plane.
 	if grid.position.x >= 0:
 		grid.position = Vector2(-64 * grid_move_repeat_frequency, 0)
-
-func _on_end_encounter_button_pressed() -> void:
-	Encounter.end()

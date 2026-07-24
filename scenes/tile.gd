@@ -76,6 +76,7 @@ var logic_script_dirty: bool = false
 var is_encounter: bool:
 	get:
 		return encounter_on_interact
+var encounter_datas: Array[EncounterData] = [EncounterData.new()]
 
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D

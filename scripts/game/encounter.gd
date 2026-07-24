@@ -8,6 +8,9 @@ signal ended(tile: Tile)
 
 var in_encounter: bool = false
 var encounter_tile: Tile
+var encounter_datas: Array[EncounterData]:
+	get:
+		return encounter_tile.encounter_datas
 var ui: EncounterUI
 
 # Called when the node enters the scene tree for the first time.

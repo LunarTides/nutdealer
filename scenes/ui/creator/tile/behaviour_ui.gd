@@ -9,7 +9,17 @@ const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 @export var code_container: PanelContainer
 @export var encounter_container: PanelContainer
 
-var tile: Tile
+var tile: Tile:
+	set(value):
+		tile = value
+		
+		for check_box: TileBehaviourCheckBox in check_box_container.get_children():
+			if check_box is not TileBehaviourCheckBox:
+				return
+			
+			check_box.tile = tile
+		encounter_container.tile = tile
+		
 var code_intro: String = "extends Node2D
 
 var tile:
@@ -20,11 +30,7 @@ var tile:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for check_box: TileBehaviourCheckBox in check_box_container.get_children():
-		if check_box is not TileBehaviourCheckBox:
-			return
-		
-		check_box.tile = tile
+	tab_container.current_tab = 0
 	
 	code_edit.text_changed.connect(func() -> void:
 		var old_dirty: bool = tile.logic_script_dirty
