@@ -47,6 +47,8 @@ signal id_changed
 		if is_inside_tree():
 			regenerate_id()
 @export_storage var logic_script_path: String
+# TODO: Replace with a path for reusing encounters.
+@export_storage var encounter_datas: Array[EncounterData] = [EncounterData.new()]
 
 var id: String = "null":
 	set(value):
@@ -80,7 +82,6 @@ var logic_script_dirty: bool = false
 var is_encounter: bool:
 	get:
 		return encounter_on_interact
-var encounter_datas: Array[EncounterData] = [EncounterData.new()]
 
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D

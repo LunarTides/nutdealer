@@ -40,6 +40,9 @@ func _ready() -> void:
 		target = Vector2.ZERO
 	)
 	Game.play_end.connect(func() -> void:
+		if not enabled:
+			return
+		
 		show()
 	)
 	Settings.changed.connect(func() -> void:
