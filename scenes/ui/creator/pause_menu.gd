@@ -1,5 +1,7 @@
 extends Control
 
+const SETTINGS: PackedScene = preload("uid://haqo8dlnsblw")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	hide()
@@ -16,6 +18,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_close_button_pressed() -> void:
 	hide()
 
+func _on_settings_button_pressed() -> void:
+	var settings: Control = SETTINGS.instantiate()
+	add_sibling(settings)
+	
+	hide()
+	settings.closed.connect(show)
 
 func _on_exit_to_menu_button_pressed() -> void:
 	exit_to_menu()
@@ -45,4 +53,5 @@ func exit_to_desktop() -> void:
 	WorldSave.save_then(force_exit_to_desktop)
 
 func force_exit_to_desktop() -> void:
+	Settings.save_settings()
 	get_tree().quit()

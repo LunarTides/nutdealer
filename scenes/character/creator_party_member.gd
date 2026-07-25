@@ -22,12 +22,17 @@ var speed: float = 75
 var state: State = State.Moving
 var target: Vector2
 var in_dialogue: bool = false
+var enabled: bool:
+	get:
+		return Settings.creator.party_members_enabled
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	position.y = Global.screen_size.y - 32 - 6
 	position.x = randf_range(32, Global.screen_size.x - 32)
 	create_state_loop()
+	
+	visible = enabled
 	
 	Game.play_start.connect(func() -> void:
 		# TODO: Play animation of jumping through the veil.
@@ -36,6 +41,9 @@ func _ready() -> void:
 	)
 	Game.play_end.connect(func() -> void:
 		show()
+	)
+	Settings.changed.connect(func() -> void:
+		visible = enabled
 	)
 
 

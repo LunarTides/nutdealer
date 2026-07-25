@@ -481,14 +481,22 @@ text = "Play"
 layout_mode = 2
 text = "Create"
 
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=602271906]
+layout_mode = 2
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=693870745]
+layout_mode = 2
+text = "Exit"
+
 [node name="Grid" type="TextureRect" parent="." unique_id=1500288263]
 modulate = Color(0.38851848, 0.38851848, 0.38851845, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -148.4911
-offset_top = -107.510635
-offset_right = 1259.5089
-offset_bottom = 788.4894
+offset_left = -250.676
+offset_top = -5.3240743
+offset_right = 1157.324
+offset_bottom = 890.6759
 mouse_filter = 2
 texture = ExtResource("2_fe2o3")
 stretch_mode = 1
@@ -504,3 +512,5 @@ limit_bottom = 640
 [connection signal="animation_finished" from="VBoxContainer/TitleContainer/Intro/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

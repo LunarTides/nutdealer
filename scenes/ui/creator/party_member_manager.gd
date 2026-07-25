@@ -1,16 +1,30 @@
 extends Node
 
 var in_dialogue: bool = false
+var enabled: bool:
+	get:
+		return Settings.creator.party_members_enabled
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	create_dialogue_loop()
 	
+	process_mode = Node.PROCESS_MODE_INHERIT if enabled else Node.PROCESS_MODE_DISABLED
+	
 	Game.play_start.connect(func() -> void:
+		if not enabled:
+			return
+		
 		process_mode = Node.PROCESS_MODE_DISABLED
 	)
 	Game.play_end.connect(func() -> void:
+		if not enabled:
+			return
+		
 		process_mode = Node.PROCESS_MODE_INHERIT
+	)
+	Settings.changed.connect(func() -> void:
+		process_mode = Node.PROCESS_MODE_INHERIT if enabled else Node.PROCESS_MODE_DISABLED
 	)
 
 func create_dialogue_loop() -> void:

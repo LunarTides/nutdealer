@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://haqo8dlnsblw"]
+
+[ext_resource type="Script" uid="uid://c6ou2ipnnhnv5" path="res://scenes/ui/settings.gd" id="1_8wfqe"]
+
+[node name="SettingsUI" type="Control" unique_id=1952239954 node_paths=PackedStringArray("party_members_check_box")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8wfqe")
+party_members_check_box = NodePath("TabContainer/Creator/PartyMembersCheckBox")
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=927278826]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -20.0
+offset_right = 4.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Creator" type="VBoxContainer" parent="TabContainer" unique_id=1260849108]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="PartyMembersCheckBox" type="CheckBox" parent="TabContainer/Creator" unique_id=1552373052]
+layout_mode = 2
+tooltip_text = "If the party members should wander about in the creator."
+text = "Party Members"
+
+[node name="CloseButton" type="Button" parent="TabContainer/Creator" unique_id=1559712253]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Close"
+
+[connection signal="toggled" from="TabContainer/Creator/PartyMembersCheckBox" to="." method="_on_party_members_check_box_toggled"]
+[connection signal="pressed" from="TabContainer/Creator/CloseButton" to="." method="_on_close_button_pressed"]

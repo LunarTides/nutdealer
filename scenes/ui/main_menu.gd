@@ -2,6 +2,7 @@
 extends Control
 
 const CREATOR_DARK_WORLD_UI: PackedScene = preload("uid://cidw2jv7myp3u")
+const SETTINGS: PackedScene = preload("uid://haqo8dlnsblw")
 
 @export var grid_move_speed: float = 300
 @export var grid_move_repeat_frequency: int = 4
@@ -47,9 +48,19 @@ func _on_play_button_pressed() -> void:
 	
 	WorldSave.create_open_world_dialogue()
 
-
 func _on_create_button_pressed() -> void:
 	get_tree().change_scene_to_packed(CREATOR_DARK_WORLD_UI)
+
+func _on_settings_button_pressed() -> void:
+	var settings: Control = SETTINGS.instantiate()
+	add_sibling(settings)
+	
+	hide()
+	settings.closed.connect(show)
+
+func _on_exit_button_pressed() -> void:
+	Settings.save_settings()
+	get_tree().quit()
 
 func init_grid() -> void:
 	# Move the grid a little left and make it a little bigger.
