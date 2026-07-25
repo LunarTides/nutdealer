@@ -178,6 +178,9 @@ func _on_move_button_pressed() -> void:
 	var new_tile: Tile = clone()
 	CreatorPlaceTiles.start(new_tile)
 	queue_free()
+	
+	# Automatically stop the tile placement after one tile.
+	CreatorPlaceTiles.placed.connect(CreatorPlaceTiles.stop, ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_behaviour_button_pressed() -> void:
 	# Spawn behaviour ui to the right of the tile.

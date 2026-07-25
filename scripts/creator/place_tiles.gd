@@ -2,6 +2,8 @@ extends Node
 
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 
+signal placed
+
 var tile: Tile
 var tile_texture_button: TextureButton
 var tile_last_placed_position: Vector2i
@@ -50,8 +52,7 @@ func _input(event: InputEvent) -> void:
 			# NOTE: For some reason, the mouse positions don't change much when panning,
 			# so it's safe enough to just check if they're equal without using an epsilon or anything.
 			elif Global.mouse_position == cancel_mouse_position:
-				Creator.mode = Creator.Mode.None
-				tile_texture_button.queue_free()
+				stop()
 	
 	if event is InputEventMouseMotion and dragging and not event.relative.is_zero_approx():
 		if event.button_mask & MOUSE_BUTTON_LEFT == MOUSE_BUTTON_LEFT:
@@ -75,7 +76,17 @@ func start(tile_to_place: Tile) -> void:
 	should_erase = false
 	create_hovering_tile()
 
+func stop() -> void:
+	Creator.mode = Creator.Mode.None
+	
+	if is_instance_valid(tile_texture_button):
+		tile_texture_button.queue_free()
+
 func create_hovering_tile() -> void:
+	# The mode might change halfway through. (E.g. If connected to the placed signal.)
+	if Creator.mode != Creator.Mode.PlacingTile:
+		return
+	
 	tile_texture_button = TextureButton.new()
 	tile_texture_button.texture_normal = tile.texture
 	
@@ -108,6 +119,7 @@ func place_current_tile() -> void:
 	Game.tiles.add_child(tile)
 	tile_last_placed_position = coords
 	has_placed_tile = true
+	placed.emit()
 	
 	var new_tile: Tile = tile.clone()
 	
