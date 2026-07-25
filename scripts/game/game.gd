@@ -70,6 +70,12 @@ func setup_tiles() -> void:
 	add_child(tiles)
 	
 	border_tiles = Node.new()
+	Encounter.started.connect(func(tile: Tile) -> void:
+		border_tiles.process_mode = Node.PROCESS_MODE_DISABLED
+	)
+	Encounter.ended.connect(func(tile: Tile) -> void:
+		border_tiles.process_mode = Node.PROCESS_MODE_INHERIT
+	)
 	add_child(border_tiles)
 
 func feedback(message: String, feedback_type: FeedbackType) -> void:

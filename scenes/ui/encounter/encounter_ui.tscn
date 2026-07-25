@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://414ticr2po26" path="res://resources/encounter_data.gd" id="5_mrwyr"]
 [ext_resource type="PackedScene" uid="uid://ca03oun6n6xh4" path="res://scenes/ui/encounter/actions.tscn" id="6_1vo3m"]
 [ext_resource type="Script" uid="uid://bs0rvp84eyy6v" path="res://scenes/ui/encounter/actions_container.gd" id="6_fet88"]
+[ext_resource type="PackedScene" uid="uid://dp7vkfevdqcpi" path="res://scenes/ui/encounter/soul.tscn" id="8_1eyuo"]
 
 [sub_resource type="Resource" id="Resource_i6yx0"]
 script = ExtResource("5_mrwyr")
@@ -14,7 +15,17 @@ name = "test"
 health = 100
 metadata/_custom_type_script = "uid://414ticr2po26"
 
-[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "camera_2d")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xele"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(33, 256)
+
+[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "camera_2d", "soul_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,15 +36,16 @@ script = ExtResource("1_dd44b")
 grid_move_speed = 25.0
 grid = NodePath("Grid")
 camera_2d = NodePath("Camera2D")
+soul_container = NodePath("SoulContainer")
 
 [node name="Grid" type="TextureRect" parent="." unique_id=1906994448]
 modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -23.251839
-offset_top = -232.74818
-offset_right = 1384.7482
-offset_bottom = 663.25183
+offset_left = -89.899704
+offset_top = -166.10146
+offset_right = 1318.1003
+offset_bottom = 729.89856
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
@@ -102,5 +114,54 @@ layout_mode = 2
 
 [node name="Actions3" parent="ActionsContainer" unique_id=1326461017 instance=ExtResource("6_1vo3m")]
 layout_mode = 2
+
+[node name="SoulContainer" type="PanelContainer" parent="." unique_id=1920543855]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xele")
+
+[node name="LeftWall" type="StaticBody2D" parent="SoulContainer" unique_id=1705899972]
+position = Vector2(-16, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/LeftWall" unique_id=1226507363]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="RightWall" type="StaticBody2D" parent="SoulContainer" unique_id=410977562]
+position = Vector2(272, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/RightWall" unique_id=2115979341]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Ceiling" type="StaticBody2D" parent="SoulContainer" unique_id=565098639]
+position = Vector2(128, -16)
+rotation = 1.5707964
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/Ceiling" unique_id=1808840362]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Floor" type="StaticBody2D" parent="SoulContainer" unique_id=509047610]
+position = Vector2(128, 272)
+rotation = -1.5707964
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/Floor" unique_id=1718301443]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Soul" parent="SoulContainer" unique_id=1163045652 instance=ExtResource("8_1eyuo")]
+position = Vector2(127, 130)
 
 [connection signal="pressed" from="Creator/VBoxContainer/EndEncounterButton" to="Creator" method="_on_end_encounter_button_pressed"]

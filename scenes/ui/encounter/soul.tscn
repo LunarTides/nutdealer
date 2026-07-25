@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dp7vkfevdqcpi"]
+
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_58lfs"]
+[ext_resource type="Script" uid="uid://drbnfn2r6h516" path="res://scenes/ui/encounter/soul.gd" id="1_niifa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_niifa"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58lfs"]
+radius = 12.0
+
+[node name="Soul" type="CharacterBody2D" unique_id=1163045652]
+motion_mode = 1
+script = ExtResource("1_niifa")
+speed = 100.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1984745588]
+texture = ExtResource("1_58lfs")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2101374105]
+shape = SubResource("RectangleShape2D_niifa")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=484265100]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1549570371]
+shape = SubResource("CircleShape2D_58lfs")

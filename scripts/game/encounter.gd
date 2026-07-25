@@ -7,6 +7,7 @@ signal started(tile: Tile)
 signal ended(tile: Tile)
 signal turn_ended(turn: int)
 signal state_changed(old: State, new: State)
+signal enemy_turn_started
 
 enum State {
 	PartyMembers,
@@ -24,6 +25,7 @@ var state: State = State.PartyMembers:
 			state_changed.emit(old, state)
 			
 			if state == State.Enemy:
+				enemy_turn_started.emit()
 				handle_enemy_turn()
 var running: bool = false
 var party_members: Array[PartyMemberData]
@@ -107,8 +109,8 @@ func handle_enemy_turn() -> void:
 		return
 	
 	# TODO: Do
-	print_debug("[Encounter] Enemy turn. Enemy will do nothing for 1 second.")
-	await get_tree().create_timer(1.0).timeout
+	print_debug("[Encounter] Enemy turn. Enemy will do nothing for 3 seconds.")
+	await get_tree().create_timer(3.0).timeout
 	end_turn()
 
 func start(tile: Tile) -> void:
