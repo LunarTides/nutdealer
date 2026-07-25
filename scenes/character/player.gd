@@ -19,19 +19,7 @@ func _ready() -> void:
 	default_speed = speed
 
 func _process(delta: float) -> void:
-	# Handle interacting with tiles.
-	if Input.is_action_just_pressed(&"interact"):
-		var pos: Vector2 = global_position + (direction * 16)
-		if direction == Vector2(0, 1):
-			pos += direction * 32
-		elif direction != Vector2(0, -1):
-			pos += direction * 8
-		
-		var coords: Vector2i = Global.position_to_coords(pos)
-		var tile: Tile = Game.tiles.get_tile_on(coords)
-		
-		if is_instance_valid(tile):
-			tile.interact()
+	pass
 
 func _physics_process(delta: float) -> void:
 	# Get the input vector and handle the movement.
@@ -44,6 +32,21 @@ func _physics_process(delta: float) -> void:
 	set_correct_direction()
 	set_correct_sprite()
 	move_and_slide()
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Handle interacting with tiles.
+	if event.is_action_pressed(&"interact"):
+		var pos: Vector2 = global_position + (direction * 16)
+		if direction == Vector2(0, 1):
+			pos += direction * 32
+		elif direction != Vector2(0, -1):
+			pos += direction * 8
+		
+		var coords: Vector2i = Global.position_to_coords(pos)
+		var tile: Tile = Game.tiles.get_tile_on(coords)
+		
+		if is_instance_valid(tile):
+			tile.interact()
 
 func set_correct_sprite() -> void:
 	animated_sprite_2d.play()

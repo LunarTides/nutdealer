@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://ca03oun6n6xh4"]
+
+[ext_resource type="Script" uid="uid://dsuwh1pyosf48" path="res://scenes/ui/encounter/actions.gd" id="1_lcca3"]
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_or24m"]
+[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="2_lcca3"]
+[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="3_rijx5"]
+
+[node name="Actions" type="VBoxContainer" unique_id=576412403 node_paths=PackedStringArray("buttons_container", "labels_container")]
+offset_right = 320.0
+offset_bottom = 83.0
+theme_override_constants/separation = 0
+script = ExtResource("1_lcca3")
+buttons_container = NodePath("Buttons")
+labels_container = NodePath("Labels")
+
+[node name="Buttons" type="HBoxContainer" parent="." unique_id=131531030]
+propagate_maximum_size = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="FightButton" type="TextureRect" parent="Buttons" unique_id=626785667]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("1_or24m")
+
+[node name="ActButton" type="TextureRect" parent="Buttons" unique_id=1921919993]
+self_modulate = Color(0.7173395, 0.7151803, 0.73309356, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture = ExtResource("1_or24m")
+
+[node name="ItemsButton" type="TextureRect" parent="Buttons" unique_id=673676047]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture = ExtResource("2_lcca3")
+
+[node name="SpareButton" type="TextureRect" parent="Buttons" unique_id=1937922153]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture = ExtResource("3_rijx5")
+
+[node name="DefendButton" type="TextureRect" parent="Buttons" unique_id=310399638]
+self_modulate = Color(0.9664404, 0.46057504, 3.85046e-07, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture = ExtResource("2_lcca3")
+
+[node name="Labels" type="HBoxContainer" parent="." unique_id=41132238]
+layout_mode = 2
+
+[node name="FightLabel" type="Label" parent="Labels" unique_id=306900959]
+layout_mode = 2
+size_flags_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+text = "Fight"
+
+[node name="ActLabel" type="Label" parent="Labels" unique_id=723936459]
+layout_mode = 2
+size_flags_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(24, 0)
+text = "Act"
+
+[node name="ItemsLabel" type="Label" parent="Labels" unique_id=282140615]
+layout_mode = 2
+size_flags_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(42, 0)
+text = "Items"
+
+[node name="SpareLabel" type="Label" parent="Labels" unique_id=732681986]
+layout_mode = 2
+size_flags_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(46, 0)
+text = "Spare"
+
+[node name="DefendLabel" type="Label" parent="Labels" unique_id=706426848]
+layout_mode = 2
+size_flags_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(48, 0)
+text = "Defend"
