@@ -12,6 +12,10 @@ signal id_changed
 		if is_inside_tree():
 			sprite_2d.texture = texture
 			regenerate_id()
+@export var custom_texture_path: String:
+	set(value):
+		custom_texture_path = value
+		load_custom_texture(custom_texture_path)
 @export var is_solid: bool = false:
 	set(value):
 		is_solid = value
@@ -88,6 +92,8 @@ var encounter_datas: Array[EncounterData] = [EncounterData.new()]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	load_custom_texture(custom_texture_path)
+	
 	sprite_2d.texture = texture
 	if is_solid:
 		static_body_2d.collision_layer |= 1
@@ -200,6 +206,16 @@ func clone(new_id: bool = false) -> Tile:
 	if new_id:
 		new_tile.regenerate_id()
 	return new_tile
+
+func load_custom_texture(texture_path: String) -> void:
+	if not texture_path:
+		return
+	
+	texture_path = CreatorResourceSaver.get_full_path(texture_path)
+	
+	for custom_texture: ImageTexture in GameData.custom_tile_textures:
+		if custom_texture.resource_path == texture_path:
+			texture = custom_texture
 
 func create_logic_script(text: String, path: String) -> void:
 	# New script.

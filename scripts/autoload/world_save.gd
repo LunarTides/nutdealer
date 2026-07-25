@@ -167,7 +167,7 @@ func create_open_world_dialogue() -> void:
 		if not dir.contains("/worlds/") or not FileAccess.file_exists("%s/world.cfg" % dir):
 			return
 		
-		new_world()
+		new_world(false)
 		
 		var parts: PackedStringArray = dir.split("/")
 		world_name = parts[parts.size() - 1]
@@ -217,12 +217,6 @@ func save_world() -> void:
 	var path: String = "user://worlds/%s" % world_name
 	DirAccess.make_dir_recursive_absolute(path)
 	
-	# Tiles
-	var tiles: PackedScene = PackedScene.new()
-	tiles.pack(Game.tiles)
-	DirAccess.make_dir_recursive_absolute("%s/tiles" % path)
-	ResourceSaver.save(tiles, "%s/tiles/tiles.tscn" % path)
-	
 	# Tile Scripts
 	for tile: Tile in Game.tiles.get_all():
 		if is_instance_valid(tile.logic_script):
@@ -231,6 +225,25 @@ func save_world() -> void:
 			var script_name: String = tile.logic_script_name
 			var file: FileAccess = FileAccess.open("%s/tiles/scripts/%s.gd" % [path, script_name], FileAccess.WRITE)
 			file.store_string(tile.logic_script.source_code)
+	
+	# Tile Textures
+	for custom_texture: ImageTexture in GameData.custom_tile_textures:
+		DirAccess.make_dir_recursive_absolute("%s/tiles/textures" % path)
+		
+		var texture_name: String = custom_texture.resource_path.split("/")[-1]
+		var new_texture_path: String = "%s/tiles/textures/%s" % [path, texture_name]
+		DirAccess.copy_absolute(custom_texture.resource_path, new_texture_path)
+		
+		# Actually make tiles reference the new resource_path.
+		for tile: Tile in Game.tiles.get_all():
+			if tile.texture.resource_path == custom_texture.resource_path:
+				tile.custom_texture_path = CreatorResourceSaver.get_relative_path(new_texture_path)
+	
+	# Tiles
+	var tiles: PackedScene = PackedScene.new()
+	tiles.pack(Game.tiles)
+	DirAccess.make_dir_recursive_absolute("%s/tiles" % path)
+	ResourceSaver.save(tiles, "%s/tiles/tiles.tscn" % path)
 	
 	# Config
 	var config: ConfigFile = ConfigFile.new()
@@ -274,6 +287,19 @@ func load_world() -> void:
 			var bounds: Rect2i = config.get_value("rooms", key)
 			Room.add_room(bounds)
 	
+	# Tile Textures
+	var tile_textures_path: String = "%s/tiles/textures" % path
+	if DirAccess.dir_exists_absolute(tile_textures_path):
+		for texture_path: String in DirAccess.get_files_at(tile_textures_path):
+			var image_path: String = "%s/%s" % [tile_textures_path, texture_path]
+			
+			var image: Image = Image.load_from_file(image_path)
+			image.resource_path = ""
+			
+			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
+			image_texture.resource_path = image_path
+			GameData.custom_tile_textures.append(image_texture)
+	
 	# Tiles
 	var packed_tiles: PackedScene = load("%s/tiles/tiles.tscn" % path)
 	var tiles: Tiles = packed_tiles.instantiate()
@@ -293,8 +319,9 @@ func load_world() -> void:
 func handle_different_engine_version() -> bool:
 	return true
 
-func new_world() -> void:
-	new_world_begun.emit()
+func new_world(emit_signals: bool = true) -> void:
+	if emit_signals:
+		new_world_begun.emit()
 	
 	Tiles.delete_all()
 	Room.clear_rooms()
@@ -311,5 +338,7 @@ func new_world() -> void:
 	await get_tree().process_frame
 	
 	has_saved_once = false
-	new_world_ended.emit()
 	dirty = false
+	
+	if emit_signals:
+		new_world_ended.emit()
