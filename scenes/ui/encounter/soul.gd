@@ -28,3 +28,15 @@ func _physics_process(delta: float) -> void:
 
 func reposition() -> void:
 	global_position = Global.screen_size / 2
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	var projectile: Projectile = area.get_parent()
+	if projectile is Projectile:
+		if projectile.type == Projectile.ProjectileType.Damage:
+			# TODO: Do invincibility frames.
+			Encounter.deal_damage_to_party_targets(projectile.damage)
+		elif projectile.type == Projectile.ProjectileType.Heal:
+			Encounter.heal_party_targets(projectile.damage)
+		
+		projectile.queue_free()

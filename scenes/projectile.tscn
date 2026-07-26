@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ddbwwx6oq47q6"]
+
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_c8fcr"]
+[ext_resource type="Script" uid="uid://dpa1y3057ys6q" path="res://scenes/projectile.gd" id="1_q3m7n"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hakx0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_c8fcr")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(32, 32)
+
+[node name="Projectile" type="CharacterBody2D" unique_id=887394843 node_paths=PackedStringArray("animated_sprite_2d")]
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_q3m7n")
+sprite = ExtResource("1_c8fcr")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=928533118]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_hakx0")
+
+[node name="HitBox" type="Area2D" parent="." unique_id=1396939519]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1658056790]
+shape = SubResource("RectangleShape2D_hakx0")

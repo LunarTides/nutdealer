@@ -23,12 +23,13 @@ enum FeedbackType {
 
 var playing: bool = false:
 	set(value):
-		playing = value
-		
-		if playing:
-			play_start.emit()
-		else:
-			play_end.emit()
+		if playing != value:
+			playing = value
+			
+			if playing:
+				play_start.emit()
+			else:
+				play_end.emit()
 var mode: Mode = Mode.DarkWorld:
 	set(value):
 		if mode != value:

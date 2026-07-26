@@ -81,7 +81,7 @@ func handle_action() -> void:
 	if button_index == 0:
 		# TODO: Choose an enemy.
 		# TODO: Do the attack timing thing to vary attack damage.
-		Encounter.deal_damage(0, 50)
+		Encounter.deal_damage_to_enemy(0, 50)
 		Encounter.end_turn()
 	# Act
 	elif button_index == 1:

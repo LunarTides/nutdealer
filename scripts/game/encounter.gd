@@ -2,6 +2,7 @@ extends Node
 
 const ENCOUNTER_UI: PackedScene = preload("uid://dhefrdnkspjje")
 const ENCOUNTER_PARTY_MEMBER: PackedScene = preload("uid://db1npunkjreud")
+const PROJECTILE: PackedScene = preload("uid://ddbwwx6oq47q6")
 
 signal started(tile: Tile)
 signal ended(tile: Tile)
@@ -66,7 +67,7 @@ func set_default_party_members() -> void:
 	ralsei.health = 100
 	party_members.append(ralsei)
 
-func deal_damage(enemy_index: int, amount: int) -> void:
+func deal_damage_to_enemy(enemy_index: int, amount: int) -> void:
 	var encounter_data: EncounterData = encounter_datas.get(enemy_index)
 	if not encounter_data:
 		return
@@ -77,6 +78,17 @@ func deal_damage(enemy_index: int, amount: int) -> void:
 	if encounter_data.health <= 0:
 		win_by_damage()
 
+func deal_damage_to_party_targets(amount: int) -> void:
+	# TODO: Deal damage to attack targets.
+	print_debug("[Encounter] Dealt %d damage to %s. Health %d -> %d" % [amount, party_members[0].name, party_members[0].health, party_members[0].health - amount])
+	party_members[0].health -= amount
+
+func heal_party_targets(amount: int) -> void:
+	# TODO: Heal attack targets.
+	# TODO: Clamp to max health.
+	print_debug("[Encounter] Healed %d damage to %s. Health %d -> %d" % [amount, party_members[0].name, party_members[0].health, party_members[0].health + amount])
+	party_members[0].health += amount
+
 func defend_this_turn() -> void:
 	# TODO: Implement
 	print_debug("[Encounter] %s will defend this turn." % party_members[turn].name)
@@ -86,11 +98,11 @@ func end_turn() -> void:
 		return
 	
 	if state == State.Enemy:
-		state = State.PartyMembers
-		
 		var old_turn: int = turn
 		turn = 0
 		turn_ended.emit(old_turn)
+		
+		state = State.PartyMembers
 		
 		print_debug("[Encounter] Enemy turn ended.")
 		return
@@ -99,17 +111,28 @@ func end_turn() -> void:
 	turn += 1
 	print_debug("[Encounter] Turn counter incremented.")
 	
+	turn_ended.emit(turn - 1)
+	
 	if turn >= party_members.size():
 		state = State.Enemy
-	
-	turn_ended.emit(turn - 1)
 
 func handle_enemy_turn() -> void:
 	if not running:
 		return
 	
 	# TODO: Do
-	print_debug("[Encounter] Enemy turn. Enemy will do nothing for 3 seconds.")
+	var projectile_1: Projectile = PROJECTILE.instantiate()
+	projectile_1.sprite = preload("res://assets/sprites/tiles/debug/red.svg")
+	projectile_1.start_position = Vector2(339, 57)
+	ui.soul_container.add_child(projectile_1)
+	
+	var projectile_2: Projectile = PROJECTILE.instantiate()
+	projectile_2.sprite = preload("res://assets/sprites/tiles/debug/green.svg")
+	projectile_2.type = Projectile.ProjectileType.Heal
+	projectile_2.start_position = Vector2(339, 200)
+	ui.soul_container.add_child(projectile_2)
+	
+	print_debug("[Encounter] Enemy turn. Spawn 2 projectiles, wait for 2 seconds.")
 	await get_tree().create_timer(3.0).timeout
 	end_turn()
 

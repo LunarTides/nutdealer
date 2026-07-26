@@ -10,6 +10,7 @@ size = Vector2(32, 32)
 radius = 12.0
 
 [node name="Soul" type="CharacterBody2D" unique_id=1163045652]
+collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_niifa")
 speed = 100.0
@@ -27,3 +28,5 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1549570371]
 shape = SubResource("CircleShape2D_58lfs")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
