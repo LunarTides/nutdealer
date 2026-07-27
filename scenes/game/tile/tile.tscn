@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cfme7hrx25bgv"]
+
+[ext_resource type="Script" uid="uid://b0c1rvg1twwth" path="res://scenes/game/tile/tile.gd" id="1_lkefh"]
+[ext_resource type="Script" uid="uid://bdxm6dj448qpe" path="res://scenes/game/tile/tile_logic.gd" id="2_i36ew"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="3_xk5ep"]
+[ext_resource type="PackedScene" uid="uid://bqwrd47eaim0y" path="res://scenes/creator/tile/actions.tscn" id="4_qvbh2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(64, 64)
+
+[node name="Tile" type="Node2D" unique_id=939431773]
+script = ExtResource("1_lkefh")
+
+[node name="Logic" type="Node2D" parent="." unique_id=956117243]
+script = ExtResource("2_i36ew")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=406712904]
+collision_layer = 2
+input_pickable = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=240555624]
+texture = ExtResource("3_xk5ep")
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1227396779]
+position = Vector2(32, 32)
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Actions" parent="." unique_id=1028659122 node_paths=PackedStringArray("tile", "static_body_2d") instance=ExtResource("4_qvbh2")]
+tile = NodePath("..")
+static_body_2d = NodePath("../StaticBody2D")
+
+[connection signal="input_event" from="StaticBody2D" to="." method="_on_static_body_2d_input_event"]

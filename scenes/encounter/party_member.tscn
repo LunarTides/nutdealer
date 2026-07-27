@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://db1npunkjreud"]
 
-[ext_resource type="Script" uid="uid://byyjtbjiwjhaj" path="res://scenes/character/encounter_party_member.gd" id="1_ls82y"]
+[ext_resource type="Script" uid="uid://byyjtbjiwjhaj" path="res://scenes/encounter/party_member.gd" id="1_ls82y"]
 [ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="2_6skj3"]
 
 [node name="EncounterPartyMember" type="Node2D" unique_id=1452198581 node_paths=PackedStringArray("animated_sprite_2d")]

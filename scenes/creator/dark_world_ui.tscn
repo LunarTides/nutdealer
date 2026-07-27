@@ -1,22 +1,22 @@
 [gd_scene format=3 uid="uid://cidw2jv7myp3u"]
 
-[ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/ui/creator/dark_world_ui.gd" id="1_0wj4i"]
-[ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/ui/creator/room_outlines.gd" id="2_skldr"]
+[ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/creator/dark_world_ui.gd" id="1_0wj4i"]
+[ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/creator/room_outlines.gd" id="2_skldr"]
 [ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_wyeqc"]
-[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/ui/creator/pause_menu.tscn" id="4_xy4lk"]
+[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/creator/pause_menu.tscn" id="4_xy4lk"]
 [ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="5_2sl0l"]
 [ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="6_oboim"]
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="7_f3slr"]
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="8_ofl6s"]
-[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/ui/creator/tile/chooser.gd" id="9_o23ng"]
-[ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/ui/creator/actions.gd" id="10_evxai"]
+[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://scenes/creator/tile/picker.gd" id="9_o23ng"]
+[ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://scenes/creator/actions.gd" id="10_evxai"]
 [ext_resource type="Texture2D" uid="uid://di1rwtjlgbxpq" path="res://assets/sprites/creator/eraser.png" id="10_wyeqc"]
 [ext_resource type="Texture2D" uid="uid://bhq5oehn5r73p" path="res://assets/sprites/creator/import_tile.png" id="11_ofl6s"]
-[ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://scenes/ui/creator/feedback_label.tscn" id="11_skldr"]
-[ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://scenes/ui/creator/preview_actions.gd" id="12_2sl0l"]
+[ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://scenes/creator/feedback_label.tscn" id="11_skldr"]
+[ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://scenes/creator/preview_actions.gd" id="12_2sl0l"]
 [ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
-[ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://scenes/ui/creator/party_member_manager.gd" id="15_f3slr"]
-[ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://scenes/character/creator_party_member.tscn" id="15_oboim"]
+[ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://scenes/creator/party_member_manager.gd" id="15_f3slr"]
+[ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://scenes/creator/party_member.tscn" id="15_oboim"]
 [ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="18_o23ng"]
 [ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://resources/sprite_frames/susie.tres" id="19_dw1n6"]
 [ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://resources/sprite_frames/ralsei.tres" id="20_kahae"]
@@ -145,7 +145,7 @@ text = "Preview"
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="CanvasLayer" unique_id=283158090]
 
-[node name="TileChooser" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151]
+[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151]
 offset_top = 32.0
 offset_right = 76.0
 offset_bottom = 312.0
@@ -279,8 +279,8 @@ character_name = 2
 sprite_frames = ExtResource("20_kahae")
 
 [connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
-[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_empty_clicked"]
-[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_item_clicked"]
+[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TilePicker" to="CanvasLayer/CanvasLayer2/TilePicker" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TilePicker" to="CanvasLayer/CanvasLayer2/TilePicker" method="_on_item_clicked"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/SpeedButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_speed_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NoclipButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_noclip_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NextRoomButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_next_room_button_pressed"]

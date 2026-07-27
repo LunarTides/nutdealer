@@ -53,10 +53,6 @@ signal id_changed
 var id: String = "null":
 	set(value):
 		id = value
-		
-		if is_inside_tree() and is_instance_valid(id_label):
-			id_label.text = id
-		
 		id_changed.emit()
 var coords: Vector2i:
 	get:
@@ -86,8 +82,6 @@ var is_encounter: bool:
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D
 @onready var collision_shape_2d: CollisionShape2D = $StaticBody2D/CollisionShape2D
-@onready var actions: PanelContainer = $Actions
-@onready var id_label: Label = $Actions/VBoxContainer/IDLabel
 # TODO: Call _room_enter and _room_exit when entering / exiting room.
 @onready var logic: TileLogic = $Logic
 
@@ -106,11 +100,6 @@ func _ready() -> void:
 	
 	if id == "null":
 		regenerate_id()
-	id_label.text = id
-	
-	actions.hide()
-	if not Creator.enabled:
-		actions.queue_free()
 	
 	logic.process_mode = Node.PROCESS_MODE_DISABLED
 	Game.play_start.connect(func() -> void:
@@ -155,41 +144,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if Creator.enabled and not actions.get_global_rect().has_point(Global.mouse_position):
-			# Clicked outside window.
-			self_modulate = Color.WHITE
-			actions.hide()
-
-
-func _on_delete_button_pressed() -> void:
-	queue_free()
-
-
-func _on_copy_button_pressed() -> void:
-	var new_tile: Tile = clone()
-	CreatorPlaceTiles.start(new_tile)
-	self_modulate = Color.WHITE
-	actions.hide()
-
-
-func _on_move_button_pressed() -> void:
-	var new_tile: Tile = clone()
-	CreatorPlaceTiles.start(new_tile)
-	queue_free()
-	
-	# Automatically stop the tile placement after one tile.
-	CreatorPlaceTiles.placed.connect(CreatorPlaceTiles.stop, ConnectFlags.CONNECT_ONE_SHOT)
-
-func _on_behaviour_button_pressed() -> void:
-	# Spawn behaviour ui to the right of the tile.
-	var ui: Control = CREATOR_TILE_BEHAVIOUR_UI.instantiate()
-	ui.tile = self
-	Creator.dark_world_ui.add_child(ui)
-	ui.global_position = position + Vector2(64, 0)
-	actions.hide()
 
 func interact() -> void:
 	logic._interact()
@@ -254,17 +208,9 @@ func _on_mouse_entered() -> void:
 	if Creator.enabled:
 		sprite_2d.self_modulate *= 1.25
 
-
 func _on_mouse_exited() -> void:
 	if Creator.enabled:
 		sprite_2d.self_modulate = Color.WHITE
-
-
-func _on_static_body_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if Creator.enabled and not actions.visible and event is InputEventMouseButton and event.pressed:
-		actions.global_position = Global.mouse_position
-		self_modulate *= 1.25
-		actions.show()
 
 func regenerate_id() -> void:
 	var chars: String = "abcdefghijklmnopqrstuvwxyz"

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dp7vkfevdqcpi"]
 
 [ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_58lfs"]
-[ext_resource type="Script" uid="uid://drbnfn2r6h516" path="res://scenes/ui/encounter/soul.gd" id="1_niifa"]
+[ext_resource type="Script" uid="uid://drbnfn2r6h516" path="res://scenes/encounter/soul.gd" id="1_niifa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_niifa"]
 size = Vector2(32, 32)

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b7xjlu3flg8wu"]
 
-[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/ui/creator/tile/behaviour_ui.gd" id="1_nbn28"]
-[ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/ui/creator/tile/behaviour_check_box.gd" id="2_nbn28"]
-[ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/ui/creator/code_edit.tscn" id="3_6f6pg"]
-[ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://scenes/ui/creator/tile/encounter_ui.gd" id="3_x3iqa"]
+[ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/creator/tile/behaviour_ui.gd" id="1_nbn28"]
+[ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/creator/tile/behaviour_check_box.gd" id="2_nbn28"]
+[ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/creator/code_edit.tscn" id="3_6f6pg"]
+[ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://scenes/creator/tile/encounter_ui.gd" id="3_x3iqa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_x3iqa"]
 font_color = Color(0.6052743, 0.6052743, 0.6052743, 1)

@@ -17,8 +17,10 @@ var old_grid_position: Vector2
 func _ready() -> void:
 	init_grid()
 	
-	if not Engine.is_editor_hint():
-		soul_container.hide()
+	if Engine.is_editor_hint():
+		return
+	
+	soul_container.hide()
 	
 	Encounter.state_changed.connect(func(old: Encounter.State, new: Encounter.State) -> void:
 		var enemy: bool = new == Encounter.State.Enemy

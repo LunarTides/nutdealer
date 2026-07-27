@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dhefrdnkspjje"]
 
 [ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="1_3ians"]
-[ext_resource type="Script" uid="uid://dlcbtmiuriwy2" path="res://scenes/ui/encounter/encounter_ui.gd" id="1_dd44b"]
-[ext_resource type="Script" uid="uid://c58bfaaqn7l7a" path="res://scenes/ui/encounter/creator.gd" id="3_v6ope"]
-[ext_resource type="PackedScene" uid="uid://cxr3ttkfmv0mw" path="res://scenes/ui/encounter/encounter_info.tscn" id="4_nn2jx"]
+[ext_resource type="Script" uid="uid://dlcbtmiuriwy2" path="res://scenes/encounter/encounter_ui.gd" id="1_dd44b"]
+[ext_resource type="Script" uid="uid://c58bfaaqn7l7a" path="res://scenes/encounter/creator.gd" id="3_v6ope"]
+[ext_resource type="PackedScene" uid="uid://cxr3ttkfmv0mw" path="res://scenes/encounter/enemy_info.tscn" id="4_nn2jx"]
 [ext_resource type="Script" uid="uid://414ticr2po26" path="res://resources/encounter_data.gd" id="5_mrwyr"]
-[ext_resource type="PackedScene" uid="uid://ca03oun6n6xh4" path="res://scenes/ui/encounter/actions.tscn" id="6_1vo3m"]
-[ext_resource type="Script" uid="uid://bs0rvp84eyy6v" path="res://scenes/ui/encounter/actions_container.gd" id="6_fet88"]
-[ext_resource type="PackedScene" uid="uid://dp7vkfevdqcpi" path="res://scenes/ui/encounter/soul.tscn" id="8_1eyuo"]
+[ext_resource type="PackedScene" uid="uid://ca03oun6n6xh4" path="res://scenes/encounter/actions.tscn" id="6_1vo3m"]
+[ext_resource type="Script" uid="uid://bs0rvp84eyy6v" path="res://scenes/encounter/actions_container.gd" id="6_fet88"]
+[ext_resource type="PackedScene" uid="uid://dp7vkfevdqcpi" path="res://scenes/encounter/soul.tscn" id="8_1eyuo"]
 
 [sub_resource type="Resource" id="Resource_i6yx0"]
 script = ExtResource("5_mrwyr")
@@ -42,10 +42,10 @@ soul_container = NodePath("SoulContainer")
 modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -161.1566
-offset_top = -94.84436
-offset_right = 1246.8434
-offset_bottom = 801.15564
+offset_left = -176.77356
+offset_top = -79.225555
+offset_right = 1231.2264
+offset_bottom = 816.7744
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1

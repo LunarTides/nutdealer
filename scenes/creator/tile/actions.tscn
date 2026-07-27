@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bqwrd47eaim0y"]
+
+[ext_resource type="Script" uid="uid://dhwxb1wadvman" path="res://scenes/creator/tile/actions.gd" id="1_3u2p8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hdp2l"]
+outline_size = 2
+outline_color = Color(0.98354346, 0, 0.23551083, 1)
+
+[node name="Actions" type="PanelContainer" unique_id=1028659122 node_paths=PackedStringArray("id_label")]
+z_index = 3
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 1
+script = ExtResource("1_3u2p8")
+id_label = NodePath("VBoxContainer/IDLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1184976229]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="IDLabel" type="Label" parent="VBoxContainer" unique_id=199996067]
+layout_mode = 2
+text = "id"
+label_settings = SubResource("LabelSettings_hdp2l")
+horizontal_alignment = 1
+
+[node name="DeleteButton" type="Button" parent="VBoxContainer" unique_id=663309924]
+layout_mode = 2
+text = "Delete"
+
+[node name="CopyButton" type="Button" parent="VBoxContainer" unique_id=1710544167]
+layout_mode = 2
+text = "Copy"
+
+[node name="MoveButton" type="Button" parent="VBoxContainer" unique_id=214012139]
+layout_mode = 2
+text = "Move"
+
+[node name="BehaviourButton" type="Button" parent="VBoxContainer" unique_id=2030411289]
+layout_mode = 2
+text = "Behaviour"
+
+[connection signal="pressed" from="VBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BehaviourButton" to="." method="_on_behaviour_button_pressed"]

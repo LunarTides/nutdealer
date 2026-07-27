@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ddbwwx6oq47q6"]
 
 [ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="1_c8fcr"]
-[ext_resource type="Script" uid="uid://dpa1y3057ys6q" path="res://scenes/projectile.gd" id="1_q3m7n"]
+[ext_resource type="Script" uid="uid://dpa1y3057ys6q" path="res://scenes/encounter/projectile.gd" id="1_q3m7n"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hakx0"]
 animations = [{
