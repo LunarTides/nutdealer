@@ -9,6 +9,16 @@ signal ended(tile: Tile)
 signal turn_ended(turn: int)
 signal state_changed(old: State, new: State)
 signal enemy_turn_started
+signal enemy_turn_ended
+signal intention_set(intention: Intention, party_member: PartyMemberData)
+
+enum Intention {
+	Fight,
+	Act,
+	Item,
+	Spare,
+	Defend,
+}
 
 enum State {
 	PartyMembers,
@@ -28,8 +38,13 @@ var state: State = State.PartyMembers:
 			if state == State.Enemy:
 				enemy_turn_started.emit()
 				handle_enemy_turn()
+			elif old == State.Enemy:
+				enemy_turn_ended.emit()
 var running: bool = false
 var party_members: Array[PartyMemberData]
+var party_member: PartyMemberData:
+	get:
+		return party_members[turn]
 var turn: int
 var ui: EncounterUI
 
@@ -89,9 +104,11 @@ func heal_party_targets(amount: int) -> void:
 	print_debug("[Encounter] Healed %d damage to %s. Health %d -> %d" % [amount, party_members[0].name, party_members[0].health, party_members[0].health + amount])
 	party_members[0].health += amount
 
-func defend_this_turn() -> void:
-	# TODO: Implement
-	print_debug("[Encounter] %s will defend this turn." % party_members[turn].name)
+func set_intention(intention: Intention) -> void:
+	print_debug("[Encounter] %s will %s this turn." % [party_member.name, Intention.keys()[intention]])
+	party_member.encounter_intention = intention
+	intention_set.emit(intention, party_member)
+	end_turn()
 
 func end_turn() -> void:
 	if not running:
@@ -172,17 +189,22 @@ func start(tile: Tile) -> void:
 	# Create lead party member (Kris)
 	var party_member_lead: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
 	party_member_lead.index = 0
+	party_member_lead.sprite_frames = load("res://resources/sprite_frames/%s.tres" % party_members[0].name.to_snake_case())
 	ui.add_child(party_member_lead)
 	party_member_lead.global_position = player_position
-	party_member_lead.play_intro_animation()
+	party_member_lead.play_encounter_start_animation()
 	await party_member_lead.intro_animation_ended
 	
 	# Create other Party Members
-	for i: int in range(2):
+	for i: int in range(party_members.size() - 1):
 		var party_member: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
 		party_member.index = i + 1
+		party_member.sprite_frames = load("res://resources/sprite_frames/%s.tres" % party_members[i + 1].name.to_snake_case())
 		ui.add_child(party_member)
 		party_member.reposition()
+		
+		party_member.play_intro_animation()
+	party_member_lead.play_intro_animation()
 	
 	started.emit(tile)
 

@@ -28,7 +28,6 @@ func _ready() -> void:
 	animated_sprite_2d.sprite_frames.set_frame(&"default", 0, sprite)
 	
 	Encounter.turn_ended.connect(func(turn: int) -> void:
-		print(turn)
 		queue_free()
 	)
 

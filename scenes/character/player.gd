@@ -52,13 +52,13 @@ func set_correct_sprite() -> void:
 	animated_sprite_2d.play()
 	
 	if velocity.x > 0:
-		animated_sprite_2d.animation = &"move_right"
+		animated_sprite_2d.animation = &"walk_right"
 	elif velocity.x < 0:
-		animated_sprite_2d.animation = &"move_left"
+		animated_sprite_2d.animation = &"walk_left"
 	elif velocity.y > 0:
-		animated_sprite_2d.animation = &"move_down"
+		animated_sprite_2d.animation = &"walk_down"
 	elif velocity.y < 0:
-		animated_sprite_2d.animation = &"move_up"
+		animated_sprite_2d.animation = &"walk_up"
 	else:
 		if animated_sprite_2d.sprite_frames.has_animation(&"idle"):
 			animated_sprite_2d.animation = &"idle"

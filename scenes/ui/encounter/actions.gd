@@ -77,22 +77,5 @@ func reset_ui() -> void:
 		label.modulate.a = 0.0
 
 func handle_action() -> void:
-	# Fight
-	if button_index == 0:
-		# TODO: Choose an enemy.
-		# TODO: Do the attack timing thing to vary attack damage.
-		Encounter.deal_damage_to_enemy(0, 50)
-		Encounter.end_turn()
-	# Act
-	elif button_index == 1:
-		pass
-	# Items
-	elif button_index == 2:
-		pass
-	# Spare
-	elif button_index == 3:
-		pass
-	# Defend
-	elif button_index == 4:
-		Encounter.defend_this_turn()
-		Encounter.end_turn()
+	var intention: Encounter.Intention = button_index as Encounter.Intention
+	Encounter.set_intention(intention)

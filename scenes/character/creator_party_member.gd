@@ -14,6 +14,10 @@ enum State {
 signal target_reached
 
 @export var character_name: CharacterName = CharacterName.Kris
+@export var sprite_frames: SpriteFrames:
+	set(value):
+		sprite_frames = value
+		animated_sprite_2d.sprite_frames = sprite_frames
 
 @export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
@@ -63,13 +67,13 @@ func _physics_process(delta: float) -> void:
 			target = Vector2.ZERO
 	
 		if vector.y > 0:
-			animated_sprite_2d.play(&"move_down")
+			animated_sprite_2d.play(&"walk_down")
 		elif vector.y < 0:
-			animated_sprite_2d.play(&"move_up")
+			animated_sprite_2d.play(&"walk_up")
 		elif vector.x > 0:
-			animated_sprite_2d.play(&"move_right")
+			animated_sprite_2d.play(&"walk_right")
 		elif vector.x < 0:
-			animated_sprite_2d.play(&"move_left")
+			animated_sprite_2d.play(&"walk_left")
 	else:
 		animated_sprite_2d.stop()
 	

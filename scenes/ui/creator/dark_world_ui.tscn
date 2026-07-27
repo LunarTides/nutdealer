@@ -17,6 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
 [ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://scenes/ui/creator/party_member_manager.gd" id="15_f3slr"]
 [ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://scenes/character/creator_party_member.tscn" id="15_oboim"]
+[ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="18_o23ng"]
+[ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://resources/sprite_frames/susie.tres" id="19_dw1n6"]
+[ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://resources/sprite_frames/ralsei.tres" id="20_kahae"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
 outline_size = 2
@@ -265,14 +268,15 @@ label_settings = SubResource("LabelSettings_847bk")
 script = ExtResource("15_f3slr")
 
 [node name="Kris" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=1452198581 instance=ExtResource("15_oboim")]
+sprite_frames = ExtResource("18_o23ng")
 
 [node name="Susie" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=988659988 instance=ExtResource("15_oboim")]
-modulate = Color(0.8627451, 0, 0.7058824, 1)
 character_name = 1
+sprite_frames = ExtResource("19_dw1n6")
 
 [node name="Ralsei" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=1930576751 instance=ExtResource("15_oboim")]
-modulate = Color(0.21176471, 0.83137256, 0.22352941, 1)
 character_name = 2
+sprite_frames = ExtResource("20_kahae")
 
 [connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
 [connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TileChooser" to="CanvasLayer/CanvasLayer2/TileChooser" method="_on_empty_clicked"]
