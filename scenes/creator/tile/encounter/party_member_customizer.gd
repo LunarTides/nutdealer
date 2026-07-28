@@ -13,6 +13,9 @@ var party_member: PartyMember:
 		if not is_instance_valid(tile):
 			return
 		
+		if tile.encounter_party_members.size() <= party_member_index:
+			return
+		
 		return tile.encounter_party_members[party_member_index]
 
 # Called when the node enters the scene tree for the first time.

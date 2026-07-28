@@ -2,9 +2,29 @@ extends VBoxContainer
 
 const PARTY_MEMBER: PackedScene = preload("uid://bhgdjs3lbq3cl")
 
-@export var encounter_ui: Control
-@export var party_member_info: PanelContainer
-@export var enemy_info: PanelContainer
+@export var encounter_ui: Control:
+	set(value):
+		encounter_ui = value
+		
+		encounter_ui.visibility_changed.connect(func() -> void:
+			if not encounter_ui.visible:
+				return
+			
+			# When the encounter ui becomes visible, refresh the party members.
+			for child: Control in get_children():
+				child.queue_free()
+			
+			for i: int in range(tile.encounter_party_members.size()):
+				var party_member: PartyMember = tile.encounter_party_members[i]
+				
+				var party_member_node: Button = PARTY_MEMBER.instantiate()
+				party_member_node.party_member_index = i
+				party_member_node.sprite_frames = party_member.sprite_frames
+				setup_party_member_node(party_member_node)
+				add_child(party_member_node)
+		)
+@export var party_member_customizer: PanelContainer
+@export var enemy_customizer: PanelContainer
 
 var tile: Tile:
 	set(value):
@@ -14,21 +34,6 @@ var tile: Tile:
 func _ready() -> void:
 	for child: Control in get_children():
 		child.queue_free()
-	
-	encounter_ui.visibility_changed.connect(func() -> void:
-		if not encounter_ui.visible:
-			return
-		
-		# When the encounter ui becomes visible, refresh the party members.
-		for i: int in range(tile.encounter_party_members.size()):
-			var party_member: PartyMember = tile.encounter_party_members[i]
-			
-			var party_member_node: Button = PARTY_MEMBER.instantiate()
-			party_member_node.party_member_index = i
-			party_member_node.sprite_frames = party_member.sprite_frames
-			setup_party_member_node(party_member_node)
-			add_child(party_member_node)
-	)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,17 +53,17 @@ func _on_add_button_pressed() -> void:
 	add_child(party_member)
 	
 	# Show party_member info
-	enemy_info.hide()
-	party_member_info.party_member_index = new_index
-	party_member_info.show()
+	enemy_customizer.hide()
+	party_member_customizer.party_member_index = new_index
+	party_member_customizer.show()
 
 
 func setup_party_member_node(node: Button) -> void:
 	node.pressed.connect(func() -> void:
 		# FIXME: Can't click on Susie for some reason.
-		enemy_info.hide()
-		party_member_info.party_member_index = node.party_member_index
-		party_member_info.show()
+		enemy_customizer.hide()
+		party_member_customizer.party_member_index = node.party_member_index
+		party_member_customizer.show()
 	)
 	node.deleted.connect(func() -> void:
 		tile.encounter_party_members.pop_at(node.party_member_index)

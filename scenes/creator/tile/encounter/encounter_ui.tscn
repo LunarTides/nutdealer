@@ -1,39 +1,19 @@
 [gd_scene format=3 uid="uid://btwgbfpd6n7kt"]
 
 [ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://scenes/creator/tile/encounter/encounter_ui.gd" id="1_wg8ba"]
-[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="2_bugg3"]
-[ext_resource type="PackedScene" uid="uid://bhgdjs3lbq3cl" path="res://scenes/creator/tile/encounter/party_member.tscn" id="3_0mc3v"]
-[ext_resource type="Script" uid="uid://6jc1v1g3s62a" path="res://scenes/creator/tile/encounter/party_members.gd" id="3_ypk23"]
-[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="4_ltqpr"]
-[ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://resources/sprite_frames/susie.tres" id="5_6gp7d"]
-[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="5_if1yw"]
-[ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://resources/sprite_frames/ralsei.tres" id="6_04whv"]
-[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="6_cpdvs"]
-[ext_resource type="PackedScene" uid="uid://du043hf2x26vo" path="res://scenes/creator/tile/encounter/enemy.tscn" id="7_0mc3v"]
-[ext_resource type="Script" uid="uid://caxiydmnet3tc" path="res://scenes/creator/tile/encounter/enemies.gd" id="8_6jyln"]
-[ext_resource type="Script" uid="uid://b4n6fehqju1cn" path="res://scenes/creator/tile/encounter/party_member_info.gd" id="10_04whv"]
-[ext_resource type="Script" uid="uid://wt41qdwfewcr" path="res://scenes/creator/tile/encounter/enemy_info.gd" id="13_6gp7d"]
+[ext_resource type="PackedScene" uid="uid://f5b0onr12n1v" path="res://scenes/creator/tile/encounter/main.tscn" id="2_nicsj"]
+[ext_resource type="PackedScene" uid="uid://dp48d41dggila" path="res://scenes/creator/tile/encounter/logic.tscn" id="3_rnxnx"]
+[ext_resource type="PackedScene" uid="uid://dcihrp1mlesg5" path="res://scenes/creator/tile/encounter/party_member_customizer.tscn" id="4_o6kio"]
+[ext_resource type="PackedScene" uid="uid://c00qkgmr15k8i" path="res://scenes/creator/tile/encounter/enemy_customizer.tscn" id="5_u5u6w"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltqpr"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
-font_size = 24
-font_color = Color(0, 0.76862746, 0.9098039, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_x3iqa"]
-font_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
-
-[node name="Encounter" type="Control" unique_id=1191887749 node_paths=PackedStringArray("preview_button", "party_members", "enemies", "party_member_info", "enemy_info")]
+[node name="Encounter" type="Control" unique_id=1191887749 node_paths=PackedStringArray("main", "party_member_customizer", "enemy_customizer")]
 custom_minimum_size = Vector2(512, 384)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_wg8ba")
-preview_button = NodePath("VBoxContainer/Upper/Main/VBoxContainer/PreviewButton")
-party_members = NodePath("VBoxContainer/Upper/Main/PartyMembers")
-enemies = NodePath("VBoxContainer/Upper/Main/EnemiesContainer/Enemies")
-party_member_info = NodePath("VBoxContainer/Lower/PartyMemberInfo")
-enemy_info = NodePath("VBoxContainer/Lower/EnemyInfo")
+main = NodePath("VBoxContainer/Upper/Main")
+party_member_customizer = NodePath("VBoxContainer/Lower/PartyMemberCustomizer")
+enemy_customizer = NodePath("VBoxContainer/Lower/EnemyCustomizer")
 metadata/_tab_index = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=906916803]
@@ -46,303 +26,18 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Main" type="PanelContainer" parent="VBoxContainer/Upper" unique_id=833852309]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
-
-[node name="EncounterGrid" type="TextureRect" parent="VBoxContainer/Upper/Main" unique_id=1058471213]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
-custom_maximum_size = Vector2(512, 384)
-layout_mode = 2
-texture = ExtResource("2_bugg3")
-stretch_mode = 1
-metadata/_edit_lock_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Upper/Main" unique_id=43488099]
+[node name="Main" parent="VBoxContainer/Upper" unique_id=1151965058 instance=ExtResource("2_nicsj")]
 layout_mode = 2
 
-[node name="PreviewButton" type="Button" parent="VBoxContainer/Upper/Main/VBoxContainer" unique_id=768564671]
+[node name="Logic" parent="VBoxContainer/Upper" unique_id=23582441 instance=ExtResource("3_rnxnx")]
 layout_mode = 2
-size_flags_horizontal = 8
-text = "Preview"
-
-[node name="Label" type="Label" parent="VBoxContainer/Upper/Main/VBoxContainer" unique_id=929814277]
-layout_mode = 2
-text = "wip :3 (main)"
-label_settings = SubResource("LabelSettings_6knb3")
-
-[node name="PartyMembers" type="VBoxContainer" parent="VBoxContainer/Upper/Main" unique_id=592399331 node_paths=PackedStringArray("encounter_ui", "party_member_info", "enemy_info")]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-script = ExtResource("3_ypk23")
-encounter_ui = NodePath("../../../..")
-party_member_info = NodePath("../../../Lower/PartyMemberInfo")
-enemy_info = NodePath("../../../Lower/EnemyInfo")
-
-[node name="1" parent="VBoxContainer/Upper/Main/PartyMembers" unique_id=1653187992 instance=ExtResource("3_0mc3v")]
-layout_mode = 2
-
-[node name="2" parent="VBoxContainer/Upper/Main/PartyMembers" unique_id=144535558 instance=ExtResource("3_0mc3v")]
-layout_mode = 2
-sprite_frames = ExtResource("5_6gp7d")
-party_member_index = 1
-
-[node name="3" parent="VBoxContainer/Upper/Main/PartyMembers" unique_id=1046663495 instance=ExtResource("3_0mc3v")]
-layout_mode = 2
-sprite_frames = ExtResource("6_04whv")
-party_member_index = 2
-
-[node name="AddButton" type="Button" parent="VBoxContainer/Upper/Main/PartyMembers" unique_id=540974559]
-layout_mode = 2
-text = "Add Party Member"
-
-[node name="EnemiesContainer" type="VBoxContainer" parent="VBoxContainer/Upper/Main" unique_id=190957073]
-layout_mode = 2
-size_flags_vertical = 4
-
-[node name="Enemies" type="VBoxContainer" parent="VBoxContainer/Upper/Main/EnemiesContainer" unique_id=1848504756 node_paths=PackedStringArray("party_member_info", "enemy_info")]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-script = ExtResource("8_6jyln")
-party_member_info = NodePath("../../../../Lower/PartyMemberInfo")
-enemy_info = NodePath("../../../../Lower/EnemyInfo")
-
-[node name="1" parent="VBoxContainer/Upper/Main/EnemiesContainer/Enemies" unique_id=2032154164 instance=ExtResource("7_0mc3v")]
-layout_mode = 2
-
-[node name="AddButton" type="Button" parent="VBoxContainer/Upper/Main/EnemiesContainer" unique_id=817883624]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "Add Enemy"
-
-[node name="Logic" type="TabContainer" parent="VBoxContainer/Upper" unique_id=2069657579]
-custom_minimum_size = Vector2(512, 356)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
-current_tab = 0
-clip_tabs = false
-
-[node name="Properties" type="Control" parent="VBoxContainer/Upper/Logic" unique_id=2104716780]
-layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="EncounterGrid" type="TextureRect" parent="VBoxContainer/Upper/Logic/Properties" unique_id=2079893146]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
-custom_maximum_size = Vector2(512, 384)
-clip_contents = true
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -27.0
-mouse_filter = 2
-texture = ExtResource("2_bugg3")
-stretch_mode = 1
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="VBoxContainer/Upper/Logic/Properties" unique_id=1180608793]
-layout_mode = 0
-text = "wip :3 (properties)"
-label_settings = SubResource("LabelSettings_6knb3")
-
-[node name="Bullet Patterns" type="Control" parent="VBoxContainer/Upper/Logic" unique_id=421524895]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="EncounterGrid2" type="TextureRect" parent="VBoxContainer/Upper/Logic/Bullet Patterns" unique_id=207298306]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
-custom_maximum_size = Vector2(512, 384)
-clip_contents = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -27.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_bugg3")
-stretch_mode = 1
-metadata/_edit_lock_ = true
-
-[node name="Label" type="Label" parent="VBoxContainer/Upper/Logic/Bullet Patterns" unique_id=1726039043]
-layout_mode = 0
-text = "wip :3 (bullet patterns)"
-label_settings = SubResource("LabelSettings_6knb3")
-
-[node name="Script" type="CodeEdit" parent="VBoxContainer/Upper/Logic" unique_id=163582507]
-visible = false
-layout_mode = 2
-placeholder_text = "wip :3 (script)"
-metadata/_tab_index = 2
 
 [node name="Lower" type="HBoxContainer" parent="VBoxContainer" unique_id=33488717]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PartyMemberInfo" type="PanelContainer" parent="VBoxContainer/Lower" unique_id=1742072656 node_paths=PackedStringArray("party_member_label")]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
-script = ExtResource("10_04whv")
-party_member_label = NodePath("VBoxContainer/Info/PartyMemberLabel")
-
-[node name="EncounterGrid" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo" unique_id=763275493]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
-custom_maximum_size = Vector2(512, 384)
-layout_mode = 2
-texture = ExtResource("2_bugg3")
-stretch_mode = 1
-metadata/_edit_lock_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Lower/PartyMemberInfo" unique_id=495660285]
+[node name="PartyMemberCustomizer" parent="VBoxContainer/Lower" unique_id=1204561274 instance=ExtResource("4_o6kio")]
 layout_mode = 2
 
-[node name="Info" type="VBoxContainer" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer" unique_id=1940939902]
+[node name="EnemyCustomizer" parent="VBoxContainer/Lower" unique_id=320387843 instance=ExtResource("5_u5u6w")]
 layout_mode = 2
-
-[node name="PartyMemberLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Info" unique_id=1194489350]
-layout_mode = 2
-text = "Kris"
-
-[node name="Actions" type="VBoxContainer" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer" unique_id=576412403]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_constants/separation = 0
-
-[node name="Buttons" type="HBoxContainer" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions" unique_id=131531030]
-propagate_maximum_size = false
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 0
-
-[node name="FightButton" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Buttons" unique_id=626785667]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-texture = ExtResource("4_ltqpr")
-
-[node name="ActButton" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Buttons" unique_id=1921919993]
-self_modulate = Color(0.7173395, 0.7151803, 0.73309356, 1)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-texture = ExtResource("4_ltqpr")
-
-[node name="ItemsButton" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Buttons" unique_id=673676047]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-texture = ExtResource("5_if1yw")
-
-[node name="SpareButton" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Buttons" unique_id=1937922153]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-texture = ExtResource("6_cpdvs")
-
-[node name="DefendButton" type="TextureRect" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Buttons" unique_id=310399638]
-self_modulate = Color(0.9664404, 0.46057504, 3.85046e-07, 1)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-texture = ExtResource("5_if1yw")
-
-[node name="Labels" type="HBoxContainer" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions" unique_id=41132238]
-layout_mode = 2
-
-[node name="FightLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Labels" unique_id=306900959]
-layout_mode = 2
-size_flags_horizontal = 0
-offset_transform_enabled = true
-offset_transform_position = Vector2(8, 0)
-text = "Fight"
-
-[node name="ActLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Labels" unique_id=723936459]
-layout_mode = 2
-size_flags_horizontal = 0
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-text = "Act"
-
-[node name="ItemsLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Labels" unique_id=282140615]
-layout_mode = 2
-size_flags_horizontal = 0
-offset_transform_enabled = true
-offset_transform_position = Vector2(42, 0)
-text = "Items"
-
-[node name="SpareLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Labels" unique_id=732681986]
-layout_mode = 2
-size_flags_horizontal = 0
-offset_transform_enabled = true
-offset_transform_position = Vector2(46, 0)
-text = "Spare"
-
-[node name="DefendLabel" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions/Labels" unique_id=706426848]
-layout_mode = 2
-size_flags_horizontal = 0
-offset_transform_enabled = true
-offset_transform_position = Vector2(48, 0)
-text = "Defend"
-
-[node name="Label" type="Label" parent="VBoxContainer/Lower/PartyMemberInfo/VBoxContainer/Actions" unique_id=1520135737]
-layout_mode = 2
-size_flags_vertical = 1
-text = "wip :3 (actions)"
-label_settings = SubResource("LabelSettings_6knb3")
-
-[node name="EnemyInfo" type="PanelContainer" parent="VBoxContainer/Lower" unique_id=1368973151 node_paths=PackedStringArray("name_input", "health_input")]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
-script = ExtResource("13_6gp7d")
-name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
-health_input = NodePath("VBoxContainer/HBoxContainer2/HealthInput")
-
-[node name="EncounterGrid" type="TextureRect" parent="VBoxContainer/Lower/EnemyInfo" unique_id=997643331]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
-custom_maximum_size = Vector2(512, 384)
-layout_mode = 2
-texture = ExtResource("2_bugg3")
-stretch_mode = 1
-metadata/_edit_lock_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Lower/EnemyInfo" unique_id=1643410979]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer" unique_id=817535712]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Label" type="Label" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer" unique_id=2014298319]
-layout_mode = 2
-text = "Name"
-label_settings = SubResource("LabelSettings_x3iqa")
-
-[node name="NameInput" type="LineEdit" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer" unique_id=62673694]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer" unique_id=479373733]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer2" unique_id=933458127]
-layout_mode = 2
-text = "Health"
-label_settings = SubResource("LabelSettings_x3iqa")
-
-[node name="HealthInput" type="LineEdit" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer2" unique_id=1543837071]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/Lower/EnemyInfo/VBoxContainer" unique_id=371079206]
-layout_mode = 2
-text = "wip :3 (enemy info)"
-label_settings = SubResource("LabelSettings_6knb3")
-
-[connection signal="pressed" from="VBoxContainer/Upper/Main/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Upper/Main/PartyMembers/AddButton" to="VBoxContainer/Upper/Main/PartyMembers" method="_on_add_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Upper/Main/EnemiesContainer/AddButton" to="VBoxContainer/Upper/Main/EnemiesContainer/Enemies" method="_on_add_button_pressed"]
-[connection signal="text_changed" from="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer/NameInput" to="VBoxContainer/Lower/EnemyInfo" method="_on_name_input_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/Lower/EnemyInfo/VBoxContainer/HBoxContainer2/HealthInput" to="VBoxContainer/Lower/EnemyInfo" method="_on_health_input_text_changed"]

@@ -74,6 +74,7 @@ func deal_damage_to_enemy(enemy_index: int, amount: int) -> void:
 	print_debug("[Encounter] Dealt %d damage to Enemy %d (%s). Health %d -> %d" % [amount, enemy_index + 1, enemy.name, enemy.health, enemy.health - amount])
 	enemy.health -= amount
 	
+	# TODO: This should only happen once ALL enemies are dead.
 	if enemy.health <= 0:
 		win_by_damage()
 

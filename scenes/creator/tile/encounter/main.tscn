@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://f5b0onr12n1v"]
+
+[ext_resource type="Script" uid="uid://csqx8nty4vuv" path="res://scenes/creator/tile/encounter/main.gd" id="1_c0l0f"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="1_lc0yh"]
+[ext_resource type="Script" uid="uid://6jc1v1g3s62a" path="res://scenes/creator/tile/encounter/party_members.gd" id="2_c0l0f"]
+[ext_resource type="PackedScene" uid="uid://bhgdjs3lbq3cl" path="res://scenes/creator/tile/encounter/party_member.tscn" id="3_b4xc7"]
+[ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://resources/sprite_frames/susie.tres" id="4_c6gbv"]
+[ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://resources/sprite_frames/ralsei.tres" id="5_4duxo"]
+[ext_resource type="Script" uid="uid://caxiydmnet3tc" path="res://scenes/creator/tile/encounter/enemies.gd" id="6_uu3c0"]
+[ext_resource type="PackedScene" uid="uid://du043hf2x26vo" path="res://scenes/creator/tile/encounter/enemy.tscn" id="7_inucl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltqpr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
+font_size = 24
+font_color = Color(0, 0.76862746, 0.9098039, 1)
+
+[node name="Main" type="PanelContainer" unique_id=1151965058 node_paths=PackedStringArray("preview_button", "party_members", "enemies")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
+script = ExtResource("1_c0l0f")
+preview_button = NodePath("VBoxContainer/PreviewButton")
+party_members = NodePath("PartyMembers")
+enemies = NodePath("EnemiesContainer/Enemies")
+
+[node name="EncounterGrid" type="TextureRect" parent="." unique_id=2029133424]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+custom_maximum_size = Vector2(512, 384)
+layout_mode = 2
+texture = ExtResource("1_lc0yh")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=711459686]
+layout_mode = 2
+
+[node name="PreviewButton" type="Button" parent="VBoxContainer" unique_id=1958606329]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Preview"
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=332618857]
+layout_mode = 2
+text = "wip :3 (main)"
+label_settings = SubResource("LabelSettings_6knb3")
+
+[node name="PartyMembers" type="VBoxContainer" parent="." unique_id=1234200999]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+script = ExtResource("2_c0l0f")
+
+[node name="1" parent="PartyMembers" unique_id=1093611130 instance=ExtResource("3_b4xc7")]
+layout_mode = 2
+
+[node name="2" parent="PartyMembers" unique_id=1453851244 instance=ExtResource("3_b4xc7")]
+layout_mode = 2
+sprite_frames = ExtResource("4_c6gbv")
+party_member_index = 1
+
+[node name="3" parent="PartyMembers" unique_id=161073822 instance=ExtResource("3_b4xc7")]
+layout_mode = 2
+sprite_frames = ExtResource("5_4duxo")
+party_member_index = 2
+
+[node name="AddButton" type="Button" parent="PartyMembers" unique_id=1292657207]
+layout_mode = 2
+text = "Add Party Member"
+
+[node name="EnemiesContainer" type="VBoxContainer" parent="." unique_id=252681097]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Enemies" type="VBoxContainer" parent="EnemiesContainer" unique_id=1102200579]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+script = ExtResource("6_uu3c0")
+
+[node name="1" parent="EnemiesContainer/Enemies" unique_id=1205400351 instance=ExtResource("7_inucl")]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="EnemiesContainer" unique_id=970611948]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Add Enemy"
+
+[connection signal="pressed" from="VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
+[connection signal="pressed" from="PartyMembers/AddButton" to="PartyMembers" method="_on_add_button_pressed"]
+[connection signal="pressed" from="EnemiesContainer/AddButton" to="EnemiesContainer/Enemies" method="_on_add_button_pressed"]

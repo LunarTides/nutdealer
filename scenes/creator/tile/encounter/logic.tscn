@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://dp48d41dggila"]
+
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="1_p28jy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltqpr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
+font_size = 24
+font_color = Color(0, 0.76862746, 0.9098039, 1)
+
+[node name="Logic" type="TabContainer" unique_id=23582441]
+custom_minimum_size = Vector2(512, 356)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
+current_tab = 0
+clip_tabs = false
+
+[node name="Properties" type="Control" parent="." unique_id=1807751045]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="EncounterGrid" type="TextureRect" parent="Properties" unique_id=1672273597]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+custom_maximum_size = Vector2(512, 384)
+clip_contents = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+mouse_filter = 2
+texture = ExtResource("1_p28jy")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Properties" unique_id=943024124]
+layout_mode = 0
+text = "wip :3 (properties)"
+label_settings = SubResource("LabelSettings_6knb3")
+
+[node name="Bullet Patterns" type="Control" parent="." unique_id=88362296]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="EncounterGrid2" type="TextureRect" parent="Bullet Patterns" unique_id=1063697216]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+custom_maximum_size = Vector2(512, 384)
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_p28jy")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Bullet Patterns" unique_id=473679237]
+layout_mode = 0
+text = "wip :3 (bullet patterns)"
+label_settings = SubResource("LabelSettings_6knb3")
+
+[node name="Script" type="CodeEdit" parent="." unique_id=1975531223]
+visible = false
+layout_mode = 2
+placeholder_text = "wip :3 (script)"
+delimiter_strings = Array[String](["\" \"", "' '"])
+metadata/_tab_index = 2
