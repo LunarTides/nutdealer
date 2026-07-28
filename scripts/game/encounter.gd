@@ -5,7 +5,8 @@ const ENCOUNTER_PARTY_MEMBER: PackedScene = preload("uid://db1npunkjreud")
 const PROJECTILE: PackedScene = preload("uid://ddbwwx6oq47q6")
 
 signal started(tile: Tile)
-signal ended(tile: Tile)
+signal ending(tile: Tile, won: bool)
+signal ended(tile: Tile, won: bool)
 signal turn_ended(turn: int)
 signal state_changed(old: State, new: State)
 signal enemy_turn_started
@@ -52,7 +53,7 @@ var ui: EncounterUI
 func _ready() -> void:
 	Game.play_end.connect(func() -> void:
 		if Encounter.in_encounter:
-			Encounter.end()
+			Encounter.end(true)
 	)
 	
 	set_default_party_members()
@@ -64,7 +65,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if in_encounter and Creator.enabled and event.is_action_pressed(&"debug_end_encounter"):
-		end()
+		end(true)
 
 func set_default_party_members() -> void:
 	var kris: PartyMemberData = PartyMemberData.new()
@@ -208,11 +209,14 @@ func start(tile: Tile) -> void:
 	
 	started.emit(tile)
 
-func end() -> void:
+func end(won: bool) -> void:
 	if not in_encounter:
 		return
 	
 	print_debug("[Encounter] Encounter ended.")
+	ending.emit(encounter_tile, won)
+	# Give time for animations and stuff.
+	await get_tree().create_timer(3.0).timeout
 	
 	# Setup variables
 	Game.mode = Game.Mode.DarkWorld
@@ -230,7 +234,7 @@ func end() -> void:
 	for child: Node in get_children():
 		child.queue_free()
 	
-	ended.emit(encounter_tile)
+	ended.emit(encounter_tile, won)
 	encounter_tile = null
 
 func win_by_damage() -> void:
@@ -240,4 +244,4 @@ func win_by_damage() -> void:
 	print_debug("[Encounter] Won by damage. Playing win animation.")
 	await get_tree().create_timer(1.0).timeout
 	
-	end()
+	end(true)

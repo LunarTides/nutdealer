@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://btwgbfpd6n7kt"]
+
+[ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://scenes/creator/tile/encounter_ui.gd" id="1_wg8ba"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="2_bugg3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hakx0"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x3iqa"]
+font_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
+font_size = 24
+font_color = Color(0, 0.76862746, 0.9098039, 1)
+
+[node name="Encounter" type="PanelContainer" unique_id=668010796 node_paths=PackedStringArray("name_input", "health_input", "preview_button")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_hakx0")
+script = ExtResource("1_wg8ba")
+name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
+health_input = NodePath("VBoxContainer/HBoxContainer2/HealthInput")
+preview_button = NodePath("VBoxContainer/HBoxContainer/PreviewButton")
+metadata/_tab_index = 1
+
+[node name="EncounterGrid" type="TextureRect" parent="." unique_id=1058471213]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+custom_maximum_size = Vector2(640, 448)
+layout_mode = 2
+texture = ExtResource("2_bugg3")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=43488099]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1068863575]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1882797192]
+layout_mode = 2
+text = "Name"
+label_settings = SubResource("LabelSettings_x3iqa")
+
+[node name="NameInput" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=1457020588]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreviewButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=768564671]
+layout_mode = 2
+text = "Preview"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1872058735]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1253491863]
+layout_mode = 2
+text = "Health"
+label_settings = SubResource("LabelSettings_x3iqa")
+
+[node name="HealthInput" type="LineEdit" parent="VBoxContainer/HBoxContainer2" unique_id=832575690]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=929814277]
+layout_mode = 2
+text = "wip :3"
+label_settings = SubResource("LabelSettings_6knb3")
+
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/HealthInput" to="." method="_on_health_input_text_changed"]

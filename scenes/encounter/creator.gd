@@ -27,4 +27,5 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_end_encounter_button_pressed() -> void:
-	Encounter.end()
+	end_encounter_button.hide()
+	Encounter.end(true)

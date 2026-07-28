@@ -39,6 +39,11 @@ func _ready() -> void:
 	Encounter.enemy_turn_ended.connect(func() -> void:
 		play_idle_animation()
 	)
+	
+	Encounter.ending.connect(func(tile: Tile, won: bool) -> void:
+		if won:
+			play_victory_animation()
+	)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,6 +59,9 @@ func play_encounter_start_animation() -> void:
 	tween.tween_interval(0.5)
 	tween.tween_property(self, ^"position", Vector2(150, 150), 0.5)
 	tween.tween_callback(intro_animation_ended.emit)
+
+func play_victory_animation() -> void:
+	animated_sprite_2d.play(&"battle_victory")
 
 func play_idle_animation() -> void:
 	animated_sprite_2d.play(&"battle_idle")

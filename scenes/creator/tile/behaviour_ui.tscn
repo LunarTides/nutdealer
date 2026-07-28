@@ -3,14 +3,7 @@
 [ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/creator/tile/behaviour_ui.gd" id="1_nbn28"]
 [ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/creator/tile/behaviour_check_box.gd" id="2_nbn28"]
 [ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/creator/code_edit.tscn" id="3_6f6pg"]
-[ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://scenes/creator/tile/encounter_ui.gd" id="3_x3iqa"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_x3iqa"]
-font_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
-font_size = 24
-font_color = Color(0, 0.76862746, 0.9098039, 1)
+[ext_resource type="PackedScene" uid="uid://btwgbfpd6n7kt" path="res://scenes/creator/tile/encounter_ui.tscn" id="3_mg6f4"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_0dgii"]
 action = &"save"
@@ -76,46 +69,10 @@ text = "Encounter on interact (temp)"
 script = ExtResource("2_nbn28")
 tile_property = &"encounter_on_interact"
 
-[node name="Encounter" type="PanelContainer" parent="TabContainer" unique_id=1990021112 node_paths=PackedStringArray("name_input", "health_input")]
+[node name="Encounter" parent="TabContainer" unique_id=668010796 node_paths=PackedStringArray("behavior_ui") instance=ExtResource("3_mg6f4")]
 visible = false
 layout_mode = 2
-script = ExtResource("3_x3iqa")
-name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
-health_input = NodePath("VBoxContainer/HBoxContainer2/HealthInput")
-metadata/_tab_index = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Encounter" unique_id=190555398]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Encounter/VBoxContainer" unique_id=1047383093]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Label" type="Label" parent="TabContainer/Encounter/VBoxContainer/HBoxContainer" unique_id=1644366374]
-layout_mode = 2
-text = "Name"
-label_settings = SubResource("LabelSettings_x3iqa")
-
-[node name="NameInput" type="LineEdit" parent="TabContainer/Encounter/VBoxContainer/HBoxContainer" unique_id=1653096366]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/Encounter/VBoxContainer" unique_id=1148670027]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TabContainer/Encounter/VBoxContainer/HBoxContainer2" unique_id=484848464]
-layout_mode = 2
-text = "Health"
-label_settings = SubResource("LabelSettings_x3iqa")
-
-[node name="HealthInput" type="LineEdit" parent="TabContainer/Encounter/VBoxContainer/HBoxContainer2" unique_id=1128296228]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="TabContainer/Encounter/VBoxContainer" unique_id=1257365242]
-layout_mode = 2
-text = "wip :3"
-label_settings = SubResource("LabelSettings_6knb3")
+behavior_ui = NodePath("../..")
 
 [node name="Code" type="PanelContainer" parent="TabContainer" unique_id=1875978336]
 visible = false
@@ -167,8 +124,6 @@ func _room_exit():
 	pass
 "
 
-[connection signal="text_changed" from="TabContainer/Encounter/VBoxContainer/HBoxContainer/NameInput" to="TabContainer/Encounter" method="_on_name_input_text_changed"]
-[connection signal="text_changed" from="TabContainer/Encounter/VBoxContainer/HBoxContainer2/HealthInput" to="TabContainer/Encounter" method="_on_health_input_text_changed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/ReadyButton" to="." method="_on_ready_button_pressed"]
