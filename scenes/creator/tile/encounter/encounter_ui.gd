@@ -1,53 +1,51 @@
-extends PanelContainer
+extends Control
 
 @export_category("UI Nodes")
 @export var behavior_ui: Control
-@export var name_input: LineEdit
-@export var health_input: LineEdit
 @export var preview_button: Button
+@export var party_members: VBoxContainer
+@export var enemies: VBoxContainer
+@export var party_member_info: PanelContainer
+@export var enemy_info: PanelContainer
 
 var tile: Tile
-var encounter_index: int = 0
-var encounter_data: EncounterData:
+var enemy_index: int = 0
+var enemy: EncounterEnemy:
 	get:
-		return tile.encounter_datas[encounter_index]
+		return tile.encounter_enemies[enemy_index]
 var old_grid_position: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_ui()
-	#encounter_data.changed.connect(update_ui)
+	#enemy.changed.connect(update_ui)
+	
+	enemy_info.tile = tile
+	party_member_info.tile = tile
+	
+	enemies.tile = tile
+	party_members.tile = tile
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
-
-func _on_name_input_text_changed(new_text: String) -> void:
-	encounter_data.name = new_text
-
-
-func _on_health_input_text_changed(new_text: String) -> void:
-	if not new_text.is_valid_int():
-		Game.feedback("Invalid health.", Game.FeedbackType.Error)
-		return
-	
-	encounter_data.health = new_text.to_int()
-
 func update_ui() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	name_input.text = encounter_data.name
-	health_input.text = str(encounter_data.health)
 	preview_button.text = "Start Encounter" if Game.playing else "Preview"
 
 
 func _on_preview_button_pressed() -> void:
+	if Room.bounds.size() <= 0:
+		Game.feedback("There are no rooms to preview from.", Game.FeedbackType.Error)
+		return
+	
 	var previewing: bool = Game.playing
 	if not previewing:
-		Creator.start_preview()
+		Creator.start_preview(0)
 	
 	behavior_ui.hide()
 	Encounter.start(tile)

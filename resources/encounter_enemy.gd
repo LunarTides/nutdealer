@@ -1,5 +1,5 @@
 extends Resource
-class_name EncounterData
+class_name EncounterEnemy
 
 @export var name: String:
 	set(value):

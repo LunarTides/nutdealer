@@ -103,13 +103,7 @@ func _feedback(message: String, feedback_type: Game.FeedbackType) -> void:
 	tween.tween_property(feedback_label, ^"modulate:a", 0.0, 2.0)
 	tween.tween_callback(feedback_label.queue_free)
 
-func start_preview() -> void:
-	# Get starting room from camera position.
-	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
-	if room_index == -1:
-		Game.feedback("Must start in a room.", Game.FeedbackType.Error)
-		return
-	
+func start_preview(room_index: int) -> void:
 	print_debug("Previewing from Room %d" % room_index)
 	
 	# Disable tiles outside room.
@@ -130,6 +124,15 @@ func start_preview() -> void:
 	
 	Game.constrain_player_to_current_room()
 	Game.constrain_camera_to_current_room()
+
+func start_preview_from_camera() -> void:
+	# Get starting room from camera position.
+	var room_index: int = Room.position_to_room_index(dark_world_ui.camera_2d.global_position)
+	if room_index == -1:
+		Game.feedback("Must start in a room.", Game.FeedbackType.Error)
+		return
+	
+	start_preview(room_index)
 
 func stop_preview() -> void:
 	Game.mode = Game.Mode.DarkWorld

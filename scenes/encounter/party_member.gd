@@ -12,13 +12,13 @@ signal intro_animation_ended
 @export var animated_sprite_2d: AnimatedSprite2D
 
 var index: int = 0
-var data: PartyMemberData:
+var data: PartyMember:
 	get:
 		return Encounter.party_members[index]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Encounter.intention_set.connect(func(intention: Encounter.Intention, party_member: PartyMemberData) -> void:
+	Encounter.intention_set.connect(func(intention: Encounter.Intention, party_member: PartyMember) -> void:
 		if party_member != data:
 			return
 		

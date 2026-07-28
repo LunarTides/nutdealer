@@ -11,7 +11,7 @@ signal turn_ended(turn: int)
 signal state_changed(old: State, new: State)
 signal enemy_turn_started
 signal enemy_turn_ended
-signal intention_set(intention: Intention, party_member: PartyMemberData)
+signal intention_set(intention: Intention, party_member: PartyMember)
 
 enum Intention {
 	Fight,
@@ -28,7 +28,11 @@ enum State {
 
 var in_encounter: bool = false
 var encounter_tile: Tile
-var encounter_datas: Array[EncounterData]
+var enemies: Array[EncounterEnemy]
+var party_members: Array[PartyMember]
+var party_member: PartyMember:
+	get:
+		return party_members[turn]
 var state: State = State.PartyMembers:
 	set(value):
 		if state != value:
@@ -42,10 +46,6 @@ var state: State = State.PartyMembers:
 			elif old == State.Enemy:
 				enemy_turn_ended.emit()
 var running: bool = false
-var party_members: Array[PartyMemberData]
-var party_member: PartyMemberData:
-	get:
-		return party_members[turn]
 var turn: int
 var ui: EncounterUI
 
@@ -55,8 +55,6 @@ func _ready() -> void:
 		if Encounter.in_encounter:
 			Encounter.end(true)
 	)
-	
-	set_default_party_members()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -67,31 +65,16 @@ func _input(event: InputEvent) -> void:
 	if in_encounter and Creator.enabled and event.is_action_pressed(&"debug_end_encounter"):
 		end(true)
 
-func set_default_party_members() -> void:
-	var kris: PartyMemberData = PartyMemberData.new()
-	kris.name = "Kris"
-	kris.health = 100
-	party_members.append(kris)
-	
-	var susie: PartyMemberData = PartyMemberData.new()
-	susie.name = "Susie"
-	susie.health = 100
-	party_members.append(susie)
-	
-	var ralsei: PartyMemberData = PartyMemberData.new()
-	ralsei.name = "Ralsei"
-	ralsei.health = 100
-	party_members.append(ralsei)
 
 func deal_damage_to_enemy(enemy_index: int, amount: int) -> void:
-	var encounter_data: EncounterData = encounter_datas.get(enemy_index)
-	if not encounter_data:
+	var enemy: EncounterEnemy = enemies.get(enemy_index)
+	if not enemy:
 		return
 	
-	print_debug("[Encounter] Dealt %d damage to Enemy %d (%s). Health %d -> %d" % [amount, enemy_index + 1, encounter_data.name, encounter_data.health, encounter_data.health - amount])
-	encounter_data.health -= amount
+	print_debug("[Encounter] Dealt %d damage to Enemy %d (%s). Health %d -> %d" % [amount, enemy_index + 1, enemy.name, enemy.health, enemy.health - amount])
+	enemy.health -= amount
 	
-	if encounter_data.health <= 0:
+	if enemy.health <= 0:
 		win_by_damage()
 
 func deal_damage_to_party_targets(amount: int) -> void:
@@ -168,7 +151,8 @@ func start(tile: Tile) -> void:
 	running = true
 	in_encounter = true
 	encounter_tile = tile
-	encounter_datas = encounter_tile.encounter_datas.duplicate_deep()
+	enemies = encounter_tile.encounter_enemies.duplicate_deep()
+	party_members = encounter_tile.encounter_party_members.duplicate_deep()
 	
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():

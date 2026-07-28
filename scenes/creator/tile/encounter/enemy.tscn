@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://du043hf2x26vo"]
+
+[ext_resource type="Script" uid="uid://bt3xagjclv5u0" path="res://scenes/creator/tile/encounter/enemy.gd" id="2_4w7bd"]
+[ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="3_q7sx5"]
+
+[node name="Enemy" type="Button" unique_id=1205400351 node_paths=PackedStringArray("animated_sprite_2d")]
+custom_minimum_size = Vector2(36, 38)
+offset_right = 36.0
+offset_bottom = 38.0
+size_flags_horizontal = 8
+flat = true
+script = ExtResource("2_4w7bd")
+sprite_frames = ExtResource("3_q7sx5")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=10482879]
+position = Vector2(18, 19)
+sprite_frames = ExtResource("3_q7sx5")
+animation = &"battle_idle"
+frame_progress = 0.9284844
+flip_h = true
+
+[node name="DeleteButton" type="Button" parent="." unique_id=1188843050]
+modulate = Color(1, 0, 0, 1)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -19.0
+offset_bottom = 27.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 12
+text = "x"
+flat = true
+
+[connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]

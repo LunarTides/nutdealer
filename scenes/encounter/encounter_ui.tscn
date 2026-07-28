@@ -4,15 +4,14 @@
 [ext_resource type="Script" uid="uid://dlcbtmiuriwy2" path="res://scenes/encounter/encounter_ui.gd" id="1_dd44b"]
 [ext_resource type="Script" uid="uid://c58bfaaqn7l7a" path="res://scenes/encounter/creator.gd" id="3_v6ope"]
 [ext_resource type="PackedScene" uid="uid://cxr3ttkfmv0mw" path="res://scenes/encounter/enemy_info.tscn" id="4_nn2jx"]
-[ext_resource type="Script" uid="uid://414ticr2po26" path="res://resources/encounter_data.gd" id="5_mrwyr"]
+[ext_resource type="Script" uid="uid://414ticr2po26" path="res://resources/encounter_enemy.gd" id="5_mrwyr"]
 [ext_resource type="PackedScene" uid="uid://ca03oun6n6xh4" path="res://scenes/encounter/actions.tscn" id="6_1vo3m"]
 [ext_resource type="Script" uid="uid://bs0rvp84eyy6v" path="res://scenes/encounter/actions_container.gd" id="6_fet88"]
 [ext_resource type="PackedScene" uid="uid://dp7vkfevdqcpi" path="res://scenes/encounter/soul.tscn" id="8_1eyuo"]
 
-[sub_resource type="Resource" id="Resource_i6yx0"]
+[sub_resource type="Resource" id="Resource_q28hl"]
 script = ExtResource("5_mrwyr")
-name = "test"
-health = 100
+name = "Test"
 metadata/_custom_type_script = "uid://414ticr2po26"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xele"]
@@ -42,10 +41,10 @@ soul_container = NodePath("SoulContainer")
 modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -178.81656
-offset_top = -77.18254
-offset_right = 1229.1835
-offset_bottom = 818.81744
+offset_left = -96.075096
+offset_top = -159.92343
+offset_right = 1311.9249
+offset_bottom = 736.07654
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
@@ -57,7 +56,7 @@ limit_top = 0
 limit_right = 1152
 limit_bottom = 640
 
-[node name="Creator" type="Control" parent="." unique_id=1234424102 node_paths=PackedStringArray("encounter_infos", "end_encounter_button")]
+[node name="Creator" type="Control" parent="." unique_id=1234424102 node_paths=PackedStringArray("enemy_infos", "end_encounter_button")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,7 +64,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_v6ope")
-encounter_infos = NodePath("VBoxContainer/EncounterInfos")
+enemy_infos = NodePath("VBoxContainer/EnemyInfos")
 end_encounter_button = NodePath("VBoxContainer/EndEncounterButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Creator" unique_id=6184467]
@@ -81,13 +80,13 @@ offset_bottom = 50.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="EncounterInfos" type="TabContainer" parent="Creator/VBoxContainer" unique_id=133213777]
+[node name="EnemyInfos" type="TabContainer" parent="Creator/VBoxContainer" unique_id=133213777]
 layout_mode = 2
 current_tab = 0
 
-[node name="1" parent="Creator/VBoxContainer/EncounterInfos" unique_id=2020372914 instance=ExtResource("4_nn2jx")]
+[node name="1" parent="Creator/VBoxContainer/EnemyInfos" unique_id=2020372914 instance=ExtResource("4_nn2jx")]
 layout_mode = 2
-encounter_data = SubResource("Resource_i6yx0")
+enemy = SubResource("Resource_q28hl")
 
 [node name="EndEncounterButton" type="Button" parent="Creator/VBoxContainer" unique_id=1417115440]
 layout_mode = 2

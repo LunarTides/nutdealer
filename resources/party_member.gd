@@ -1,5 +1,5 @@
 extends Resource
-class_name PartyMemberData
+class_name PartyMember
 
 @export var name: String:
 	set(value):
@@ -10,6 +10,11 @@ class_name PartyMemberData
 	set(value):
 		if health != value:
 			health = value
+			emit_changed()
+@export var sprite_frames: SpriteFrames:
+	set(value):
+		if sprite_frames != value:
+			sprite_frames = value
 			emit_changed()
 
 var encounter_intention: Encounter.Intention:

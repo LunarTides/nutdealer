@@ -46,9 +46,13 @@ signal id_changed
 		
 		if is_inside_tree():
 			regenerate_id()
+			
+			if encounter_on_interact:
+				load_encounter_party_members()
 @export_storage var logic_script_path: String
 # TODO: Replace with a path for reusing encounters.
-@export_storage var encounter_datas: Array[EncounterData] = [EncounterData.new()]
+@export_storage var encounter_enemies: Array[EncounterEnemy] = [EncounterEnemy.new()]
+@export_storage var encounter_party_members: Array[PartyMember]
 
 var id: String = "null":
 	set(value):
@@ -222,3 +226,22 @@ func regenerate_id() -> void:
 	
 	# Anything that causes the id to be regenerated is a dirty operation.
 	Creator.make_dirty()
+
+func load_encounter_party_members() -> void:
+	var kris: PartyMember = PartyMember.new()
+	kris.name = "Kris"
+	kris.health = 100
+	kris.sprite_frames = load("res://resources/sprite_frames/kris.tres")
+	encounter_party_members.append(kris)
+	
+	var susie: PartyMember = PartyMember.new()
+	susie.name = "Susie"
+	susie.health = 100
+	susie.sprite_frames = load("res://resources/sprite_frames/susie.tres")
+	encounter_party_members.append(susie)
+	
+	var ralsei: PartyMember = PartyMember.new()
+	ralsei.name = "Ralsei"
+	ralsei.health = 100
+	ralsei.sprite_frames = load("res://resources/sprite_frames/ralsei.tres")
+	encounter_party_members.append(ralsei)

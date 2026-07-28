@@ -36,7 +36,7 @@ func _on_preview_button_pressed() -> void:
 		Creator.stop_preview()
 	else:
 		use_preview_options()
-		Creator.start_preview()
+		Creator.start_preview_from_camera()
 
 
 func setup_menu_buttons() -> void:

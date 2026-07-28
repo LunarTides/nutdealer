@@ -7,7 +7,7 @@ const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 @export var check_box_container: VBoxContainer
 @export var code_edit: CodeEdit
 @export var code_container: PanelContainer
-@export var encounter_container: PanelContainer
+@export var encounter_container: Control
 
 var tile: Tile:
 	set(value):
@@ -49,7 +49,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if not tab_container.get_global_rect().has_point(get_global_mouse_position()):
 			# If you click outside the window, but the script is dirty,
