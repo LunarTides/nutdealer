@@ -10,6 +10,7 @@ enum SoulColor {
 
 @export var speed: float = 300.0
 @export var color: SoulColor = SoulColor.Red
+@export var sfx_player: AudioStreamPlayer
 
 func _ready() -> void:
 	Encounter.enemy_turn_started.connect(func() -> void:
@@ -36,6 +37,8 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		if projectile.type == Projectile.ProjectileType.Damage:
 			# TODO: Do invincibility frames.
 			Encounter.deal_damage_to_party_targets(projectile.damage)
+			sfx_player.stream = preload("res://assets/audio/battle/hurt1.wav")
+			sfx_player.play()
 		elif projectile.type == Projectile.ProjectileType.Heal:
 			Encounter.heal_party_targets(projectile.damage)
 		

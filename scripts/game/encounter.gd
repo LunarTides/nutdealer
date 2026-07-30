@@ -48,9 +48,19 @@ var state: State = State.PartyMembers:
 var running: bool = false
 var turn: int
 var ui: EncounterUI
+var music_player: AudioStreamPlayer
+var sfx_player: AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	music_player = AudioStreamPlayer.new()
+	# The music shouldn't deafen sfx.
+	music_player.bus = &"Music"
+	add_child(music_player)
+	
+	sfx_player = AudioStreamPlayer.new()
+	add_child(sfx_player)
+	
 	Game.play_end.connect(func() -> void:
 		if Encounter.in_encounter:
 			Encounter.end(true)
@@ -160,6 +170,14 @@ func start(tile: Tile) -> void:
 		t.process_mode = Node.PROCESS_MODE_DISABLED
 		t.hide()
 	Game.player.process_mode = Node.PROCESS_MODE_DISABLED
+	Game.stop_music()
+	
+	# Play tension sfx
+	sfx_player.stream = preload("res://assets/audio/battle/tensionhorn.wav")
+	sfx_player.play()
+	await get_tree().create_timer(0.3).timeout
+	sfx_player.pitch_scale = 1.1
+	sfx_player.play()
 	
 	# Create UI
 	ui = ENCOUNTER_UI.instantiate()
@@ -192,11 +210,23 @@ func start(tile: Tile) -> void:
 		party_member.play_intro_animation()
 	party_member_lead.play_intro_animation()
 	
+	sfx_player.pitch_scale = 1.0
+	sfx_player.stream = preload("res://assets/audio/battle/weaponpull.wav")
+	sfx_player.play()
+	
+	# Preemptively load music while waiting for sfx to finish playing. 
+	music_player.stream = preload("res://assets/audio/music/battle.ogg")
+	await sfx_player.finished
+	
+	music_player.play()
+	
 	started.emit(tile)
 
 func end(won: bool) -> void:
 	if not in_encounter:
 		return
+	
+	music_player.stop()
 	
 	print_debug("[Encounter] Encounter ended.")
 	ending.emit(encounter_tile, won)
@@ -212,18 +242,28 @@ func end(won: bool) -> void:
 	for t: Tile in Game.tiles.get_all():
 		t.process_mode = Node.PROCESS_MODE_INHERIT
 		t.show()
-	Game.player.show()
-	Game.player.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	# If the encounter ends to to pressing the "Stop Preview" button,
+	# the player doesn't exist.
+	if Game.player:
+		Game.player.show()
+		Game.player.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Delete all children
 	for child: Node in get_children():
+		if child is AudioStreamPlayer:
+			continue
+		
 		child.queue_free()
+	
+	Game.play_music()
 	
 	ended.emit(encounter_tile, won)
 	encounter_tile = null
 
 func win_by_damage() -> void:
 	running = false
+	music_player.stop()
 	
 	# TODO: Animation
 	print_debug("[Encounter] Won by damage. Playing win animation.")

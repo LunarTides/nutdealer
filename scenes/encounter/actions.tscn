@@ -5,13 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://assets/sprites/tiles/debug/blue.svg" id="2_lcca3"]
 [ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://assets/sprites/tiles/debug/green.svg" id="3_rijx5"]
 
-[node name="Actions" type="VBoxContainer" unique_id=576412403 node_paths=PackedStringArray("buttons_container", "labels_container")]
+[node name="Actions" type="VBoxContainer" unique_id=576412403 node_paths=PackedStringArray("buttons_container", "labels_container", "sfx_player")]
 offset_right = 320.0
 offset_bottom = 83.0
 theme_override_constants/separation = 0
 script = ExtResource("1_lcca3")
 buttons_container = NodePath("Buttons")
 labels_container = NodePath("Labels")
+sfx_player = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1400026486]
 
 [node name="Buttons" type="HBoxContainer" parent="." unique_id=131531030]
 propagate_maximum_size = false

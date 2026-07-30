@@ -3,7 +3,12 @@ extends ItemList
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
 const IMPORT_TEXTURE_DIALOGUE: PackedScene = preload("uid://m13iyxlbc6ii")
 
+const TILE_SFX: AudioStream = preload("res://assets/audio/sfx/bell_bounce_short.wav")
+const IMPORT_SFX: AudioStream = preload("res://assets/audio/sfx/coaster_kiss.wav")
+
 var special_tile_amount: int = 2
+
+@export var sfx_player: AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:	
@@ -40,6 +45,9 @@ func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int)
 	if index == item_count - 1:
 		deselect_all()
 		
+		sfx_player.stream = IMPORT_SFX
+		sfx_player.play()
+		
 		var import_dialogue: FileDialog = IMPORT_TEXTURE_DIALOGUE.instantiate()
 		import_dialogue.files_selected.connect(func(paths: PackedStringArray) -> void:
 			for path: String in paths:
@@ -66,6 +74,9 @@ func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int)
 	tile.texture = texture
 	
 	CreatorPlaceTiles.start(tile)
+	
+	sfx_player.stream = TILE_SFX
+	sfx_player.play()
 	
 	# Eraser
 	if index == item_count - 2:

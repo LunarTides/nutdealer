@@ -15,7 +15,11 @@ var room_previous_pos: Vector2
 var new_room_created: bool = false
 var new_room_index: int = -1
 
-var current_action: Action = Action.None
+var current_action: Action = Action.None:
+	set(value):
+		if current_action != value:
+			current_action = value
+			sfx_pitch = 1.0
 var hovering: int = -1:
 	set(value):
 		if (not handle_lock and not hover_lock) or hovering == -1:
@@ -38,8 +42,16 @@ var handle_lock: bool = false:
 			hovering = -1
 			hovering_handle = Vector2.ZERO
 
+var sfx_player: AudioStreamPlayer
+var sfx_pitch: float = 1.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	sfx_player = AudioStreamPlayer.new()
+	#sfx_player.stream = preload("res://assets/audio/sfx/scissorbell_lite.wav")
+	sfx_player.stream = preload("res://assets/audio/misc/hit.wav")
+	add_child(sfx_player)
+	
 	Creator.creator_enabled.connect(func() -> void:
 		start()
 	)
@@ -63,7 +75,9 @@ func stop() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	sfx_pitch -= 0.5 * delta
+	if sfx_pitch < 1.0:
+		sfx_pitch = 1.0
 
 func _input(event: InputEvent) -> void:
 	if not enabled or Game.playing or Creator.mode != Creator.Mode.None:
@@ -99,29 +113,6 @@ func _input(event: InputEvent) -> void:
 			if event.is_released():
 				cleanup()
 
-func handle_new_room(event: InputEventMouseMotion) -> void:
-	var mouse_pos: Vector2 = Global.mouse_position
-	if not room_start_pos:
-		room_start_pos = mouse_pos
-	
-	var start_coords: Vector2i = Global.position_to_coords(room_start_pos)
-	var previous_coords: Vector2i = Global.position_to_coords(room_previous_pos)
-	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
-	if start_coords == current_coords or current_coords == previous_coords:
-		# The mouse hasn't moved a coord space. Don't create/update the room yet.
-		return
-	
-	var rect: Rect2i = Rect2i(start_coords, current_coords - start_coords)
-	if not new_room_created:
-		# New room.
-		new_room_created = true
-		new_room_index = Room.add_room(rect)
-	else:
-		# Update room that we're creating.
-		Room.update_room(new_room_index, rect)
-	
-	room_previous_pos = mouse_pos
-
 func cleanup() -> void:
 	# Clear variables.
 	if hovering_handle:
@@ -151,6 +142,31 @@ func cleanup_broken_room(room_index: int) -> void:
 		if room_index != -1:
 			Room.delete_room(room_index)
 
+
+func handle_new_room(event: InputEventMouseMotion) -> void:
+	var mouse_pos: Vector2 = Global.mouse_position
+	if not room_start_pos:
+		room_start_pos = mouse_pos
+	
+	var start_coords: Vector2i = Global.position_to_coords(room_start_pos)
+	var previous_coords: Vector2i = Global.position_to_coords(room_previous_pos)
+	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	if start_coords == current_coords or current_coords == previous_coords:
+		# The mouse hasn't moved a coord space. Don't create/update the room yet.
+		return
+	
+	var rect: Rect2i = Rect2i(start_coords, current_coords - start_coords)
+	if not new_room_created:
+		# New room.
+		new_room_created = true
+		new_room_index = Room.add_room(rect)
+	else:
+		# Update room that we're creating.
+		Room.update_room(new_room_index, rect)
+	
+	room_previous_pos = mouse_pos
+	play_sfx()
+
 func handle_resize_room(event: InputEventMouseMotion) -> void:
 	var mouse_pos: Vector2 = Global.mouse_position
 	var bounds: Rect2i = Room.bounds[hovering]
@@ -177,6 +193,11 @@ func handle_resize_room(event: InputEventMouseMotion) -> void:
 	var rect: Rect2i = Rect2i(start_coords, current_coords - start_coords)
 	Room.update_room(hovering, rect)
 	
+	var previous_coords: Vector2i = Global.position_to_coords(room_previous_pos)
+	if current_coords != previous_coords:
+		# TODO: Doesn't work with side-handles.
+		play_sfx()
+	
 	room_previous_pos = mouse_pos
 
 func handle_move_room(event: InputEventMouseMotion) -> void:
@@ -201,4 +222,12 @@ func handle_move_room(event: InputEventMouseMotion) -> void:
 	bounds.position += a - b
 	Room.update_room(hovering, bounds, true)
 	
+	if current_coords != previous_coords:
+		play_sfx()
+	
 	room_previous_pos = mouse_pos
+
+func play_sfx() -> void:
+	sfx_player.pitch_scale = sfx_pitch
+	sfx_player.play()
+	sfx_pitch += 0.1

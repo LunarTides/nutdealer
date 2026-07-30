@@ -5,6 +5,7 @@ extends VBoxContainer
 @export_category("UI Nodes")
 @export var buttons_container: HBoxContainer
 @export var labels_container: HBoxContainer
+@export var sfx_player: AudioStreamPlayer
 
 var buttons: Array[TextureRect]:
 	get:
@@ -53,10 +54,16 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed(&"walk_right"):
 		button_index += 1
+		sfx_player.stream = preload("res://assets/audio/ui/menumove.wav")
+		sfx_player.play()
 	elif event.is_action_pressed(&"walk_left"):
 		button_index -= 1
+		sfx_player.stream = preload("res://assets/audio/ui/menumove.wav")
+		sfx_player.play()
 	elif event.is_action_pressed(&"interact"):
 		handle_action()
+		sfx_player.stream = preload("res://assets/audio/ui/select.wav")
+		sfx_player.play()
 
 func reset_ui() -> void:
 	labels_container.visible = active

@@ -37,24 +37,38 @@ var dirty: bool = false:
 			dirty_changed.emit()
 var dark_world_ui: CreatorDarkWorldUI
 var feedback_label: Label
+var music_player: AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Start disabled. Only enable when going into create mode.
 	process_mode = Node.PROCESS_MODE_DISABLED
 	
+	music_player = AudioStreamPlayer.new()
+	music_player.stream = preload("res://assets/audio/music/castletown.ogg")
+	music_player.bus = &"Music"
+	add_child(music_player)
+	
 	Game.play_start.connect(func() -> void:
 		# Set to normal mode on play/preview.
 		mode = Mode.None
+		music_player.stream_paused = true
+	)
+	Game.play_end.connect(func() -> void:
+		music_player.stream_paused = false
 	)
 
 func start() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
+	
+	if not music_player.playing:
+		music_player.play()
 
 func stop() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	enabled = false
+	#music_player.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -122,6 +136,7 @@ func start_preview(room_index: int) -> void:
 	player.global_position = dark_world_ui.camera_2d.global_position
 	Game.player = player
 	
+	Game.play_music()
 	Game.constrain_player_to_current_room()
 	Game.constrain_camera_to_current_room()
 
@@ -144,3 +159,4 @@ func stop_preview() -> void:
 	
 	Game.playing = false
 	Game.player.queue_free()
+	Game.stop_music()

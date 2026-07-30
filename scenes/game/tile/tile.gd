@@ -2,6 +2,8 @@ extends Node2D
 class_name Tile
 
 const CREATOR_TILE_BEHAVIOUR_UI: PackedScene = preload("uid://b7xjlu3flg8wu")
+const HOVER_SFX: AudioStream = preload("res://assets/audio/text/queen.wav")
+const EXPLOSION_SFX: AudioStream = preload("res://assets/audio/sfx/badexplosion.wav")
 
 signal id_changed
 
@@ -49,6 +51,7 @@ signal id_changed
 			
 			if encounter_on_interact:
 				load_encounter_party_members()
+@export var enabled: bool = true
 @export_storage var logic_script_path: String
 # TODO: Replace with a path for reusing encounters.
 @export_storage var encounter_enemies: Array[EncounterEnemy] = [EncounterEnemy.new()]
@@ -86,6 +89,10 @@ var is_encounter: bool:
 @onready var static_body_2d: StaticBody2D = $StaticBody2D
 @onready var sprite_2d: Sprite2D = $StaticBody2D/Sprite2D
 @onready var collision_shape_2d: CollisionShape2D = $StaticBody2D/CollisionShape2D
+@onready var explosion_animated_sprite: AnimatedSprite2D = $Explosion
+@onready var creator_sfx_player: AudioStreamPlayer = $CreatorSFXPlayer
+@onready var sfx_player: AudioStreamPlayer = $SFXPlayer
+@onready var actions: PanelContainer = $Actions
 # TODO: Call _room_enter and _room_exit when entering / exiting room.
 @onready var logic: TileLogic = $Logic
 
@@ -101,6 +108,8 @@ func _ready() -> void:
 	
 	static_body_2d.mouse_entered.connect(_on_mouse_entered)
 	static_body_2d.mouse_exited.connect(_on_mouse_exited)
+	
+	explosion_animated_sprite.hide()
 	
 	if id == "null":
 		regenerate_id()
@@ -143,6 +152,7 @@ func _ready() -> void:
 	
 	# Call the `_ready` function on the tile if we're actually playing. (Not creating.)
 	if not Creator.enabled:
+		creator_sfx_player.queue_free()
 		logic._ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -158,16 +168,40 @@ func interact() -> void:
 func disable() -> void:
 	hide()
 	process_mode = Node.PROCESS_MODE_DISABLED
+	enabled = false
 
 func enable() -> void:
 	show()
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	enabled = true
 
 func clone(new_id: bool = false) -> Tile:
 	var new_tile: Tile = duplicate(DUPLICATE_DEFAULT | DUPLICATE_INTERNAL_STATE)
 	if new_id:
 		new_tile.regenerate_id()
 	return new_tile
+
+func delete_with_explosion() -> void:
+	if not enabled:
+		# Already being deleted.
+		return
+	
+	logic.process_mode = Node.PROCESS_MODE_DISABLED
+	enabled = false
+	sprite_2d.hide()
+	
+	for tile: Tile in Game.tiles.get_all():
+		if not tile.enabled and tile != self:
+			# Prioritize this tile's explosion sfx over any other.
+			tile.creator_sfx_player.stop()
+	
+	creator_sfx_player.stream = EXPLOSION_SFX
+	creator_sfx_player.play()
+	
+	explosion_animated_sprite.show()
+	explosion_animated_sprite.play()
+	await explosion_animated_sprite.animation_finished
+	queue_free()
 
 func load_custom_texture(texture_path: String) -> void:
 	if not texture_path:
@@ -209,8 +243,10 @@ func set_logic_script_to(script: GDScript) -> void:
 		logic_script_path = script.resource_path
 
 func _on_mouse_entered() -> void:
-	if Creator.enabled:
+	if Creator.enabled and Creator.mode == Creator.Mode.None and enabled and not actions.visible:
 		sprite_2d.self_modulate *= 1.25
+		creator_sfx_player.stream = HOVER_SFX
+		creator_sfx_player.play()
 
 func _on_mouse_exited() -> void:
 	if Creator.enabled:

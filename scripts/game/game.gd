@@ -47,10 +47,15 @@ var current_room: int = 0:
 		room_changed.emit(old, current_room)
 var canvas_layer: CanvasLayer
 var pause_menu: Control
+var music_player: AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	setup_tiles()
+	
+	music_player = AudioStreamPlayer.new()
+	music_player.bus = &"Music"
+	add_child(music_player)
 	
 	canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
@@ -74,7 +79,7 @@ func setup_tiles() -> void:
 	Encounter.started.connect(func(tile: Tile) -> void:
 		border_tiles.process_mode = Node.PROCESS_MODE_DISABLED
 	)
-	Encounter.ended.connect(func(tile: Tile) -> void:
+	Encounter.ended.connect(func(tile: Tile, won: bool) -> void:
 		border_tiles.process_mode = Node.PROCESS_MODE_INHERIT
 	)
 	add_child(border_tiles)
@@ -127,6 +132,7 @@ func play_from(room_index: int) -> void:
 		@warning_ignore("integer_division")
 		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
+	play_music()
 	constrain_player_to_current_room()
 	constrain_camera_to_current_room()
 
@@ -139,6 +145,7 @@ func stop_playing() -> void:
 	
 	# Clear everything.
 	WorldSave.new_world()
+	stop_music()
 
 func switch_room(room_index: int) -> void:
 	play_from(room_index)
@@ -211,3 +218,13 @@ func create_border_tile(coords: Vector2i) -> Tile:
 	tile.id = "border"
 	
 	return tile
+
+func play_music() -> void:
+	if music_player.playing:
+		return
+	
+	music_player.stream = preload("res://assets/audio/music/tv_world.ogg")
+	music_player.play()
+
+func stop_music() -> void:
+	music_player.stop()

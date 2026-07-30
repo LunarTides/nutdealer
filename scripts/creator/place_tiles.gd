@@ -1,6 +1,8 @@
 extends Node
 
 const TILE: PackedScene = preload("uid://cfme7hrx25bgv")
+const PLACE_SFX: AudioStream = preload("res://assets/audio/sfx/bump.wav")
+const CANCEL_SFX: AudioStream = preload("res://assets/audio/sfx/bell_bounce_short.wav")
 
 signal placed
 
@@ -8,12 +10,16 @@ var tile: Tile
 var tile_texture_button: TextureButton
 var tile_last_placed_position: Vector2i
 var cancel_mouse_position: Vector2
+var sfx_player: AudioStreamPlayer
 var has_placed_tile: bool = false
 var dragging: bool = false
 var should_erase: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	sfx_player = AudioStreamPlayer.new()
+	add_child(sfx_player)
+	
 	Creator.mode_changed.connect(func(old: Creator.Mode, new: Creator.Mode) -> void:
 		# Delete the pending tile when the creator mode is changed.
 		if is_instance_valid(tile_texture_button):
@@ -81,6 +87,11 @@ func stop() -> void:
 	
 	if is_instance_valid(tile_texture_button):
 		tile_texture_button.queue_free()
+	
+	# Play cancel sfx
+	sfx_player.stream = CANCEL_SFX
+	sfx_player.pitch_scale = 0.75
+	sfx_player.play()
 
 func create_hovering_tile() -> void:
 	# The mode might change halfway through. (E.g. If connected to the placed signal.)
@@ -100,7 +111,7 @@ func create_hovering_tile() -> void:
 func place_current_tile() -> void:
 	var coords: Vector2i = Global.position_to_coords(tile_texture_button.global_position)
 	var existing_tile: Tile = Game.tiles.get_tile_on(coords)
-	if existing_tile and existing_tile.id == tile.id:
+	if existing_tile and existing_tile.id == tile.id and existing_tile.enabled:
 		# We're about to place a duplicate tile on this coord.
 		# Don't do this.
 		tile_texture_button.queue_free()
@@ -109,7 +120,7 @@ func place_current_tile() -> void:
 	if should_erase:
 		# If we're in erase mode, delete the tile on the cursor.
 		if existing_tile:
-			existing_tile.queue_free()
+			existing_tile.delete_with_explosion()
 		
 		tile_texture_button.queue_free()
 		return
@@ -120,6 +131,10 @@ func place_current_tile() -> void:
 	tile_last_placed_position = coords
 	has_placed_tile = true
 	placed.emit()
+	
+	sfx_player.stream = PLACE_SFX
+	sfx_player.pitch_scale = 1.0
+	sfx_player.play()
 	
 	var new_tile: Tile = tile.clone()
 	

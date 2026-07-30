@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://scenes/creator/feedback_label.tscn" id="11_skldr"]
 [ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://scenes/creator/preview_actions.gd" id="12_2sl0l"]
 [ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
+[ext_resource type="AudioStream" uid="uid://dyjhtv2p0olgm" path="res://assets/audio/sfx/bell_bounce_short.wav" id="13_hwafg"]
 [ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://scenes/creator/party_member_manager.gd" id="15_f3slr"]
 [ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://scenes/creator/party_member.tscn" id="15_oboim"]
 [ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="18_o23ng"]
@@ -145,7 +146,7 @@ text = "Preview"
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="CanvasLayer" unique_id=283158090]
 
-[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151]
+[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151 node_paths=PackedStringArray("sfx_player")]
 offset_top = 32.0
 offset_right = 76.0
 offset_bottom = 312.0
@@ -162,6 +163,10 @@ item_3/icon = ExtResource("8_ofl6s")
 item_4/icon = ExtResource("10_wyeqc")
 item_5/icon = ExtResource("11_ofl6s")
 script = ExtResource("9_o23ng")
+sfx_player = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/TilePicker" unique_id=1151946189]
+stream = ExtResource("13_hwafg")
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
 

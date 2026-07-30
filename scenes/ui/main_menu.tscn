@@ -2,6 +2,17 @@
 
 [ext_resource type="Script" uid="uid://dax1gd5h7je8o" path="res://scenes/ui/main_menu.gd" id="1_sl1te"]
 [ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="2_fe2o3"]
+[ext_resource type="AudioStream" uid="uid://cjpc5kdyruhxg" path="res://assets/audio/misc/speak_and_spell_N.wav" id="2_otr3d"]
+[ext_resource type="AudioStream" uid="uid://c3mee25a6gjup" path="res://assets/audio/ui/menumove.wav" id="3_1g8jr"]
+[ext_resource type="AudioStream" uid="uid://b6pwoxyhj7a8p" path="res://assets/audio/misc/speak_and_spell_U.wav" id="3_8ekit"]
+[ext_resource type="AudioStream" uid="uid://c2jsj6nctnt3x" path="res://assets/audio/misc/booster.wav" id="4_m1kxf"]
+[ext_resource type="AudioStream" uid="uid://dt4wyfn75xcoj" path="res://assets/audio/misc/speak_and_spell_T.wav" id="4_n4uci"]
+[ext_resource type="AudioStream" uid="uid://7rnf6ntrhg2c" path="res://assets/audio/misc/speak_and_spell_D.wav" id="5_877pj"]
+[ext_resource type="AudioStream" uid="uid://dyhe2ep1o2deu" path="res://assets/audio/misc/speak_and_spell_E.wav" id="6_ayp64"]
+[ext_resource type="AudioStream" uid="uid://dfmrflagyqbsj" path="res://assets/audio/misc/speak_and_spell_A.wav" id="7_y2j7i"]
+[ext_resource type="AudioStream" uid="uid://qveow7tb2phg" path="res://assets/audio/misc/speak_and_spell_L.wav" id="8_y1h5l"]
+[ext_resource type="AudioStream" uid="uid://bi07v6u3nb4b" path="res://assets/audio/misc/speak_and_spell_R.wav" id="10_8ekit"]
+[ext_resource type="AudioStream" uid="uid://c4q3ryo3ms7md" path="res://assets/audio/music/menu.ogg" id="13_8ekit"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hakx0"]
 font_size = 32
@@ -366,6 +377,32 @@ tracks/6/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../../..")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(-0.33333334, 0, 0.6, 1.2, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"values": [{
+"args": [0],
+"method": &"intro_step"
+}, {
+"args": [0],
+"method": &"intro_step"
+}, {
+"args": [1],
+"method": &"intro_step"
+}, {
+"args": [2],
+"method": &"intro_step"
+}, {
+"args": [3],
+"method": &"intro_step"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_btxxm"]
 _data = {
@@ -373,7 +410,7 @@ _data = {
 &"intro": SubResource("Animation_uhagc")
 }
 
-[node name="MainMenu" type="Control" unique_id=1928361223 node_paths=PackedStringArray("grid", "idle_container", "title_label", "title_label_animation_player", "title_label_pulse", "title_label_pulse_animation_player", "intro_container")]
+[node name="MainMenu" type="Control" unique_id=1928361223 node_paths=PackedStringArray("grid", "version_label", "idle_container", "title_label", "title_label_animation_player", "title_label_pulse", "title_label_pulse_animation_player", "intro_container", "sfx_player", "intro_sfx_player", "music_player")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -383,13 +420,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sl1te")
 grid_move_speed = 25.0
+spell_streams = Dictionary[String, AudioStream]({
+"a": ExtResource("7_y2j7i"),
+"d": ExtResource("5_877pj"),
+"e": ExtResource("6_ayp64"),
+"l": ExtResource("8_y1h5l"),
+"n": ExtResource("2_otr3d"),
+"r": ExtResource("10_8ekit"),
+"t": ExtResource("4_n4uci"),
+"u": ExtResource("3_8ekit")
+})
 grid = NodePath("Grid")
+version_label = NodePath("CanvasLayer/VersionLabel")
 idle_container = NodePath("VBoxContainer/TitleContainer/Idle")
 title_label = NodePath("VBoxContainer/TitleContainer/Idle/TitleLabel")
 title_label_animation_player = NodePath("VBoxContainer/TitleContainer/Idle/TitleLabel/AnimationPlayer")
 title_label_pulse = NodePath("VBoxContainer/TitleContainer/Idle/TitleLabelPulse")
 title_label_pulse_animation_player = NodePath("VBoxContainer/TitleContainer/Idle/TitleLabelPulse/AnimationPlayer")
 intro_container = NodePath("VBoxContainer/TitleContainer/Intro")
+sfx_player = NodePath("SFXPlayer")
+intro_sfx_player = NodePath("IntroSFXPlayer")
+music_player = NodePath("MusicPlayer")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1173272385]
 layout_mode = 1
@@ -489,14 +540,25 @@ text = "Settings"
 layout_mode = 2
 text = "Exit"
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1285029359]
+
+[node name="VersionLabel" type="Label" parent="CanvasLayer" unique_id=1598588550]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -19.0
+offset_right = 75.0
+grow_vertical = 0
+text = "Version"
+
 [node name="Grid" type="TextureRect" parent="." unique_id=1500288263]
 modulate = Color(0.38851848, 0.38851848, 0.38851845, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -250.676
-offset_top = -5.3240743
-offset_right = 1157.324
-offset_bottom = 890.6759
+offset_left = -39.97189
+offset_top = -216.02754
+offset_right = 1368.0281
+offset_bottom = 679.9725
 mouse_filter = 2
 texture = ExtResource("2_fe2o3")
 stretch_mode = 1
@@ -508,9 +570,23 @@ limit_top = 0
 limit_right = 1152
 limit_bottom = 640
 
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1016986947]
+stream = ExtResource("3_1g8jr")
+
+[node name="IntroSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1129211438]
+stream = ExtResource("4_m1kxf")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=265051463]
+stream = ExtResource("13_8ekit")
+bus = &"Music"
+
 [connection signal="animation_finished" from="VBoxContainer/TitleContainer/Idle/TitleLabel/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="VBoxContainer/TitleContainer/Intro/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="mouse_entered" from="VBoxContainer/PlayButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/CreateButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/SettingsButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/ExitButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

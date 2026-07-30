@@ -4,9 +4,85 @@
 [ext_resource type="Script" uid="uid://bdxm6dj448qpe" path="res://scenes/game/tile/tile_logic.gd" id="2_i36ew"]
 [ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="3_xk5ep"]
 [ext_resource type="PackedScene" uid="uid://bqwrd47eaim0y" path="res://scenes/creator/tile/actions.tscn" id="4_qvbh2"]
+[ext_resource type="Texture2D" uid="uid://csidtpc4aabql" path="res://assets/sprites/extracted/badexplosion/bad_explosion_0.png" id="5_khghh"]
+[ext_resource type="Texture2D" uid="uid://ctveb0emxy0wc" path="res://assets/sprites/extracted/badexplosion/bad_explosion_1.png" id="6_v4j6d"]
+[ext_resource type="Texture2D" uid="uid://3t16yw7vhjs0" path="res://assets/sprites/extracted/badexplosion/bad_explosion_2.png" id="7_jtxe3"]
+[ext_resource type="Texture2D" uid="uid://cooxvkvnlmie4" path="res://assets/sprites/extracted/badexplosion/bad_explosion_3.png" id="8_emlr5"]
+[ext_resource type="Texture2D" uid="uid://b78vhxyngjvsq" path="res://assets/sprites/extracted/badexplosion/bad_explosion_4.png" id="9_xl1ju"]
+[ext_resource type="Texture2D" uid="uid://68gb7c6431ch" path="res://assets/sprites/extracted/badexplosion/bad_explosion_5.png" id="10_hulir"]
+[ext_resource type="Texture2D" uid="uid://nu71sd4oefre" path="res://assets/sprites/extracted/badexplosion/bad_explosion_6.png" id="11_majnc"]
+[ext_resource type="Texture2D" uid="uid://gxyk45ilaoht" path="res://assets/sprites/extracted/badexplosion/bad_explosion_7.png" id="12_brwr3"]
+[ext_resource type="Texture2D" uid="uid://dhe88cv8yahih" path="res://assets/sprites/extracted/badexplosion/bad_explosion_8.png" id="13_lwa8k"]
+[ext_resource type="Texture2D" uid="uid://bep88d1mcaic0" path="res://assets/sprites/extracted/badexplosion/bad_explosion_9.png" id="14_qfeko"]
+[ext_resource type="Texture2D" uid="uid://b8b67j8mpjn56" path="res://assets/sprites/extracted/badexplosion/bad_explosion_10.png" id="15_vfifl"]
+[ext_resource type="Texture2D" uid="uid://wajpf82sk56m" path="res://assets/sprites/extracted/badexplosion/bad_explosion_11.png" id="16_x0qaa"]
+[ext_resource type="Texture2D" uid="uid://bfty7g4sd8ba1" path="res://assets/sprites/extracted/badexplosion/bad_explosion_12.png" id="17_ssbty"]
+[ext_resource type="Texture2D" uid="uid://bd6oy7tc8fq3p" path="res://assets/sprites/extracted/badexplosion/bad_explosion_13.png" id="18_hakaq"]
+[ext_resource type="Texture2D" uid="uid://b683cy3mcen3h" path="res://assets/sprites/extracted/badexplosion/bad_explosion_14.png" id="19_cgrh4"]
+[ext_resource type="Texture2D" uid="uid://c0ftmhnfwatvm" path="res://assets/sprites/extracted/badexplosion/bad_explosion_15.png" id="20_ktmnd"]
+[ext_resource type="Texture2D" uid="uid://v1hf2yyfo4va" path="res://assets/sprites/extracted/badexplosion/bad_explosion_16.png" id="21_8x0w0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hakx0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_khghh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_v4j6d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_jtxe3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_emlr5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_xl1ju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_hulir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_majnc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_brwr3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_lwa8k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_qfeko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_vfifl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_x0qaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ssbty")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_hakaq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_cgrh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ktmnd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_8x0w0")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 15.0
+}]
 
 [node name="Tile" type="Node2D" unique_id=939431773]
 script = ExtResource("1_lkefh")
@@ -29,5 +105,16 @@ shape = SubResource("RectangleShape2D_hakx0")
 [node name="Actions" parent="." unique_id=1028659122 node_paths=PackedStringArray("tile", "static_body_2d") instance=ExtResource("4_qvbh2")]
 tile = NodePath("..")
 static_body_2d = NodePath("../StaticBody2D")
+
+[node name="Explosion" type="AnimatedSprite2D" parent="." unique_id=1482939292]
+visible = false
+position = Vector2(32, 35)
+sprite_frames = SubResource("SpriteFrames_hakx0")
+frame = 16
+frame_progress = 1.0
+
+[node name="CreatorSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1665506673]
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=2129783602]
 
 [connection signal="input_event" from="StaticBody2D" to="." method="_on_static_body_2d_input_event"]
