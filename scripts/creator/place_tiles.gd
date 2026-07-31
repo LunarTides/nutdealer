@@ -64,11 +64,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and dragging and not event.relative.is_zero_approx():
 		if event.button_mask & MOUSE_BUTTON_LEFT == MOUSE_BUTTON_LEFT:
 			# When moving the mouse while the left mouse button is pressed down, place tiles.
-			var mouse: Vector2 = Global.mouse_position
-			var pos: Vector2i = Global.position_to_coords(mouse)
+			var mouse_coords: Vector2i = Global.mouse_coords
 			
-			if not has_placed_tile or pos != tile_last_placed_position:
-				tile_texture_button.global_position = Global.coords_to_position(pos)
+			if not has_placed_tile or mouse_coords != tile_last_placed_position:
+				tile_texture_button.global_position = Global.coords_to_position(mouse_coords)
 				place_current_tile()
 				create_hovering_tile()
 

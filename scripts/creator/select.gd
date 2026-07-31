@@ -113,9 +113,7 @@ func _input(event: InputEvent) -> void:
 				cleanup()
 			else:
 				# Delete selected when clicking on an empty tile.
-				var mouse_pos: Vector2 = Global.mouse_position
-				var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
-				var tile: Tile = Game.tiles.get_tile_on(mouse_coords)
+				var tile: Tile = Game.tiles.get_tile_on_mouse()
 				if not is_instance_valid(tile):
 					selected = []
 				elif not add_to_selection_has_chosen:
@@ -148,7 +146,7 @@ func handle_new_selection(event: InputEventMouseMotion) -> void:
 	
 	var start_coords: Vector2i = Global.position_to_coords(start_pos)
 	var previous_coords: Vector2i = Global.position_to_coords(previous_pos)
-	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	var current_coords: Vector2i = Global.mouse_coords
 	if start_coords == current_coords or current_coords == previous_coords:
 		# The mouse hasn't moved a coord space. Don't create/update the selection yet.
 		return
@@ -211,10 +209,7 @@ func handle_move_selected(event: InputEventMouseMotion) -> void:
 	previous_pos = mouse_pos
 
 func handle_add_to_selected(event: InputEvent) -> void:
-	var mouse_pos: Vector2 = Global.mouse_position
-	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
-	
-	var tile: Tile = Game.tiles.get_tile_on(mouse_coords)
+	var tile: Tile = Game.tiles.get_tile_on_mouse()
 	if not is_instance_valid(tile):
 		return
 	

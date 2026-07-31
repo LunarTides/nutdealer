@@ -150,7 +150,7 @@ func handle_new_room(event: InputEventMouseMotion) -> void:
 	
 	var start_coords: Vector2i = Global.position_to_coords(room_start_pos)
 	var previous_coords: Vector2i = Global.position_to_coords(room_previous_pos)
-	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	var current_coords: Vector2i = Global.mouse_coords
 	if start_coords == current_coords or current_coords == previous_coords:
 		# The mouse hasn't moved a coord space. Don't create/update the room yet.
 		return
@@ -182,7 +182,7 @@ func handle_resize_room(event: InputEventMouseMotion) -> void:
 		room_start_pos = bounds.position + size
 	
 	var start_coords: Vector2i = room_start_pos
-	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	var current_coords: Vector2i = Global.mouse_coords
 	
 	# Lock the resize axis if using the non-diagonal handles.
 	if hovering_handle.x == 0:
@@ -213,7 +213,7 @@ func handle_move_room(event: InputEventMouseMotion) -> void:
 		room_previous_pos = mouse_pos
 	
 	var start_coords: Vector2i = room_start_pos
-	var current_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	var current_coords: Vector2i = Global.mouse_coords
 	var previous_coords: Vector2i = Global.position_to_coords(room_previous_pos)
 	
 	var a: Vector2i = current_coords - start_coords

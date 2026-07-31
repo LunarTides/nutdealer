@@ -29,6 +29,9 @@ func get_tile_on(coords: Vector2i) -> Tile:
 	
 	return null
 
+func get_tile_on_mouse() -> Tile:
+	return get_tile_on(Global.mouse_coords)
+
 func get_all() -> Array[Tile]:
 	return get_children() as Array[Tile]
 

@@ -6,6 +6,9 @@ var screen_size: Vector2:
 var mouse_position: Vector2:
 	get:
 		return get_global_mouse_position()
+var mouse_coords: Vector2i:
+	get:
+		return position_to_coords(mouse_position)
 var screen_size_coords: Vector2i = Vector2i(18, 10)
 
 # Called when the node enters the scene tree for the first time.

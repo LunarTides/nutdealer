@@ -70,8 +70,7 @@ func _process(delta: float) -> void:
 	var mouse_pos: Vector2 = Global.mouse_position
 	
 	# Don't hover if the mouse is on a tile.
-	#var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
-	#var is_on_tile: bool = Game.tiles.is_tile_on(mouse_coords)
+	#var is_on_tile: bool = Game.tiles.is_tile_on(Global.mouse_coords)
 	#if is_on_tile:
 		#if hovering != -1:
 			#hovering = -1
