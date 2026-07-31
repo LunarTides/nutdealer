@@ -38,9 +38,20 @@ var active: bool:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	reset_ui()
-	Encounter.turn_ended.connect(func(turn: int) -> void:
-		button_index = 0
+	Encounter.turn_changed.connect(func(old: int, new: int) -> void:
+		var from_behind: bool = (
+			new > old and new == party_member_index or
+			# Going from enemy to first party member.
+			party_member_index == 0 and new == 0 and old > Encounter.party_members.size() - 1
+		)
+		if from_behind:
+			button_index = 0
+		
 		reset_ui()
+		
+		if not from_behind:
+			# Do setter side-effects.
+			button_index = button_index
 	)
 
 

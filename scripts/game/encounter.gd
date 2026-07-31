@@ -8,10 +8,12 @@ signal started(tile: Tile)
 signal ending(tile: Tile, won: bool)
 signal ended(tile: Tile, won: bool)
 signal turn_ended(turn: int)
+signal turn_changed(old: int, new: int)
 signal state_changed(old: State, new: State)
 signal enemy_turn_started
 signal enemy_turn_ended
 signal intention_set(intention: Intention, party_member: PartyMember)
+signal tp_changed(old: int, new: int)
 
 enum Intention {
 	Fight,
@@ -32,7 +34,7 @@ var enemies: Array[EncounterEnemy]
 var party_members: Array[PartyMember]
 var party_member: PartyMember:
 	get:
-		return party_members[turn]
+		return party_members.get(turn)
 var state: State = State.PartyMembers:
 	set(value):
 		if state != value:
@@ -46,7 +48,22 @@ var state: State = State.PartyMembers:
 			elif old == State.Enemy:
 				enemy_turn_ended.emit()
 var running: bool = false
-var turn: int
+var turn: int:
+	set(value):
+		if turn != value:
+			var old: int = turn
+			turn = value
+			turn_changed.emit(old, turn)
+var is_enemy_turn: bool:
+	get:
+		return turn > party_members.size() - 1
+var tp: int = 0:
+	set(value):
+		if tp != value:
+			var old: int = tp
+			tp = value
+			tp_changed.emit(old, tp)
+var tp_earned_for_defending: int = 16
 var ui: EncounterUI
 var music_player: AudioStreamPlayer
 var sfx_player: AudioStreamPlayer
@@ -62,8 +79,8 @@ func _ready() -> void:
 	add_child(sfx_player)
 	
 	Game.play_end.connect(func() -> void:
-		if Encounter.in_encounter:
-			Encounter.end(true)
+		if in_encounter:
+			end(true, true)
 	)
 
 
@@ -72,8 +89,19 @@ func _process(delta: float) -> void:
 	pass
 
 func _input(event: InputEvent) -> void:
-	if in_encounter and Creator.enabled and event.is_action_pressed(&"debug_end_encounter"):
-		end(true)
+	if not in_encounter:
+		return
+	
+	if Creator.enabled and event.is_action_pressed(&"debug_end_encounter"):
+		end(true, true)
+	
+	# Go back
+	if turn > 0 and not is_enemy_turn and event.is_action_pressed(&"encounter_back"):
+		turn -= 1
+		
+		if party_member.encounter_intention == Intention.Defend:
+			# Get rid of earned TP.
+			tp -= tp_earned_for_defending
 
 
 func deal_damage_to_enemy(enemy_index: int, amount: int) -> void:
@@ -101,6 +129,9 @@ func heal_party_targets(amount: int) -> void:
 
 func set_intention(intention: Intention) -> void:
 	print_debug("[Encounter] %s will %s this turn." % [party_member.name, Intention.keys()[intention]])
+	if intention == Intention.Defend:
+		tp += tp_earned_for_defending
+	
 	party_member.encounter_intention = intention
 	intention_set.emit(intention, party_member)
 	end_turn()
@@ -159,6 +190,7 @@ func start(tile: Tile) -> void:
 	Game.mode = Game.Mode.Encounter
 	state = State.PartyMembers
 	turn = 0
+	tp = 0
 	running = true
 	in_encounter = true
 	encounter_tile = tile
@@ -226,7 +258,7 @@ func end(won: bool, skip_anim: bool = false) -> void:
 	if not in_encounter:
 		return
 	
-	print_debug("[Encounter] Encounter ended.")
+	print_debug("[Encounter] Encounter ended with %d tp." % tp)
 	ending.emit(encounter_tile, won)
 	
 	if not skip_anim:

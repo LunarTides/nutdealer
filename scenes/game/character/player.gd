@@ -22,10 +22,17 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+	var actual_speed: float = speed
+	if Input.is_action_pressed(&"run"):
+		actual_speed *= 2
+		animated_sprite_2d.speed_scale = 2
+	else:
+		animated_sprite_2d.speed_scale = 1
+	
 	# Get the input vector and handle the movement.
 	var vector: Vector2 = Input.get_vector(&"walk_left", &"walk_right", &"walk_up", &"walk_down")
 	if vector:
-		velocity = vector * speed
+		velocity = vector * actual_speed
 	else:
 		velocity = Vector2.ZERO
 	

@@ -24,7 +24,13 @@ border_width_bottom = 1
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(33, 256)
 
-[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "camera_2d", "soul_container")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8jri"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qhs1"]
+bg_color = Color(0.94957036, 0.8877815, 0, 1)
+
+[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "camera_2d", "soul_container", "tp_bar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,15 +42,16 @@ grid_move_speed = 25.0
 grid = NodePath("Grid")
 camera_2d = NodePath("Camera2D")
 soul_container = NodePath("SoulContainer")
+tp_bar = NodePath("MarginContainer/TPBar")
 
 [node name="Grid" type="TextureRect" parent="." unique_id=1906994448]
 modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -96.075096
-offset_top = -159.92343
-offset_right = 1311.9249
-offset_bottom = 736.07654
+offset_left = -99.92009
+offset_top = -156.07874
+offset_right = 1308.08
+offset_bottom = 739.92126
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
@@ -162,5 +169,26 @@ shape = SubResource("RectangleShape2D_hakx0")
 
 [node name="Soul" parent="SoulContainer" unique_id=1163045652 instance=ExtResource("8_1eyuo")]
 position = Vector2(127, 130)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1927753956]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="TPBar" type="ProgressBar" parent="MarginContainer" unique_id=286813159]
+custom_minimum_size = Vector2(16, 256)
+layout_mode = 2
+theme_override_constants/outline_size = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_r8jri")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6qhs1")
+value = 50.0
+fill_mode = 3
 
 [connection signal="pressed" from="Creator/VBoxContainer/EndEncounterButton" to="Creator" method="_on_end_encounter_button_pressed"]

@@ -35,6 +35,12 @@ func _ready() -> void:
 			Encounter.deal_damage_to_enemy(0, 50)
 	)
 	
+	# Play idle animation when it becomes this party member's turn.
+	Encounter.turn_changed.connect(func(old: int, new: int) -> void:
+		if new == index:
+			animated_sprite_2d.play(&"battle_idle")
+	)
+	
 	# Reset to idle animation when enemy turn ends.
 	Encounter.enemy_turn_ended.connect(func() -> void:
 		play_idle_animation()

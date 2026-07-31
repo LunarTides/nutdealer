@@ -18,10 +18,15 @@ func _ready() -> void:
 	)
 
 func _physics_process(delta: float) -> void:
+	var actual_speed: float = speed
+	if Input.is_action_pressed(&"run"):
+		# Precision mode.
+		actual_speed /= 2
+	
 	# TODO: Maybe don't normalize this vector?
 	var direction: Vector2 = Input.get_vector(&"walk_left", &"walk_right", &"walk_up", &"walk_down")
 	if direction:
-		velocity = direction * speed
+		velocity = direction * actual_speed
 	else:
 		velocity = Vector2.ZERO
 	
