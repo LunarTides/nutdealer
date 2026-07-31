@@ -6,6 +6,7 @@ const HOVER_SFX: AudioStream = preload("res://assets/audio/text/queen.wav")
 const EXPLOSION_SFX: AudioStream = preload("res://assets/audio/sfx/badexplosion.wav")
 
 signal id_changed
+signal clicked(button_index: MouseButton)
 
 @export var texture: Texture2D:
 	set(value):
@@ -109,6 +110,7 @@ func _ready() -> void:
 	
 	static_body_2d.mouse_entered.connect(_on_mouse_entered)
 	static_body_2d.mouse_exited.connect(_on_mouse_exited)
+	static_body_2d.input_event.connect(_on_input_event)
 	
 	explosion_animated_sprite.hide()
 	
@@ -244,7 +246,7 @@ func set_logic_script_to(script: GDScript) -> void:
 		logic_script_path = script.resource_path
 
 func _on_mouse_entered() -> void:
-	if Creator.enabled and Creator.mode == Creator.Mode.None and enabled and not actions.visible:
+	if Creator.enabled and Creator.mode == Creator.Mode.Select and enabled and not actions.visible:
 		sprite_2d.self_modulate *= 1.25
 		creator_sfx_player.stream = HOVER_SFX
 		creator_sfx_player.play()
@@ -252,6 +254,10 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if Creator.enabled:
 		sprite_2d.self_modulate = Color.WHITE
+
+func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if Creator.enabled and event is InputEventMouseButton and event.is_pressed():
+		clicked.emit(event.button_index)
 
 func regenerate_id() -> void:
 	var chars: String = "abcdefghijklmnopqrstuvwxyz"

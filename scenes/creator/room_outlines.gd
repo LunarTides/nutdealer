@@ -12,12 +12,12 @@ var hovering: int = -1:
 		hovering = value
 		CreatorRoomManipulation.hovering = hovering
 		
-		if hovering == -1:
-			# Not hovering. Show on top of tiles.
-			z_index = 0
-		else:
-			# Hovering. Show behind tiles.
-			z_index = -3
+		#if hovering == -1:
+			## Not hovering. Show on top of tiles.
+			#z_index = 0
+		#else:
+			## Hovering. Show behind tiles.
+			#z_index = -3
 		
 		queue_redraw()
 var hovering_handle: Vector2 = Vector2.ZERO:
@@ -51,12 +51,17 @@ func _ready() -> void:
 	Game.play_end.connect(func() -> void:
 		show()
 	)
+	
+	Creator.mode_changed.connect(func(old: Creator.Mode, new: Creator.Mode) -> void:
+		if old == Creator.Mode.Room or new == Creator.Mode.Room:
+			queue_redraw()
+	)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	# Handle hovering.
-	if Creator.mode != Creator.Mode.None:
+	if Creator.mode != Creator.Mode.Select and Creator.mode != Creator.Mode.Room:
 		# We're in some kind of mode. Remove hovering state.
 		if hovering != -1:
 			hovering = -1
@@ -65,12 +70,12 @@ func _process(delta: float) -> void:
 	var mouse_pos: Vector2 = Global.mouse_position
 	
 	# Don't hover if the mouse is on a tile.
-	var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
-	var is_on_tile: bool = Game.tiles.is_tile_on(mouse_coords)
-	if is_on_tile:
-		if hovering != -1:
-			hovering = -1
-		return
+	#var mouse_coords: Vector2i = Global.position_to_coords(mouse_pos)
+	#var is_on_tile: bool = Game.tiles.is_tile_on(mouse_coords)
+	#if is_on_tile:
+		#if hovering != -1:
+			#hovering = -1
+		#return
 	
 	var room_index: int = Room.position_to_room_index(mouse_pos)
 	if hovering != room_index:
@@ -78,8 +83,8 @@ func _process(delta: float) -> void:
 	
 	check_hovering_handle()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if Creator.mode != Creator.Mode.None:
+func _input(event: InputEvent) -> void:
+	if Creator.mode != Creator.Mode.Select and Creator.mode != Creator.Mode.Room:
 		# We're in some kind of mode. Remove hovering state.
 		if hovering != -1:
 			hovering = -1
@@ -96,7 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.pressed:
 				start_click_mouse_position = Global.mouse_position
 			else:
-				if hovering != -1 and not hovering_handle and Global.mouse_position.distance_to(start_click_mouse_position) <= 16:
+				if hovering != -1 and not hovering_handle and Creator.mode == Creator.Mode.Room and Global.mouse_position.distance_to(start_click_mouse_position) <= 16:
 					handle_click()
 
 func _draw() -> void:
@@ -113,6 +118,9 @@ func _draw() -> void:
 		
 		var rect: Rect2 = Room.coords_to_position(bound)
 		draw_rect(rect, color, filled, width, true)
+		
+		if Creator.mode != Creator.Mode.Room:
+			continue
 		
 		# Draw corner handles
 		var handle_color: Color = Color.ORANGE_RED
@@ -146,16 +154,19 @@ func check_hovering_handle() -> void:
 	# Sets the `hovering` and `hovering_handle` variables if so.
 	hovering_handle = Vector2.ZERO
 	
+	if Creator.mode != Creator.Mode.Room:
+		return
+	
 	var mouse_pos: Vector2 = Global.mouse_position
 	
-	var top_left: Vector2 =     Vector2(-1, -1)
-	var top: Vector2 =          Vector2(0, -1)
-	var top_right: Vector2 =    Vector2(1, -1)
-	var right: Vector2 =        Vector2(1, 0)
-	var bottom_right: Vector2 = Vector2(1, 1)
-	var bottom: Vector2 =       Vector2(0, 1)
-	var bottom_left: Vector2 =  Vector2(-1, 1)
-	var left: Vector2 =         Vector2(-1, 0)
+	var top_left: Vector2 =     Vector2.UP + Vector2.LEFT
+	var top: Vector2 =          Vector2.UP
+	var top_right: Vector2 =    Vector2.UP + Vector2.RIGHT
+	var right: Vector2 =        Vector2.RIGHT
+	var bottom_right: Vector2 = Vector2.DOWN + Vector2.RIGHT
+	var bottom: Vector2 =       Vector2.DOWN
+	var bottom_left: Vector2 =  Vector2.DOWN + Vector2.LEFT
+	var left: Vector2 =         Vector2.LEFT
 	
 	for i: Vector2 in [top_left, top, top_right, right, bottom_right, bottom, bottom_left, left]:
 		var pos: Vector2 = mouse_pos - i * handle_size
@@ -190,7 +201,7 @@ func check_hovering_handle() -> void:
 			break
 
 func set_hovering_handle_cursor_shape() -> void:
-	if not hovering_handle:
+	if not hovering_handle or Creator.mode != Creator.Mode.Room:
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		return
 	

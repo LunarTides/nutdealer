@@ -55,6 +55,7 @@ func _ready() -> void:
 	
 	music_player = AudioStreamPlayer.new()
 	music_player.bus = &"Music"
+	music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(music_player)
 	
 	canvas_layer = CanvasLayer.new()

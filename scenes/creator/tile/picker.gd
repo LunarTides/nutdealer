@@ -23,6 +23,15 @@ func _ready() -> void:
 	Game.mode_changed.connect(func(old: Game.Mode, new: Game.Mode) -> void:
 		visible = new == Game.Mode.DarkWorld
 	)
+	Creator.mode_changed.connect(func(old: Creator.Mode, new: Creator.Mode) -> void:
+		if new == Creator.Mode.Brush:
+			var items: PackedInt32Array = get_selected_items()
+			var index: int = 0
+			if items.size() > 0:
+				index = items[0]
+			
+			item_clicked.emit(index, Global.mouse_position, MOUSE_BUTTON_LEFT)
+	)
 	
 	WorldSave.load_ended.connect(func() -> void:
 		for texture: ImageTexture in GameData.custom_tile_textures:
@@ -84,5 +93,5 @@ func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int)
 
 
 func _on_empty_clicked(at_position: Vector2, mouse_button_index: int) -> void:
-	if Creator.mode == Creator.Mode.PlacingTile:
-		Creator.mode = Creator.Mode.None
+	if Creator.mode == Creator.Mode.Brush:
+		Creator.mode = Creator.Mode.Select

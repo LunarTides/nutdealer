@@ -14,6 +14,7 @@ var sfx_player: AudioStreamPlayer
 var has_placed_tile: bool = false
 var dragging: bool = false
 var should_erase: bool = false
+var previous_mode: Creator.Mode
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,19 +29,19 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Creator.mode != Creator.Mode.PlacingTile:
+	if Creator.mode != Creator.Mode.Brush:
 		return
 	
 	if not is_instance_valid(tile_texture_button):
-		Game.feedback("Placing tile without proper tile_texture_button.", Game.FeedbackType.Error)
-		Creator.mode = Creator.Mode.None
+		#Game.feedback("Placing tile without proper tile_texture_button.", Game.FeedbackType.Error)
+		#Creator.mode = Creator.Mode.Select
 		return
 	
 	var mouse: Vector2 = tile_texture_button.get_global_mouse_position()	
 	tile_texture_button.global_position = Global.align_to_grid(mouse)
 
 func _input(event: InputEvent) -> void:
-	if Creator.mode != Creator.Mode.PlacingTile or not is_instance_valid(tile_texture_button):
+	if Creator.mode != Creator.Mode.Brush or not is_instance_valid(tile_texture_button):
 		return
 	
 	if event is InputEventMouseButton:
@@ -76,14 +77,20 @@ func start(tile_to_place: Tile) -> void:
 		Game.feedback("Placing tile without proper tile.", Game.FeedbackType.Error)
 		return
 	
-	Creator.mode = Creator.Mode.PlacingTile
+	# Can't go Brush > Brush.
+	# It's a tradeoff, don't worry about it.
+	if Creator.mode != Creator.Mode.Brush:
+		previous_mode = Creator.mode
+	
+	Creator.mode = Creator.Mode.Brush
 	tile = tile_to_place
 	has_placed_tile = false
 	should_erase = false
 	create_hovering_tile()
 
 func stop() -> void:
-	Creator.mode = Creator.Mode.None
+	Creator.mode = previous_mode
+	previous_mode = Creator.Mode.Select
 	
 	if is_instance_valid(tile_texture_button):
 		tile_texture_button.queue_free()
@@ -95,8 +102,11 @@ func stop() -> void:
 
 func create_hovering_tile() -> void:
 	# The mode might change halfway through. (E.g. If connected to the placed signal.)
-	if Creator.mode != Creator.Mode.PlacingTile:
+	if Creator.mode != Creator.Mode.Brush:
 		return
+	
+	if is_instance_valid(tile_texture_button):
+		tile_texture_button.queue_free()
 	
 	tile_texture_button = TextureButton.new()
 	tile_texture_button.texture_normal = tile.texture

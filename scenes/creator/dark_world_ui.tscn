@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://scenes/creator/dark_world_ui.gd" id="1_0wj4i"]
 [ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://scenes/creator/room_outlines.gd" id="2_skldr"]
+[ext_resource type="Script" uid="uid://cjvyif2pvhch7" path="res://scenes/creator/select_outline.gd" id="3_b6efl"]
 [ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://assets/sprites/creator/grid_bg.png" id="3_wyeqc"]
 [ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://scenes/creator/pause_menu.tscn" id="4_xy4lk"]
 [ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://assets/sprites/tiles/debug/red.svg" id="5_2sl0l"]
@@ -16,11 +17,34 @@
 [ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://scenes/creator/preview_actions.gd" id="12_2sl0l"]
 [ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://assets/sprites/characters/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
 [ext_resource type="AudioStream" uid="uid://dyjhtv2p0olgm" path="res://assets/audio/sfx/bell_bounce_short.wav" id="13_hwafg"]
+[ext_resource type="AudioStream" uid="uid://c7f127tdrdhxq" path="res://assets/audio/sfx/bombfall.wav" id="15_b6efl"]
+[ext_resource type="Texture2D" uid="uid://4qpb54kmnmy6" path="res://assets/sprites/creator/select.png" id="15_f1qoc"]
 [ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://scenes/creator/party_member_manager.gd" id="15_f3slr"]
+[ext_resource type="Script" uid="uid://c6fi5aify3c8t" path="res://scenes/creator/mode_select_button.gd" id="15_jixhe"]
 [ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://scenes/creator/party_member.tscn" id="15_oboim"]
+[ext_resource type="Texture2D" uid="uid://cok11pnim7qgm" path="res://assets/sprites/creator/brush.png" id="17_2q0nb"]
+[ext_resource type="Texture2D" uid="uid://de1rmrgsmwooo" path="res://assets/sprites/creator/room.png" id="18_jjb2j"]
 [ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://resources/sprite_frames/kris.tres" id="18_o23ng"]
 [ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://resources/sprite_frames/susie.tres" id="19_dw1n6"]
 [ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://resources/sprite_frames/ralsei.tres" id="20_kahae"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_jixhe"]
+action = &"creator_mode_select"
+
+[sub_resource type="Shortcut" id="Shortcut_vr4ht"]
+events = [SubResource("InputEventAction_jixhe")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_vr4ht"]
+action = &"creator_mode_brush"
+
+[sub_resource type="Shortcut" id="Shortcut_jixhe"]
+events = [SubResource("InputEventAction_vr4ht")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_b6efl"]
+action = &"creator_mode_room"
+
+[sub_resource type="Shortcut" id="Shortcut_f1qoc"]
+events = [SubResource("InputEventAction_b6efl")]
 
 [sub_resource type="LabelSettings" id="LabelSettings_847bk"]
 outline_size = 2
@@ -44,6 +68,9 @@ pause_menu = NodePath("CanvasLayer/CreatorPauseMenu")
 
 [node name="RoomOutlines" type="Node2D" parent="." unique_id=113025752]
 script = ExtResource("2_skldr")
+
+[node name="SelectOutline" type="Node2D" parent="." unique_id=976455406]
+script = ExtResource("3_b6efl")
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
 modulate = Color(0.38000557, 0.3800056, 0.38000554, 1)
@@ -146,10 +173,13 @@ text = "Preview"
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="CanvasLayer" unique_id=283158090]
 
-[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2" unique_id=849271151 node_paths=PackedStringArray("sfx_player")]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CanvasLayer2" unique_id=1015512963]
 offset_top = 32.0
 offset_right = 76.0
-offset_bottom = 312.0
+offset_bottom = 448.0
+
+[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2/HBoxContainer" unique_id=849271151 node_paths=PackedStringArray("sfx_player")]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 1
@@ -165,8 +195,52 @@ item_5/icon = ExtResource("11_ofl6s")
 script = ExtResource("9_o23ng")
 sfx_player = NodePath("AudioStreamPlayer")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/TilePicker" unique_id=1151946189]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" unique_id=1151946189]
 stream = ExtResource("13_hwafg")
+
+[node name="CreatorModeButtons" type="VBoxContainer" parent="CanvasLayer/CanvasLayer2/HBoxContainer" unique_id=1293765159]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 6)
+offset_transform_visual_only = false
+
+[node name="SelectButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1109736240 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Select"
+action_mode = 0
+shortcut = SubResource("Shortcut_vr4ht")
+texture_normal = ExtResource("15_f1qoc")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="BrushButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1416399473 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Brush"
+action_mode = 0
+shortcut = SubResource("Shortcut_jixhe")
+texture_normal = ExtResource("17_2q0nb")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+mode = 1
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="RoomButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=133145632 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Room"
+action_mode = 0
+shortcut = SubResource("Shortcut_f1qoc")
+texture_normal = ExtResource("18_jjb2j")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+mode = 2
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1842819678]
+stream = ExtResource("15_b6efl")
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
 
@@ -284,8 +358,8 @@ character_name = 2
 sprite_frames = ExtResource("20_kahae")
 
 [connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
-[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/TilePicker" to="CanvasLayer/CanvasLayer2/TilePicker" method="_on_empty_clicked"]
-[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/TilePicker" to="CanvasLayer/CanvasLayer2/TilePicker" method="_on_item_clicked"]
+[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" to="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" to="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" method="_on_item_clicked"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/SpeedButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_speed_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NoclipButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_noclip_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NextRoomButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_next_room_button_pressed"]

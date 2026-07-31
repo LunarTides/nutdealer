@@ -36,7 +36,7 @@ func _input(event: InputEvent) -> void:
 			hide()
 
 func _on_static_body_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if Creator.enabled and not visible and event is InputEventMouseButton and event.pressed and tile.enabled:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and Creator.enabled and not visible and event.pressed and tile.enabled and Creator.mode == Creator.Mode.Select:
 		global_position = Global.mouse_position
 		tile.self_modulate *= 1.25
 		show()
@@ -45,6 +45,12 @@ func _on_static_body_2d_input_event(viewport: Node, event: InputEvent, shape_idx
 		sfx_player.play()
 
 func _on_delete_button_pressed() -> void:
+	if CreatorSelect.selected.has(tile):
+		# Also delete selected ones.
+		for selected: Tile in CreatorSelect.selected:
+			selected.delete_with_explosion()
+		CreatorSelect.selected = []
+	
 	tile.delete_with_explosion()
 	hide()
 

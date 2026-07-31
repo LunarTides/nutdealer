@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 		sfx_pitch = 1.0
 
 func _input(event: InputEvent) -> void:
-	if not enabled or Game.playing or Creator.mode != Creator.Mode.None:
+	if not enabled or Creator.mode != Creator.Mode.Room or Game.playing:
 		return
 	
 	# Handle room creation / editing.

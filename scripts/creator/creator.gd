@@ -12,15 +12,17 @@ const CREATOR_ABANDON_SAVE_DIALOGUE: PackedScene = preload("uid://dkt1holgrwxif"
 const FEEDBACK_LABEL: PackedScene = preload("uid://u158p04d7v48")
 
 enum Mode {
-	None,
-	PlacingTile,
+	Select,
+	Brush,
+	Room,
 }
 
-var mode: Mode = Mode.None:
+var mode: Mode = Mode.Select:
 	set(value):
-		var old_mode: Mode = mode
-		mode = value
-		mode_changed.emit(old_mode, mode)
+		if mode != value:
+			var old_mode: Mode = mode
+			mode = value
+			mode_changed.emit(old_mode, mode)
 var enabled: bool = false:
 	set(value):
 		enabled = value
@@ -51,7 +53,7 @@ func _ready() -> void:
 	
 	Game.play_start.connect(func() -> void:
 		# Set to normal mode on play/preview.
-		mode = Mode.None
+		#mode = Mode.Select
 		music_player.stream_paused = true
 	)
 	Game.play_end.connect(func() -> void:

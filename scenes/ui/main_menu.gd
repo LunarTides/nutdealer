@@ -149,10 +149,9 @@ func _on_button_mouse_entered() -> void:
 
 
 func spell() -> void:
-	intro_sfx_player.volume_db = -6.0
-	intro_sfx_player.pitch_scale = 1.0
-	
 	for chr: String in "nutdealer":
+		intro_sfx_player.volume_db = -6.0
+		intro_sfx_player.pitch_scale = 1.0
 		intro_sfx_player.stream = spell_streams[chr]
 		intro_sfx_player.play(0.01)
 		
