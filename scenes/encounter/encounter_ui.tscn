@@ -48,10 +48,10 @@ tp_bar = NodePath("MarginContainer/TPBar")
 modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
 z_index = -10
 layout_mode = 0
-offset_left = -99.92009
-offset_top = -156.07874
-offset_right = 1308.08
-offset_bottom = 739.92126
+offset_left = -89.54098
+offset_top = -166.45813
+offset_right = 1318.459
+offset_bottom = 729.5419
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
@@ -63,7 +63,7 @@ limit_top = 0
 limit_right = 1152
 limit_bottom = 640
 
-[node name="Creator" type="Control" parent="." unique_id=1234424102 node_paths=PackedStringArray("enemy_infos", "end_encounter_button")]
+[node name="Creator" type="Control" parent="." unique_id=1234424102 node_paths=PackedStringArray("enemy_infos", "end_encounter_button", "end_encounter_without_animation_button")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,7 +72,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_v6ope")
 enemy_infos = NodePath("VBoxContainer/EnemyInfos")
-end_encounter_button = NodePath("VBoxContainer/EndEncounterButton")
+end_encounter_button = NodePath("VBoxContainer/HBoxContainer/EndEncounterButton")
+end_encounter_without_animation_button = NodePath("VBoxContainer/HBoxContainer/EndEncounterWithoutAnimationButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Creator" unique_id=6184467]
 layout_mode = 1
@@ -95,9 +96,17 @@ current_tab = 0
 layout_mode = 2
 enemy = SubResource("Resource_q28hl")
 
-[node name="EndEncounterButton" type="Button" parent="Creator/VBoxContainer" unique_id=1417115440]
+[node name="HBoxContainer" type="HBoxContainer" parent="Creator/VBoxContainer" unique_id=322760902]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="EndEncounterButton" type="Button" parent="Creator/VBoxContainer/HBoxContainer" unique_id=1417115440]
 layout_mode = 2
 text = "End Encounter"
+
+[node name="EndEncounterWithoutAnimationButton" type="Button" parent="Creator/VBoxContainer/HBoxContainer" unique_id=1514143177]
+layout_mode = 2
+text = "w/o anim"
 
 [node name="ActionsContainer" type="HBoxContainer" parent="." unique_id=2076557488]
 layout_mode = 1
@@ -191,4 +200,5 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_6qhs1")
 value = 50.0
 fill_mode = 3
 
-[connection signal="pressed" from="Creator/VBoxContainer/EndEncounterButton" to="Creator" method="_on_end_encounter_button_pressed"]
+[connection signal="pressed" from="Creator/VBoxContainer/HBoxContainer/EndEncounterButton" to="Creator" method="_on_end_encounter_button_pressed"]
+[connection signal="pressed" from="Creator/VBoxContainer/HBoxContainer/EndEncounterWithoutAnimationButton" to="Creator" method="_on_end_encounter_without_animation_button_pressed"]

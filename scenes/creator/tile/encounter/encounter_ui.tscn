@@ -11,33 +11,30 @@ custom_minimum_size = Vector2(512, 384)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_wg8ba")
-main = NodePath("VBoxContainer/Upper/Main")
-party_member_customizer = NodePath("VBoxContainer/Lower/PartyMemberCustomizer")
-enemy_customizer = NodePath("VBoxContainer/Lower/EnemyCustomizer")
+main = NodePath("Upper/VBoxContainer/Main")
+party_member_customizer = NodePath("Upper/VBoxContainer/PartyMemberCustomizer")
+enemy_customizer = NodePath("Upper/VBoxContainer/EnemyCustomizer")
 metadata/_tab_index = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=906916803]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Upper" type="HBoxContainer" parent="." unique_id=1077439485]
+layout_mode = 1
+offset_right = 1032.0
+offset_bottom = 1140.0
 theme_override_constants/separation = 8
 
-[node name="Upper" type="HBoxContainer" parent="VBoxContainer" unique_id=1077439485]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Main" parent="VBoxContainer/Upper" unique_id=1151965058 instance=ExtResource("2_nicsj")]
-layout_mode = 2
-
-[node name="Logic" parent="VBoxContainer/Upper" unique_id=23582441 instance=ExtResource("3_rnxnx")]
-layout_mode = 2
-
-[node name="Lower" type="HBoxContainer" parent="VBoxContainer" unique_id=33488717]
+[node name="VBoxContainer" type="VBoxContainer" parent="Upper" unique_id=906916803]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PartyMemberCustomizer" parent="VBoxContainer/Lower" unique_id=1204561274 instance=ExtResource("4_o6kio")]
+[node name="Main" parent="Upper/VBoxContainer" unique_id=1151965058 instance=ExtResource("2_nicsj")]
 layout_mode = 2
 
-[node name="EnemyCustomizer" parent="VBoxContainer/Lower" unique_id=320387843 instance=ExtResource("5_u5u6w")]
+[node name="PartyMemberCustomizer" parent="Upper/VBoxContainer" unique_id=1204561274 instance=ExtResource("4_o6kio")]
+layout_mode = 2
+
+[node name="EnemyCustomizer" parent="Upper/VBoxContainer" unique_id=320387843 instance=ExtResource("5_u5u6w")]
+layout_mode = 2
+
+[node name="Logic" parent="Upper" unique_id=23582441 instance=ExtResource("3_rnxnx")]
+custom_maximum_size = Vector2(-1, 712)
 layout_mode = 2

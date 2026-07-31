@@ -5,6 +5,7 @@ const ENEMY_INFO: PackedScene = preload("uid://cxr3ttkfmv0mw")
 @export_category("UI Nodes")
 @export var enemy_infos: TabContainer
 @export var end_encounter_button: Button
+@export var end_encounter_without_animation_button: Button
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,4 +29,11 @@ func _process(delta: float) -> void:
 
 func _on_end_encounter_button_pressed() -> void:
 	end_encounter_button.hide()
+	end_encounter_without_animation_button.hide()
 	Encounter.end(true)
+
+
+func _on_end_encounter_without_animation_button_pressed() -> void:
+	end_encounter_button.hide()
+	end_encounter_without_animation_button.hide()
+	Encounter.end(true, true)
