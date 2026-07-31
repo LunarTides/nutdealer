@@ -109,6 +109,7 @@ func play_from(room_index: int) -> void:
 	
 	# Disable tiles outside room.
 	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
+		# FIXME: Disables the border tiles for some asinine reason. (Only in creator for some reason.)
 		tile.disable()
 	)
 	# Enable tiles inside room.

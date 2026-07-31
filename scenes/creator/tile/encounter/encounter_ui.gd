@@ -16,7 +16,7 @@ var tile: Tile:
 var enemy_index: int = 0
 var enemy: EncounterEnemy:
 	get:
-		return tile.encounter_enemies[enemy_index]
+		return tile.encounter.enemies[enemy_index]
 var old_grid_position: Vector2
 
 # Called when the node enters the scene tree for the first time.

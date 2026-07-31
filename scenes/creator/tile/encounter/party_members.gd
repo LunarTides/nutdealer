@@ -14,8 +14,8 @@ const PARTY_MEMBER: PackedScene = preload("uid://bhgdjs3lbq3cl")
 			for child: Control in get_children():
 				child.queue_free()
 			
-			for i: int in range(tile.encounter_party_members.size()):
-				var party_member: PartyMember = tile.encounter_party_members[i]
+			for i: int in range(tile.encounter.party_members.size()):
+				var party_member: PartyMember = tile.encounter.party_members[i]
 				
 				var party_member_node: Button = PARTY_MEMBER.instantiate()
 				party_member_node.party_member_index = i
@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 
 func _on_add_button_pressed() -> void:
 	var encounter_enemy: EncounterEnemy = EncounterEnemy.new()
-	tile.encounter_enemies.append(encounter_enemy)
+	tile.encounter.enemies.append(encounter_enemy)
 	
 	var new_index: int = get_child_count()
 	
@@ -66,7 +66,7 @@ func setup_party_member_node(node: Button) -> void:
 		party_member_customizer.show()
 	)
 	node.deleted.connect(func() -> void:
-		tile.encounter_party_members.pop_at(node.party_member_index)
+		tile.encounter.party_members.pop_at(node.party_member_index)
 		for child: Button in get_children():
 			child.party_member_index -= 1
 	)

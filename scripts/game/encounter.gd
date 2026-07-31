@@ -194,8 +194,8 @@ func start(tile: Tile) -> void:
 	running = true
 	in_encounter = true
 	encounter_tile = tile
-	enemies = encounter_tile.encounter_enemies.duplicate_deep()
-	party_members = encounter_tile.encounter_party_members.duplicate_deep()
+	enemies = encounter_tile.encounter.enemies.duplicate_deep()
+	party_members = encounter_tile.encounter.party_members.duplicate_deep()
 	
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():

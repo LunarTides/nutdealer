@@ -8,12 +8,9 @@ var tile: Tile:
 	set(value):
 		tile = value
 		
-		if tile.room_transition_index != -1:
+		if is_instance_valid(tile.room_transition) and tile.room_transition.index != -1:
 			connect_button.text = "Connected to Room %d (%d, %d)" % [tile.room_transition_index, tile.room_transition_coords.x, tile.room_transition_coords.y]
-		
-		for index: int in option_button.item_count:
-			if option_button.get_item_text(index) == tile.room_transition_trigger:
-				option_button.selected = index
+			option_button.selected = tile.room_transition.trigger
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,11 +28,21 @@ func _on_connect_button_pressed() -> void:
 	
 	CreatorRoomManipulation.room_clicked.connect(func(room_index: int) -> void:
 		behavior_ui.force_open = false
-		tile.room_transition_index = room_index
-		tile.room_transition_coords = Global.mouse_coords
+		
+		if not is_instance_valid(tile.room_transition):
+			tile.room_transition = TileRoomTransition.new()
+		
+		tile.room_transition.index = room_index
+		tile.room_transition.coords = Global.mouse_coords
 		connect_button.text = "Connected to Room %d (%d, %d)" % [room_index, Global.mouse_coords.x, Global.mouse_coords.y]
 	, ConnectFlags.CONNECT_ONE_SHOT)
 
 
 func _on_option_button_item_selected(index: int) -> void:
-	tile.room_transition_trigger = option_button.get_item_text(index)
+	if not is_instance_valid(tile.room_transition):
+		# Nope.
+		option_button.selected = 0
+		return
+	
+	# Trust.
+	tile.room_transition.trigger = index as TileRoomTransition.Trigger

@@ -47,21 +47,18 @@ signal clicked(button_index: MouseButton)
 	set(value):
 		encounter_on_interact = value
 		
+		if not is_instance_valid(encounter):
+			encounter = TileEncounter.new()
+		
 		if is_inside_tree():
 			regenerate_id()
 			
 			if encounter_on_interact:
 				load_encounter_party_members()
 @export var enabled: bool = true
+@export var room_transition: TileRoomTransition
+@export var encounter: TileEncounter
 @export_storage var logic_script_path: String
-# TODO: Turn these into custom resources to reduce clutter.
-@export_storage var room_transition_index: int = -1
-@export_storage var room_transition_coords: Vector2i
-@export_storage var room_transition_trigger: StringName = &"On Touch"
-# TODO: Replace with a path for reusing encounters.
-# TODO: Also, don't initialize this here, otherwise ALL tiles will have this in the world save.
-@export_storage var encounter_enemies: Array[EncounterEnemy] = [EncounterEnemy.new()]
-@export_storage var encounter_party_members: Array[PartyMember]
 
 var id: String = "null":
 	set(value):
@@ -94,7 +91,7 @@ var logic_script_dirty: bool = false
 var border_tile_for_room_index: int = -1
 var should_override_border_tile: bool:
 	get:
-		return room_transition_index != -1 and room_transition_trigger == &"On Touch"
+		return is_instance_valid(room_transition) and room_transition.index != -1 and room_transition.trigger == TileRoomTransition.Trigger.Touch
 var is_encounter: bool:
 	get:
 		return encounter_on_interact
@@ -179,15 +176,20 @@ func interact() -> void:
 	if encounter_on_interact:
 		Encounter.start(self)
 	
-	try_room_transition(&"On Interact")
+	try_room_transition(TileRoomTransition.Trigger.Interact)
 
 func touch() -> void:
 	logic._touch()
 	
 	if encounter_on_interact:
 		Encounter.start(self)
+		Encounter.ended.connect(func(tile: Tile, won: bool) -> void:
+			if tile == self:
+				# Delete so we won't automatically enter the encounter again.
+				queue_free()
+		)
 	
-	try_room_transition(&"On Touch")
+	try_room_transition(TileRoomTransition.Trigger.Touch)
 
 func disable() -> void:
 	hide()
@@ -296,26 +298,26 @@ func load_encounter_party_members() -> void:
 	kris.name = "Kris"
 	kris.health = 100
 	kris.sprite_frames = load("res://resources/sprite_frames/kris.tres")
-	encounter_party_members.append(kris)
+	encounter.party_members.append(kris)
 	
 	var susie: PartyMember = PartyMember.new()
 	susie.name = "Susie"
 	susie.health = 100
 	susie.sprite_frames = load("res://resources/sprite_frames/susie.tres")
-	encounter_party_members.append(susie)
+	encounter.party_members.append(susie)
 	
 	var ralsei: PartyMember = PartyMember.new()
 	ralsei.name = "Ralsei"
 	ralsei.health = 100
 	ralsei.sprite_frames = load("res://resources/sprite_frames/ralsei.tres")
-	encounter_party_members.append(ralsei)
+	encounter.party_members.append(ralsei)
 
-func try_room_transition(from: StringName) -> void:
-	if room_transition_index == -1 or room_transition_trigger != from:
+func try_room_transition(from: TileRoomTransition.Trigger) -> void:
+	if not is_instance_valid(room_transition) or room_transition.index == -1 or room_transition.trigger != from:
 		return
 	
 	# Do room transition.
-	Game.switch_room(room_transition_index)
+	Game.switch_room(room_transition.index)
 	
-	if room_transition_coords:
-		Game.player.global_position = Global.coords_to_position(room_transition_coords) + Vector2(32, 32)
+	if room_transition.coords:
+		Game.player.global_position = Global.coords_to_position(room_transition.coords) + Vector2(32, 32)

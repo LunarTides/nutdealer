@@ -11,10 +11,10 @@ var enemy_index: int = 0:
 		update_ui()
 var enemy: EncounterEnemy:
 	get:
-		if not is_instance_valid(tile):
+		if not is_instance_valid(tile) or not is_instance_valid(tile.encounter):
 			return
 		
-		return tile.encounter_enemies[enemy_index]
+		return tile.encounter.enemies[enemy_index]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

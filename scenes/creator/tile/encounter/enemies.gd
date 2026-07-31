@@ -14,8 +14,8 @@ const ENEMY: PackedScene = preload("uid://du043hf2x26vo")
 			for child: Control in get_children():
 				child.queue_free()
 			
-			for i: int in range(tile.encounter_enemies.size()):
-				var _enemy: EncounterEnemy = tile.encounter_enemies[i]
+			for i: int in range(tile.encounter.enemies.size()):
+				var _enemy: EncounterEnemy = tile.encounter.enemies[i]
 				
 				var enemy_node: Button = ENEMY.instantiate()
 				enemy_node.enemy_index = i
@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 
 func _on_add_button_pressed() -> void:
 	var enemy: EncounterEnemy = EncounterEnemy.new()
-	tile.encounter_enemies.append(enemy)
+	tile.encounter.enemies.append(enemy)
 	
 	var new_index: int = get_child_count()
 	
@@ -62,7 +62,7 @@ func setup_enemy_node(node: Button) -> void:
 		enemy_customizer.show()
 	)
 	node.deleted.connect(func() -> void:
-		tile.encounter_enemies.pop_at(node.enemy_index)
+		tile.encounter.enemies.pop_at(node.enemy_index)
 		for child: Button in get_children():
 			child.enemy_index -= 1
 	)

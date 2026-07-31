@@ -10,13 +10,13 @@ var party_member_index: int = 0:
 		update_ui()
 var party_member: PartyMember:
 	get:
-		if not is_instance_valid(tile):
+		if not is_instance_valid(tile) or not is_instance_valid(tile.encounter):
 			return
 		
-		if tile.encounter_party_members.size() <= party_member_index:
+		if tile.encounter.party_members.size() <= party_member_index:
 			return
 		
-		return tile.encounter_party_members[party_member_index]
+		return tile.encounter.party_members[party_member_index]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
