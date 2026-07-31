@@ -101,6 +101,12 @@ func play_from(room_index: int) -> void:
 		feedback("This world has no rooms.", FeedbackType.Error)
 		return
 	
+	playing = true
+	current_room = room_index
+	
+	# This has side-effects that changes which tiles are considered inside the room.
+	constrain_player_to_current_room()
+	
 	# Disable tiles outside room.
 	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
 		tile.disable()
@@ -109,9 +115,6 @@ func play_from(room_index: int) -> void:
 	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
 		tile.enable()
 	)
-	
-	playing = true
-	current_room = room_index
 	
 	# Create pause menu.
 	if not Creator.enabled and not is_instance_valid(pause_menu):
@@ -134,7 +137,6 @@ func play_from(room_index: int) -> void:
 		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
 	
 	play_music()
-	constrain_player_to_current_room()
 	constrain_camera_to_current_room()
 
 func stop_playing() -> void:
@@ -200,8 +202,16 @@ func constrain_camera_to_current_room() -> void:
 	player.camera.limit_bottom = int(room_position_px.y + room_size_px.y)
 
 func create_border_tile(coords: Vector2i) -> Tile:
+	var existing_tile: Tile = tiles.get_tile_on(coords)
+	if existing_tile:
+		# For bordering room transitions and stuff.
+		if existing_tile.should_override_border_tile:
+			existing_tile.border_tile_for_room_index = current_room
+			return
+	
 	var tile: Tile = TILE.instantiate()
 	tile.is_solid = true
+	tile.border_tile_for_room_index = current_room
 	#tile.texture = preload("res://icon.svg")
 	
 	# Delete tile when room changed, or play ended.

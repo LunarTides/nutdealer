@@ -7,6 +7,8 @@ enum Action {
 	Move,
 }
 
+signal room_clicked(index: int)
+
 var enabled: bool = true
 
 var room_start_pos: Vector2
@@ -80,7 +82,18 @@ func _process(delta: float) -> void:
 		sfx_pitch = 1.0
 
 func _input(event: InputEvent) -> void:
-	if not enabled or Creator.mode != Creator.Mode.Room or Game.playing:
+	if not enabled:
+		return
+	
+	# Emit room_clicked signal.
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.is_released():
+				var room_index: int = Room.position_to_room_index(Global.mouse_position)
+				if room_index != -1:
+					room_clicked.emit(room_index)
+	
+	if Creator.mode != Creator.Mode.Room or Game.playing:
 		return
 	
 	# Handle room creation / editing.

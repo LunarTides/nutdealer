@@ -81,3 +81,11 @@ func set_correct_direction() -> void:
 		direction = Vector2(0, 1)
 	elif velocity.y < 0:
 		direction = Vector2(0, -1)
+
+
+func _on_trigger_area_body_entered(body: Node2D) -> void:
+	if body.get_parent() is not Tile:
+		return
+	
+	var tile: Tile = body.get_parent()
+	tile.touch()

@@ -59,9 +59,8 @@ func start() -> void:
 					return
 				
 				if button_index == MOUSE_BUTTON_LEFT:
-					play_select_sfx()
-					
 					if Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_CTRL):
+						play_select_sfx()
 						var tile_selected: bool = selected.has(node)
 						if tile_selected:
 							selected.erase(node)
@@ -71,7 +70,11 @@ func start() -> void:
 						selected.append(node)
 						selected_changed.emit(selected, selected)
 					else:
+						if selected.size() > 1 && selected.has(node):
+							return
+						
 						selected = [node]
+						play_select_sfx()
 			)
 		)
 		Game.tiles.child_exiting_tree.connect(func(node: Node) -> void:

@@ -13,6 +13,10 @@ func _process(delta: float) -> void:
 func _interact() -> void:
 	pass
 
+# Called when the tile is walked on by the player.
+func _touch() -> void:
+	pass
+
 # Called when the player enters the room this tile is in.
 func _room_enter() -> void:
 	pass

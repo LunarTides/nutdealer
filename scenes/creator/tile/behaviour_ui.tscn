@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bdg2wc7tdum4n" path="res://scenes/creator/tile/behaviour_ui.gd" id="1_nbn28"]
 [ext_resource type="Script" uid="uid://bufb1mmxroj0y" path="res://scenes/creator/tile/behaviour_check_box.gd" id="2_nbn28"]
 [ext_resource type="PackedScene" uid="uid://qpikcm3h5lhc" path="res://scenes/creator/code_edit.tscn" id="3_6f6pg"]
+[ext_resource type="Script" uid="uid://wuu8oro7kssa" path="res://scenes/creator/tile/room_transition.gd" id="3_l10u4"]
 [ext_resource type="PackedScene" uid="uid://btwgbfpd6n7kt" path="res://scenes/creator/tile/encounter/encounter_ui.tscn" id="3_mg6f4"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_0dgii"]
@@ -12,7 +13,7 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_bou05"]
 events = [SubResource("InputEventAction_0dgii")]
 
-[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit", "code_container", "encounter_container")]
+[node name="CreatorTileBehaviourUI" type="Control" unique_id=776226173 node_paths=PackedStringArray("tab_container", "check_box_container", "code_edit", "code_container", "encounter_container", "room_transition")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,6 +26,7 @@ check_box_container = NodePath("TabContainer/Properties/CheckBoxContainer")
 code_edit = NodePath("TabContainer/Code/VBoxContainer/CodeEdit")
 code_container = NodePath("TabContainer/Code")
 encounter_container = NodePath("TabContainer/Encounter")
+room_transition = NodePath("TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=1293620555]
 layout_mode = 1
@@ -68,6 +70,39 @@ tooltip_text = "If the tile should start an encounter on interact"
 text = "Encounter on interact (temp)"
 script = ExtResource("2_nbn28")
 tile_property = &"encounter_on_interact"
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Properties/CheckBoxContainer" unique_id=1337452339]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="RoomTransition" type="VBoxContainer" parent="TabContainer/Properties/CheckBoxContainer/MarginContainer" unique_id=629684205 node_paths=PackedStringArray("behavior_ui", "connect_button", "option_button")]
+layout_mode = 2
+script = ExtResource("3_l10u4")
+behavior_ui = NodePath("../../../../..")
+connect_button = NodePath("ConnectButton")
+option_button = NodePath("OptionButton")
+
+[node name="Label" type="Label" parent="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition" unique_id=1477962827]
+layout_mode = 2
+text = "Room Transition"
+
+[node name="ConnectButton" type="Button" parent="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition" unique_id=1483560268]
+layout_mode = 2
+text = "Connect..."
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition" unique_id=1921508778]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "On Touch"
+popup/item_0/id = 0
+popup/item_1/text = "On Interact"
+popup/item_1/id = 1
+popup/item_2/text = "Manual"
+popup/item_2/id = 2
 
 [node name="Encounter" parent="TabContainer" unique_id=668010796 node_paths=PackedStringArray("behavior_ui") instance=ExtResource("3_mg6f4")]
 visible = false
@@ -115,6 +150,10 @@ func _process(delta):
 func _interact():
 	pass
 
+# Called when the tile is walked on by the player.
+func _touch() -> void:
+	pass
+
 # Called when the player enters the room this tile is in.
 func _room_enter():
 	pass
@@ -124,6 +163,8 @@ func _room_exit():
 	pass
 "
 
+[connection signal="pressed" from="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition/ConnectButton" to="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition" method="_on_connect_button_pressed"]
+[connection signal="item_selected" from="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition/OptionButton" to="TabContainer/Properties/CheckBoxContainer/MarginContainer/RoomTransition" method="_on_option_button_item_selected"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="TabContainer/Code/VBoxContainer/HBoxContainer/ReadyButton" to="." method="_on_ready_button_pressed"]

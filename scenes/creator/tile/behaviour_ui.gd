@@ -8,18 +8,20 @@ const TILE_SCRIPT_PICKER: PackedScene = preload("uid://kkq2d5rx0xkf")
 @export var code_edit: CodeEdit
 @export var code_container: PanelContainer
 @export var encounter_container: Control
+@export var room_transition: VBoxContainer
 
 var tile: Tile:
 	set(value):
 		tile = value
 		
-		for check_box: TileBehaviourCheckBox in check_box_container.get_children():
+		for check_box: Control in check_box_container.get_children():
 			if check_box is not TileBehaviourCheckBox:
-				return
+				continue
 			
 			check_box.tile = tile
 		encounter_container.tile = tile
-		
+		room_transition.tile = tile
+var force_open: bool = false
 var code_intro: String = "extends Node2D
 
 var tile:
@@ -60,6 +62,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 			
 			# Clicked outside window.
+			if force_open:
+				return
+			
 			queue_free()
 
 func reload_ui() -> void:

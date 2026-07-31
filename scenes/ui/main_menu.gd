@@ -117,13 +117,7 @@ func intro_step(step: int) -> void:
 	# END
 	elif step == 3:
 		intro_sfx_player.volume_db = 0.0
-		
-		intro_sfx_player.pitch_scale = 0.8
-		intro_sfx_player.play()
-		
-		await get_tree().create_timer(0.05).timeout
-		intro_sfx_player.pitch_scale = 0.9
-		intro_sfx_player.play()
+		intro_sfx_player.pitch_scale = 1.0
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if Engine.is_editor_hint():
@@ -149,6 +143,9 @@ func _on_button_mouse_entered() -> void:
 
 
 func spell() -> void:
+	# Kinda sucks and blows.
+	return
+	
 	for chr: String in "nutdealer":
 		intro_sfx_player.volume_db = -6.0
 		intro_sfx_player.pitch_scale = 1.0

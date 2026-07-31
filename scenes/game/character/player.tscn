@@ -24,3 +24,11 @@ animation = &"walk_down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=221018930]
 shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="TriggerArea" type="Area2D" parent="." unique_id=1592201361]
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea" unique_id=485047974]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]

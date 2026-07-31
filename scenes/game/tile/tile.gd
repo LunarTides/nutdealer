@@ -54,6 +54,10 @@ signal clicked(button_index: MouseButton)
 				load_encounter_party_members()
 @export var enabled: bool = true
 @export_storage var logic_script_path: String
+# TODO: Turn these into custom resources to reduce clutter.
+@export_storage var room_transition_index: int = -1
+@export_storage var room_transition_coords: Vector2i
+@export_storage var room_transition_trigger: StringName = &"On Touch"
 # TODO: Replace with a path for reusing encounters.
 # TODO: Also, don't initialize this here, otherwise ALL tiles will have this in the world save.
 @export_storage var encounter_enemies: Array[EncounterEnemy] = [EncounterEnemy.new()]
@@ -70,6 +74,9 @@ var coords: Vector2i:
 		global_position = Global.coords_to_position(value)
 var room_index: int:
 	get:
+		if border_tile_for_room_index != -1:
+			return border_tile_for_room_index
+		
 		return Room.position_to_room_index(global_position)
 var logic_script: GDScript:
 	set(value):
@@ -84,6 +91,10 @@ var logic_script_name: String:
 	get:
 		return logic_script_path.split("/")[-1].replace(".gd", "")
 var logic_script_dirty: bool = false
+var border_tile_for_room_index: int = -1
+var should_override_border_tile: bool:
+	get:
+		return room_transition_index != -1 and room_transition_trigger == &"On Touch"
 var is_encounter: bool:
 	get:
 		return encounter_on_interact
@@ -167,6 +178,16 @@ func interact() -> void:
 	
 	if encounter_on_interact:
 		Encounter.start(self)
+	
+	try_room_transition(&"On Interact")
+
+func touch() -> void:
+	logic._touch()
+	
+	if encounter_on_interact:
+		Encounter.start(self)
+	
+	try_room_transition(&"On Touch")
 
 func disable() -> void:
 	hide()
@@ -288,3 +309,13 @@ func load_encounter_party_members() -> void:
 	ralsei.health = 100
 	ralsei.sprite_frames = load("res://resources/sprite_frames/ralsei.tres")
 	encounter_party_members.append(ralsei)
+
+func try_room_transition(from: StringName) -> void:
+	if room_transition_index == -1 or room_transition_trigger != from:
+		return
+	
+	# Do room transition.
+	Game.switch_room(room_transition_index)
+	
+	if room_transition_coords:
+		Game.player.global_position = Global.coords_to_position(room_transition_coords) + Vector2(32, 32)
