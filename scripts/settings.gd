@@ -4,6 +4,7 @@ signal changed
 
 var path: String = "user://settings.cfg"
 var creator: CreatorSettings = CreatorSettings.new()
+var audio: AudioSettings = AudioSettings.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -25,6 +26,9 @@ func save_settings() -> void:
 	
 	settings.set_value("creator", "party_members_enabled", creator.party_members_enabled)
 	
+	settings.set_value("audio", "master_volume", audio.master_volume)
+	settings.set_value("audio", "music_volume", audio.music_volume)
+	
 	settings.save(path)
 
 func load_settings() -> void:
@@ -37,3 +41,7 @@ func load_settings() -> void:
 	for key: String in settings.get_section_keys("creator"):
 		var value: Variant = settings.get_value("creator", key)
 		creator.set(key, value)
+	
+	for key: String in settings.get_section_keys("audio"):
+		var value: Variant = settings.get_value("audio", key)
+		audio.set(key, value)

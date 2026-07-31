@@ -157,7 +157,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_wto16")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"battle_act_ready",
 "speed": 5.0
 }, {

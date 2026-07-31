@@ -54,6 +54,7 @@ signal id_changed
 @export var enabled: bool = true
 @export_storage var logic_script_path: String
 # TODO: Replace with a path for reusing encounters.
+# TODO: Also, don't initialize this here, otherwise ALL tiles will have this in the world save.
 @export_storage var encounter_enemies: Array[EncounterEnemy] = [EncounterEnemy.new()]
 @export_storage var encounter_party_members: Array[PartyMember]
 
@@ -172,7 +173,7 @@ func disable() -> void:
 
 func enable() -> void:
 	show()
-	process_mode = Node.PROCESS_MODE_ALWAYS
+	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
 
 func clone(new_id: bool = false) -> Tile:

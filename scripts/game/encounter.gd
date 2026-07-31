@@ -170,7 +170,7 @@ func start(tile: Tile) -> void:
 		t.process_mode = Node.PROCESS_MODE_DISABLED
 		t.hide()
 	Game.player.process_mode = Node.PROCESS_MODE_DISABLED
-	Game.stop_music()
+	Game.pause_music()
 	
 	# Play tension sfx
 	sfx_player.stream = preload("res://assets/audio/battle/tensionhorn.wav")
@@ -222,16 +222,16 @@ func start(tile: Tile) -> void:
 	
 	started.emit(tile)
 
-func end(won: bool) -> void:
+func end(won: bool, skip_anim: bool = false) -> void:
 	if not in_encounter:
 		return
 	
-	music_player.stop()
-	
 	print_debug("[Encounter] Encounter ended.")
 	ending.emit(encounter_tile, won)
-	# Give time for animations and stuff.
-	await get_tree().create_timer(3.0).timeout
+	
+	if not skip_anim:
+		# Give time for animations and stuff.
+		await get_tree().create_timer(3.0).timeout
 	
 	# Setup variables
 	Game.mode = Game.Mode.DarkWorld
@@ -256,6 +256,7 @@ func end(won: bool) -> void:
 		
 		child.queue_free()
 	
+	music_player.stop()
 	Game.play_music()
 	
 	ended.emit(encounter_tile, won)
@@ -263,7 +264,6 @@ func end(won: bool) -> void:
 
 func win_by_damage() -> void:
 	running = false
-	music_player.stop()
 	
 	# TODO: Animation
 	print_debug("[Encounter] Won by damage. Playing win animation.")

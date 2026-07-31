@@ -61,10 +61,6 @@ func _on_play_button_pressed() -> void:
 	WorldSave.create_open_world_dialogue()
 
 func _on_create_button_pressed() -> void:
-	sfx_player.stream = SELECT_SFX
-	sfx_player.play()
-	await sfx_player.finished
-	
 	get_tree().change_scene_to_packed(CREATOR_DARK_WORLD_UI)
 
 func _on_settings_button_pressed() -> void:
@@ -78,10 +74,6 @@ func _on_settings_button_pressed() -> void:
 	settings.closed.connect(show)
 
 func _on_exit_button_pressed() -> void:
-	sfx_player.stream = SELECT_SFX
-	sfx_player.play()
-	await sfx_player.finished
-	
 	Settings.save_settings()
 	get_tree().quit()
 

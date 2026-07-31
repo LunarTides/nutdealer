@@ -159,4 +159,4 @@ func stop_preview() -> void:
 	
 	Game.playing = false
 	Game.player.queue_free()
-	Game.stop_music()
+	Game.pause_music()

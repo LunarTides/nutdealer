@@ -145,7 +145,7 @@ func stop_playing() -> void:
 	
 	# Clear everything.
 	WorldSave.new_world()
-	stop_music()
+	pause_music()
 
 func switch_room(room_index: int) -> void:
 	play_from(room_index)
@@ -220,11 +220,19 @@ func create_border_tile(coords: Vector2i) -> Tile:
 	return tile
 
 func play_music() -> void:
-	if music_player.playing:
+	if not Game.playing:
 		return
 	
-	music_player.stream = preload("res://assets/audio/music/tv_world.ogg")
-	music_player.play()
+	if not music_player.stream:
+		music_player.stream = preload("res://assets/audio/music/tv_world.ogg")
+	
+	if music_player.stream_paused:
+		music_player.stream_paused = false
+	elif not music_player.playing:
+		music_player.play()
+
+func pause_music() -> void:
+	music_player.stream_paused = true
 
 func stop_music() -> void:
 	music_player.stop()

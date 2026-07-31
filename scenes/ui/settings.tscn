@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c6ou2ipnnhnv5" path="res://scenes/ui/settings.gd" id="1_8wfqe"]
 
-[node name="SettingsUI" type="Control" unique_id=1952239954 node_paths=PackedStringArray("party_members_check_box")]
+[node name="SettingsUI" type="Control" unique_id=1952239954 node_paths=PackedStringArray("party_members_check_box", "master_volume_slider", "music_volume_slider")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8wfqe")
 party_members_check_box = NodePath("TabContainer/Creator/PartyMembersCheckBox")
+master_volume_slider = NodePath("TabContainer/Audio/MasterVolume/MasterVolumeSlider")
+music_volume_slider = NodePath("TabContainer/Audio/MusicVolume/MusicVolumeSlider")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=927278826]
 custom_minimum_size = Vector2(600, 400)
@@ -42,5 +44,40 @@ layout_mode = 2
 size_flags_vertical = 10
 text = "Close"
 
+[node name="Audio" type="VBoxContainer" parent="TabContainer" unique_id=1113400201]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MasterVolume" type="HBoxContainer" parent="TabContainer/Audio" unique_id=1018613473]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Audio/MasterVolume" unique_id=899435718]
+layout_mode = 2
+text = "Master"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="TabContainer/Audio/MasterVolume" unique_id=2089256015]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MusicVolume" type="HBoxContainer" parent="TabContainer/Audio" unique_id=1170204973]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Audio/MusicVolume" unique_id=766725099]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="TabContainer/Audio/MusicVolume" unique_id=1992604348]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="TabContainer/Audio" unique_id=1850381373]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Close"
+
 [connection signal="toggled" from="TabContainer/Creator/PartyMembersCheckBox" to="." method="_on_party_members_check_box_toggled"]
 [connection signal="pressed" from="TabContainer/Creator/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="value_changed" from="TabContainer/Audio/MasterVolume/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MusicVolume/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="pressed" from="TabContainer/Audio/CloseButton" to="." method="_on_close_button_pressed"]
