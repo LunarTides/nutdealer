@@ -1,0 +1,365 @@
+[gd_scene format=3 uid="uid://cidw2jv7myp3u"]
+
+[ext_resource type="Script" uid="uid://cxbxrjukui7k1" path="res://creator/ui/dark_world_ui.gd" id="1_0wj4i"]
+[ext_resource type="Script" uid="uid://er1ha2crggqq" path="res://creator/room_outlines.gd" id="2_skldr"]
+[ext_resource type="Script" uid="uid://cjvyif2pvhch7" path="res://creator/select_outline.gd" id="3_b6efl"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://creator/assets/sprites/grid_bg.png" id="3_wyeqc"]
+[ext_resource type="PackedScene" uid="uid://d3rw4wmqix5sr" path="res://creator/ui/creator_pause_menu.tscn" id="4_xy4lk"]
+[ext_resource type="Texture2D" uid="uid://cxrbxe32nw7yq" path="res://tile/assets/sprites/debug/red.svg" id="5_2sl0l"]
+[ext_resource type="Texture2D" uid="uid://digocqmvp7vby" path="res://tile/assets/sprites/debug/green.svg" id="6_oboim"]
+[ext_resource type="Texture2D" uid="uid://hu0vqmm4yvt3" path="res://tile/assets/sprites/debug/blue.svg" id="7_f3slr"]
+[ext_resource type="Texture2D" uid="uid://culcverx8jh66" path="res://icon.svg" id="8_ofl6s"]
+[ext_resource type="Script" uid="uid://ox6pfvbducd2" path="res://tile/creator/tile_picker.gd" id="9_o23ng"]
+[ext_resource type="Script" uid="uid://d14l50tq07wm3" path="res://creator/ui/creator_actions.gd" id="10_evxai"]
+[ext_resource type="Texture2D" uid="uid://di1rwtjlgbxpq" path="res://creator/assets/sprites/eraser.png" id="10_wyeqc"]
+[ext_resource type="Texture2D" uid="uid://bhq5oehn5r73p" path="res://creator/assets/sprites/import_tile.png" id="11_ofl6s"]
+[ext_resource type="PackedScene" uid="uid://u158p04d7v48" path="res://creator/ui/feedback_label.tscn" id="11_skldr"]
+[ext_resource type="Script" uid="uid://c2lckxlcda8kx" path="res://creator/ui/preview_actions.gd" id="12_2sl0l"]
+[ext_resource type="Texture2D" uid="uid://b7kh04emmiqw2" path="res://character/assets/sprites/kris/movement/walk/down/kris_down_0.png" id="12_xy4lk"]
+[ext_resource type="AudioStream" uid="uid://dyjhtv2p0olgm" path="res://assets/audio/sfx/bell_bounce_short.wav" id="13_hwafg"]
+[ext_resource type="AudioStream" uid="uid://c7f127tdrdhxq" path="res://assets/audio/sfx/bombfall.wav" id="15_b6efl"]
+[ext_resource type="Texture2D" uid="uid://4qpb54kmnmy6" path="res://creator/assets/sprites/modes/select.png" id="15_f1qoc"]
+[ext_resource type="Script" uid="uid://bhiigd3eu6q4o" path="res://creator/ui/creator_party_member_manager.gd" id="15_f3slr"]
+[ext_resource type="Script" uid="uid://c6fi5aify3c8t" path="res://creator/ui/creator_mode_select_button.gd" id="15_jixhe"]
+[ext_resource type="PackedScene" uid="uid://ckiqk3fmdeoko" path="res://creator/ui/creator_party_member.tscn" id="15_oboim"]
+[ext_resource type="Texture2D" uid="uid://cok11pnim7qgm" path="res://creator/assets/sprites/modes/brush.png" id="17_2q0nb"]
+[ext_resource type="Texture2D" uid="uid://de1rmrgsmwooo" path="res://creator/assets/sprites/modes/room.png" id="18_jjb2j"]
+[ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://character/sprite_frames/kris.tres" id="18_o23ng"]
+[ext_resource type="SpriteFrames" uid="uid://cc7cqwl2lgjnd" path="res://character/sprite_frames/susie.tres" id="19_dw1n6"]
+[ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://character/sprite_frames/ralsei.tres" id="20_kahae"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_jixhe"]
+action = &"creator_mode_select"
+
+[sub_resource type="Shortcut" id="Shortcut_vr4ht"]
+events = [SubResource("InputEventAction_jixhe")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_vr4ht"]
+action = &"creator_mode_brush"
+
+[sub_resource type="Shortcut" id="Shortcut_jixhe"]
+events = [SubResource("InputEventAction_vr4ht")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_b6efl"]
+action = &"creator_mode_room"
+
+[sub_resource type="Shortcut" id="Shortcut_f1qoc"]
+events = [SubResource("InputEventAction_b6efl")]
+
+[sub_resource type="LabelSettings" id="LabelSettings_847bk"]
+outline_size = 2
+outline_color = Color(0.92136914, 0.00056332233, 0.89856493, 1)
+
+[node name="CreatorDarkWorldUI" type="Control" unique_id=1513349051 node_paths=PackedStringArray("grid_hint", "camera_2d", "mouse_coords_label", "room_coords_label", "camera_zoom_label", "feedback_label", "bottom_center_container", "pause_menu")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_0wj4i")
+pan_speed = 500.0
+grid_hint = NodePath("GridHint")
+camera_2d = NodePath("Camera2D")
+mouse_coords_label = NodePath("CanvasLayer/Bottom/Left/MouseCoordsLabel")
+room_coords_label = NodePath("CanvasLayer/Bottom/Left/RoomCoordsLabel")
+camera_zoom_label = NodePath("CanvasLayer/Bottom/Right/CameraZoomLabel")
+feedback_label = NodePath("CanvasLayer/Bottom/Center/FeedbackLabel")
+bottom_center_container = NodePath("CanvasLayer/Bottom/Center")
+pause_menu = NodePath("CanvasLayer/CreatorPauseMenu")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1233538805]
+
+[node name="RoomOutlines" type="Node2D" parent="." unique_id=113025752]
+script = ExtResource("2_skldr")
+
+[node name="SelectOutline" type="Node2D" parent="." unique_id=976455406]
+script = ExtResource("3_b6efl")
+
+[node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
+modulate = Color(0.38000557, 0.3800056, 0.38000554, 1)
+z_index = -10
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 640.0
+mouse_filter = 2
+texture = ExtResource("3_wyeqc")
+stretch_mode = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1833017583]
+
+[node name="CreatorPauseMenu" parent="CanvasLayer" unique_id=616339155 instance=ExtResource("4_xy4lk")]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="Actions" type="HBoxContainer" parent="CanvasLayer" unique_id=1316105465 node_paths=PackedStringArray("file_menu_button", "edit_menu_button", "help_menu_button", "preview_options_menu_button", "preview_button")]
+offset_right = 117.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+script = ExtResource("10_evxai")
+file_menu_button = NodePath("FileMenuButton")
+edit_menu_button = NodePath("EditMenuButton")
+help_menu_button = NodePath("HelpMenuButton")
+preview_options_menu_button = NodePath("CanvasLayer/HBoxContainer/PreviewOptionsMenuButton")
+preview_button = NodePath("CanvasLayer/HBoxContainer/PreviewButton")
+
+[node name="FileMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=1081868281]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "File"
+flat = false
+switch_on_hover = true
+item_count = 6
+popup/item_0/text = "New  (CTRL+N)"
+popup/item_0/id = 0
+popup/item_1/text = "Open (CTRL+O)"
+popup/item_1/id = 1
+popup/item_2/text = "Save (CTRL+S)"
+popup/item_2/id = 2
+popup/item_3/text = "Exit"
+popup/item_3/id = 3
+popup/item_3/separator = true
+popup/item_4/text = "Exit to Menu"
+popup/item_4/id = 4
+popup/item_5/text = "Exit to Desktop"
+popup/item_5/id = 5
+
+[node name="EditMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=2026654288]
+layout_mode = 2
+text = "Edit"
+flat = false
+switch_on_hover = true
+item_count = 1
+popup/item_0/text = "All: _ready()"
+popup/item_0/id = 0
+
+[node name="HelpMenuButton" type="MenuButton" parent="CanvasLayer/Actions" unique_id=844898719]
+layout_mode = 2
+text = "Help"
+flat = false
+switch_on_hover = true
+item_count = 2
+popup/item_0/text = "Licenses..."
+popup/item_0/id = 0
+popup/item_1/text = "About..."
+popup/item_1/id = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasLayer/Actions" unique_id=889862257]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Actions/CanvasLayer" unique_id=496542397]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -107.0
+offset_bottom = 27.0
+grow_horizontal = 0
+theme_override_constants/separation = 0
+
+[node name="PreviewOptionsMenuButton" type="MenuButton" parent="CanvasLayer/Actions/CanvasLayer/HBoxContainer" unique_id=1485860441]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "v"
+flat = false
+item_count = 1
+popup/item_0/text = "All: _ready"
+popup/item_0/checkable = 1
+popup/item_0/id = 0
+
+[node name="PreviewButton" type="Button" parent="CanvasLayer/Actions/CanvasLayer/HBoxContainer" unique_id=496142925]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Preview"
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="CanvasLayer" unique_id=283158090]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CanvasLayer2" unique_id=1015512963]
+offset_top = 32.0
+offset_right = 76.0
+offset_bottom = 448.0
+
+[node name="TilePicker" type="ItemList" parent="CanvasLayer/CanvasLayer2/HBoxContainer" unique_id=849271151 node_paths=PackedStringArray("sfx_player")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
+auto_width = true
+auto_height = true
+item_count = 6
+item_0/icon = ExtResource("5_2sl0l")
+item_1/icon = ExtResource("6_oboim")
+item_2/icon = ExtResource("7_f3slr")
+item_3/icon = ExtResource("8_ofl6s")
+item_4/icon = ExtResource("10_wyeqc")
+item_5/icon = ExtResource("11_ofl6s")
+script = ExtResource("9_o23ng")
+sfx_player = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" unique_id=1151946189]
+stream = ExtResource("13_hwafg")
+
+[node name="CreatorModeButtons" type="VBoxContainer" parent="CanvasLayer/CanvasLayer2/HBoxContainer" unique_id=1293765159]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 6)
+offset_transform_visual_only = false
+
+[node name="SelectButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1109736240 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Select"
+action_mode = 0
+shortcut = SubResource("Shortcut_vr4ht")
+texture_normal = ExtResource("15_f1qoc")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="BrushButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1416399473 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Brush"
+action_mode = 0
+shortcut = SubResource("Shortcut_jixhe")
+texture_normal = ExtResource("17_2q0nb")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+mode = 1
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="RoomButton" type="TextureButton" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=133145632 node_paths=PackedStringArray("sfx_player")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Room"
+action_mode = 0
+shortcut = SubResource("Shortcut_f1qoc")
+texture_normal = ExtResource("18_jjb2j")
+stretch_mode = 0
+script = ExtResource("15_jixhe")
+mode = 2
+sfx_player = NodePath("../AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/CanvasLayer2/HBoxContainer/CreatorModeButtons" unique_id=1842819678]
+stream = ExtResource("15_b6efl")
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="CanvasLayer" unique_id=561988951]
+
+[node name="PreviewActions" type="HBoxContainer" parent="CanvasLayer/CanvasLayer3" unique_id=1170853081 node_paths=PackedStringArray("speed_button", "noclip_button", "next_room_button")]
+custom_maximum_size = Vector2(-1, 64)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -68.0
+offset_top = 32.0
+offset_bottom = 164.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+script = ExtResource("12_2sl0l")
+speed_button = NodePath("SpeedButton")
+noclip_button = NodePath("NoclipButton")
+next_room_button = NodePath("NextRoomButton")
+
+[node name="SpeedButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=76935415]
+self_modulate = Color(0, 0, 1, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Speed Multiplier: 1x"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
+[node name="NoclipButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=2129661590]
+self_modulate = Color(0.39688927, 0.39688927, 0.39688924, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Noclip"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
+[node name="NextRoomButton" type="TextureButton" parent="CanvasLayer/CanvasLayer3/PreviewActions" unique_id=1447597550]
+self_modulate = Color(0.8701601, 0.00043991505, 0.8356334, 1)
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Next Room (1)"
+texture_normal = ExtResource("12_xy4lk")
+stretch_mode = 0
+
+[node name="Bottom" type="HBoxContainer" parent="CanvasLayer" unique_id=670832984]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Left" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=1249468150]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+
+[node name="RoomCoordsLabel" type="Label" parent="CanvasLayer/Bottom/Left" unique_id=572939415]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+text = "Room coords"
+label_settings = SubResource("LabelSettings_847bk")
+
+[node name="MouseCoordsLabel" type="Label" parent="CanvasLayer/Bottom/Left" unique_id=252066373]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+text = "Mouse coords"
+label_settings = SubResource("LabelSettings_847bk")
+
+[node name="Center" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=59909838]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FeedbackLabel" parent="CanvasLayer/Bottom/Center" unique_id=344211520 instance=ExtResource("11_skldr")]
+custom_minimum_size = Vector2(890, 0)
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+
+[node name="Right" type="VBoxContainer" parent="CanvasLayer/Bottom" unique_id=1400618279]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+
+[node name="CameraZoomLabel" type="Label" parent="CanvasLayer/Bottom/Right" unique_id=1551493677]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+text = "Camera Zoom"
+label_settings = SubResource("LabelSettings_847bk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasLayer" unique_id=1842740258]
+
+[node name="CreatorPartyMemberManager" type="Node" parent="CanvasLayer/CanvasLayer" unique_id=579704050]
+script = ExtResource("15_f3slr")
+
+[node name="Kris" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=1452198581 instance=ExtResource("15_oboim")]
+sprite_frames = ExtResource("18_o23ng")
+
+[node name="Susie" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=988659988 instance=ExtResource("15_oboim")]
+character_name = 1
+sprite_frames = ExtResource("19_dw1n6")
+
+[node name="Ralsei" parent="CanvasLayer/CanvasLayer/CreatorPartyMemberManager" unique_id=1930576751 instance=ExtResource("15_oboim")]
+character_name = 2
+sprite_frames = ExtResource("20_kahae")
+
+[connection signal="pressed" from="CanvasLayer/Actions/CanvasLayer/HBoxContainer/PreviewButton" to="CanvasLayer/Actions" method="_on_preview_button_pressed"]
+[connection signal="empty_clicked" from="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" to="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" to="CanvasLayer/CanvasLayer2/HBoxContainer/TilePicker" method="_on_item_clicked"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/SpeedButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_speed_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NoclipButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_noclip_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CanvasLayer3/PreviewActions/NextRoomButton" to="CanvasLayer/CanvasLayer3/PreviewActions" method="_on_next_room_button_pressed"]

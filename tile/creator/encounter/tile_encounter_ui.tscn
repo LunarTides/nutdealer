@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://btwgbfpd6n7kt"]
+
+[ext_resource type="Script" uid="uid://bqpgbvqsfiyim" path="res://tile/creator/encounter/tile_encounter_ui.gd" id="1_wg8ba"]
+[ext_resource type="PackedScene" uid="uid://f5b0onr12n1v" path="res://tile/creator/encounter/main.tscn" id="2_nicsj"]
+[ext_resource type="PackedScene" uid="uid://dp48d41dggila" path="res://tile/creator/encounter/logic.tscn" id="3_rnxnx"]
+[ext_resource type="PackedScene" uid="uid://dcihrp1mlesg5" path="res://tile/creator/encounter/party_member_customizer.tscn" id="4_o6kio"]
+[ext_resource type="PackedScene" uid="uid://c00qkgmr15k8i" path="res://tile/creator/encounter/enemy_customizer.tscn" id="5_u5u6w"]
+
+[node name="Encounter" type="Control" unique_id=1191887749 node_paths=PackedStringArray("main", "party_member_customizer", "enemy_customizer")]
+custom_minimum_size = Vector2(512, 384)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_wg8ba")
+main = NodePath("Upper/VBoxContainer/Main")
+party_member_customizer = NodePath("Upper/VBoxContainer/PartyMemberCustomizer")
+enemy_customizer = NodePath("Upper/VBoxContainer/EnemyCustomizer")
+metadata/_tab_index = 1
+
+[node name="Upper" type="HBoxContainer" parent="." unique_id=1077439485]
+layout_mode = 1
+offset_right = 1032.0
+offset_bottom = 1140.0
+theme_override_constants/separation = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Upper" unique_id=906916803]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Main" parent="Upper/VBoxContainer" unique_id=1151965058 instance=ExtResource("2_nicsj")]
+layout_mode = 2
+
+[node name="PartyMemberCustomizer" parent="Upper/VBoxContainer" unique_id=1204561274 instance=ExtResource("4_o6kio")]
+layout_mode = 2
+
+[node name="EnemyCustomizer" parent="Upper/VBoxContainer" unique_id=320387843 instance=ExtResource("5_u5u6w")]
+layout_mode = 2
+
+[node name="Logic" parent="Upper" unique_id=23582441 instance=ExtResource("3_rnxnx")]
+custom_maximum_size = Vector2(-1, 712)
+layout_mode = 2

@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://c00qkgmr15k8i"]
+
+[ext_resource type="Script" uid="uid://wt41qdwfewcr" path="res://tile/creator/encounter/enemy_customizer.gd" id="1_odvq3"]
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://creator/assets/sprites/grid_bg.png" id="2_3fh6b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltqpr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x3iqa"]
+font_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6knb3"]
+font_size = 24
+font_color = Color(0, 0.76862746, 0.9098039, 1)
+
+[node name="EnemyCustomizer" type="PanelContainer" unique_id=320387843 node_paths=PackedStringArray("name_input", "health_input")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_ltqpr")
+script = ExtResource("1_odvq3")
+name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
+health_input = NodePath("VBoxContainer/HBoxContainer2/HealthInput")
+
+[node name="EncounterGrid" type="TextureRect" parent="." unique_id=1963305938]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+custom_maximum_size = Vector2(512, 384)
+layout_mode = 2
+texture = ExtResource("2_3fh6b")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2013490000]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1903539065]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1149183979]
+layout_mode = 2
+text = "Name"
+label_settings = SubResource("LabelSettings_x3iqa")
+
+[node name="NameInput" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=878556200]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=985383985]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=775821054]
+layout_mode = 2
+text = "Health"
+label_settings = SubResource("LabelSettings_x3iqa")
+
+[node name="HealthInput" type="LineEdit" parent="VBoxContainer/HBoxContainer2" unique_id=66235964]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1917956319]
+layout_mode = 2
+text = "wip :3 (enemy info)"
+label_settings = SubResource("LabelSettings_6knb3")
+
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/HealthInput" to="." method="_on_health_input_text_changed"]

@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dp7vkfevdqcpi"]
+
+[ext_resource type="Script" uid="uid://drbnfn2r6h516" path="res://encounter/soul.gd" id="1_niifa"]
+[ext_resource type="Texture2D" uid="uid://capnwp6c11yee" path="res://assets/sprites/extracted/heart.png" id="2_y8sga"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_niifa"]
+size = Vector2(24, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58lfs"]
+radius = 8.0
+
+[node name="Soul" type="CharacterBody2D" unique_id=1163045652 node_paths=PackedStringArray("sfx_player")]
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_niifa")
+speed = 150.0
+sfx_player = NodePath("AudioStreamPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1984745588]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_y8sga")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2101374105]
+shape = SubResource("RectangleShape2D_niifa")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=484265100]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1549570371]
+shape = SubResource("CircleShape2D_58lfs")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1425203702]
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

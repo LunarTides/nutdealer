@@ -46,6 +46,19 @@ window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 window/size/mode.editor=0
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "teal",
+"res://character/": "blue",
+"res://creator/": "orange",
+"res://encounter/": "red",
+"res://game/": "pink",
+"res://global/": "purple",
+"res://tile/": "green",
+"res://ui/": "yellow"
+}
+
 [gui]
 
 theme/custom_font="uid://cmpyjbc4q4y8o"

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://db1npunkjreud"]
+
+[ext_resource type="Script" uid="uid://byyjtbjiwjhaj" path="res://encounter/encounter_party_member.gd" id="1_ls82y"]
+[ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://character/sprite_frames/kris.tres" id="2_6skj3"]
+
+[node name="EncounterPartyMember" type="Node2D" unique_id=1452198581 node_paths=PackedStringArray("animated_sprite_2d")]
+z_index = 1
+scale = Vector2(2, 2)
+script = ExtResource("1_ls82y")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=609764124]
+sprite_frames = ExtResource("2_6skj3")
+animation = &"battle_act"

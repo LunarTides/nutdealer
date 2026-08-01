@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bhgdjs3lbq3cl"]
+
+[ext_resource type="SpriteFrames" uid="uid://b60dahhadxek5" path="res://character/sprite_frames/kris.tres" id="1_pe47h"]
+[ext_resource type="Script" uid="uid://c7tok1qdhg5rf" path="res://tile/creator/encounter/tile_encounter_party_member.gd" id="2_mmphn"]
+
+[node name="PartyMember" type="Button" unique_id=1093611130 node_paths=PackedStringArray("animated_sprite_2d")]
+custom_minimum_size = Vector2(36, 38)
+offset_right = 36.0
+offset_bottom = 38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+flat = true
+script = ExtResource("2_mmphn")
+sprite_frames = ExtResource("1_pe47h")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=880925252]
+position = Vector2(18, 19)
+sprite_frames = ExtResource("1_pe47h")
+animation = &"battle_idle"
+
+[node name="DeleteButton" type="Button" parent="." unique_id=868705712]
+modulate = Color(1, 0, 0, 1)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 1
+offset_right = 16.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 12
+text = "x"
+flat = true
+
+[connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]

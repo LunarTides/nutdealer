@@ -1,0 +1,204 @@
+[gd_scene format=3 uid="uid://dhefrdnkspjje"]
+
+[ext_resource type="Texture2D" uid="uid://dpct3ph6ypibi" path="res://creator/assets/sprites/grid_bg.png" id="1_3ians"]
+[ext_resource type="Script" uid="uid://dlcbtmiuriwy2" path="res://encounter/encounter_ui.gd" id="1_dd44b"]
+[ext_resource type="Script" uid="uid://c58bfaaqn7l7a" path="res://encounter/creator/creator.gd" id="3_v6ope"]
+[ext_resource type="PackedScene" uid="uid://cxr3ttkfmv0mw" path="res://encounter/creator/enemy_info.tscn" id="4_nn2jx"]
+[ext_resource type="Script" uid="uid://414ticr2po26" path="res://encounter/resources/enemy.gd" id="5_mrwyr"]
+[ext_resource type="PackedScene" uid="uid://ca03oun6n6xh4" path="res://encounter/encounter_actions.tscn" id="6_1vo3m"]
+[ext_resource type="Script" uid="uid://bs0rvp84eyy6v" path="res://encounter/encounter_actions_container.gd" id="6_fet88"]
+[ext_resource type="PackedScene" uid="uid://dp7vkfevdqcpi" path="res://encounter/soul.tscn" id="8_1eyuo"]
+
+[sub_resource type="Resource" id="Resource_q28hl"]
+script = ExtResource("5_mrwyr")
+name = "Test"
+metadata/_custom_type_script = "uid://414ticr2po26"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xele"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(33, 256)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8jri"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qhs1"]
+bg_color = Color(0.94957036, 0.8877815, 0, 1)
+
+[node name="EncounterUI" type="Control" unique_id=569011371 node_paths=PackedStringArray("grid", "camera_2d", "soul_container", "tp_bar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dd44b")
+grid_move_speed = 25.0
+grid = NodePath("Grid")
+camera_2d = NodePath("Camera2D")
+soul_container = NodePath("SoulContainer")
+tp_bar = NodePath("MarginContainer/TPBar")
+
+[node name="Grid" type="TextureRect" parent="." unique_id=1906994448]
+modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+z_index = -10
+layout_mode = 0
+offset_left = -23.498743
+offset_top = -232.50096
+offset_right = 1384.5012
+offset_bottom = 663.499
+mouse_filter = 2
+texture = ExtResource("1_3ians")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=589733589]
+limit_left = 0
+limit_top = 0
+limit_right = 1152
+limit_bottom = 640
+
+[node name="Creator" type="Control" parent="." unique_id=1234424102 node_paths=PackedStringArray("enemy_infos", "end_encounter_button", "end_encounter_without_animation_button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_v6ope")
+enemy_infos = NodePath("VBoxContainer/EnemyInfos")
+end_encounter_button = NodePath("VBoxContainer/HBoxContainer/EndEncounterButton")
+end_encounter_without_animation_button = NodePath("VBoxContainer/HBoxContainer/EndEncounterWithoutAnimationButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Creator" unique_id=6184467]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -145.0
+offset_top = -50.0
+offset_bottom = 50.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="EnemyInfos" type="TabContainer" parent="Creator/VBoxContainer" unique_id=133213777]
+layout_mode = 2
+current_tab = 0
+
+[node name="1" parent="Creator/VBoxContainer/EnemyInfos" unique_id=2020372914 instance=ExtResource("4_nn2jx")]
+layout_mode = 2
+enemy = SubResource("Resource_q28hl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Creator/VBoxContainer" unique_id=322760902]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="EndEncounterButton" type="Button" parent="Creator/VBoxContainer/HBoxContainer" unique_id=1417115440]
+layout_mode = 2
+text = "End Encounter"
+
+[node name="EndEncounterWithoutAnimationButton" type="Button" parent="Creator/VBoxContainer/HBoxContainer" unique_id=1514143177]
+layout_mode = 2
+text = "w/o anim"
+
+[node name="ActionsContainer" type="HBoxContainer" parent="." unique_id=2076557488]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = -83.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("6_fet88")
+
+[node name="Actions" parent="ActionsContainer" unique_id=442589495 instance=ExtResource("6_1vo3m")]
+layout_mode = 2
+
+[node name="Actions2" parent="ActionsContainer" unique_id=463782573 instance=ExtResource("6_1vo3m")]
+layout_mode = 2
+
+[node name="Actions3" parent="ActionsContainer" unique_id=1326461017 instance=ExtResource("6_1vo3m")]
+layout_mode = 2
+
+[node name="SoulContainer" type="PanelContainer" parent="." unique_id=1920543855]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xele")
+
+[node name="LeftWall" type="StaticBody2D" parent="SoulContainer" unique_id=1705899972]
+position = Vector2(-16, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/LeftWall" unique_id=1226507363]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="RightWall" type="StaticBody2D" parent="SoulContainer" unique_id=410977562]
+position = Vector2(272, 128)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/RightWall" unique_id=2115979341]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Ceiling" type="StaticBody2D" parent="SoulContainer" unique_id=565098639]
+position = Vector2(128, -16)
+rotation = 1.5707964
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/Ceiling" unique_id=1808840362]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Floor" type="StaticBody2D" parent="SoulContainer" unique_id=509047610]
+position = Vector2(128, 272)
+rotation = -1.5707964
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoulContainer/Floor" unique_id=1718301443]
+shape = SubResource("RectangleShape2D_hakx0")
+
+[node name="Soul" parent="SoulContainer" unique_id=1163045652 instance=ExtResource("8_1eyuo")]
+position = Vector2(127, 130)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1927753956]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="TPBar" type="ProgressBar" parent="MarginContainer" unique_id=286813159]
+custom_minimum_size = Vector2(16, 256)
+layout_mode = 2
+theme_override_constants/outline_size = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_r8jri")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6qhs1")
+value = 50.0
+fill_mode = 3
+
+[connection signal="pressed" from="Creator/VBoxContainer/HBoxContainer/EndEncounterButton" to="Creator" method="_on_end_encounter_button_pressed"]
+[connection signal="pressed" from="Creator/VBoxContainer/HBoxContainer/EndEncounterWithoutAnimationButton" to="Creator" method="_on_end_encounter_without_animation_button_pressed"]
