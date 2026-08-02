@@ -6,6 +6,11 @@ class_name PartyMember
 		if name != value:
 			name = value
 			emit_changed()
+@export var index: int:
+	set(value):
+		if index != value:
+			index = value
+			emit_changed()
 @export var max_health: int:
 	set(value):
 		if max_health != value:

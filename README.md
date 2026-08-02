@@ -19,11 +19,11 @@ Here are some fundementals. There are still some bugs / small features that have
             - [x] Save/load scripts
     - [x] Save/load dark worlds
     - [x] Preview
-	- [ ] Encounters
+	- [x] Encounters
 	- [ ] Dialogue
-	- [ ] Party Members
+	- [x] Party Members
 		- [x] Lead (Kris)
-		- [ ] Follow (Susie, Ralsei, etc...)
+		- [x] Follow (Susie, Ralsei, etc...)
 - [x] Play dark worlds
 ---
 

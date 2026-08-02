@@ -38,6 +38,12 @@ var mode: Mode = Mode.DarkWorld:
 			mode_changed.emit(old, mode)
 		
 var player: Player
+var party_members: Array[WorldPartyMember]
+var party_members_with_player: Array[WorldPartyMember]:
+	get:
+		var value: Array[WorldPartyMember] = [player]
+		value.append_array(party_members)
+		return value
 var tiles: Tiles
 var border_tiles: Node
 var current_room: int = 0:
@@ -121,7 +127,18 @@ func play_from(room_index: int, position: Vector2 = Vector2.ZERO) -> void:
 		# NOTE: For some reason, we can't preload the player scene. ???
 		var player_scene: PackedScene = load("uid://cbbmactdk1u14")
 		player = player_scene.instantiate()
+		player.party_member = PartyMembers.lead
 		add_child(player)
+		
+		for party_member: PartyMember in PartyMembers.party_members:
+			if party_member == player.party_member:
+				continue
+			
+			var party_member_scene: PackedScene = preload("uid://cvqr7nikcw4k6")
+			var follow_player: FollowPlayer = party_member_scene.instantiate()
+			follow_player.party_member = party_member
+			party_members.append(follow_player)
+			add_child(follow_player)
 	
 	if position == Vector2.ZERO:
 		# Teleport player to room start position.
@@ -158,6 +175,9 @@ func stop_playing(clear_world: bool = true) -> void:
 	)
 	
 	player.queue_free()
+	for party_member: WorldPartyMember in party_members:
+		party_member.queue_free()
+	party_members.clear()
 	
 	if is_instance_valid(pause_menu):
 		pause_menu.queue_free()

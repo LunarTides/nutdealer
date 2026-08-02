@@ -4,6 +4,10 @@ signal added(party_member: PartyMember)
 signal removed(party_member: PartyMember)
 
 var party_members: Array[PartyMember]
+var lead: PartyMember:
+	get:
+		# TODO: Allow actually assigning this.
+		return party_members[0]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -50,18 +54,21 @@ func initialize_with_kris_susie_ralsei() -> void:
 	
 	var kris: PartyMember = PartyMember.new()
 	kris.name = "Kris"
+	kris.index = 0
 	kris.max_health = 100
 	kris.sprite_frames = load("res://character/sprite_frames/kris.tres")
 	add(kris)
 	
 	var susie: PartyMember = PartyMember.new()
 	susie.name = "Susie"
+	kris.index = 1
 	susie.max_health = 100
 	susie.sprite_frames = load("res://character/sprite_frames/susie.tres")
 	add(susie)
 	
 	var ralsei: PartyMember = PartyMember.new()
 	ralsei.name = "Ralsei"
+	kris.index = 2
 	ralsei.max_health = 100
 	ralsei.sprite_frames = load("res://character/sprite_frames/ralsei.tres")
 	add(ralsei)

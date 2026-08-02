@@ -7,6 +7,7 @@ extends VBoxContainer
 @export var labels_container: HBoxContainer
 @export var sfx_player: AudioStreamPlayer
 
+# TODO: Only have as many sets of actions as there are party members in this encounter.
 var buttons: Array[TextureRect]:
 	get:
 		return buttons_container.get_children() as Array[TextureRect]

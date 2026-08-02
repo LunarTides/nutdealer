@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cvqr7nikcw4k6"]
+
+[ext_resource type="Script" uid="uid://c1opiy04848kq" path="res://character/follow_player.gd" id="1_u7dpl"]
+[ext_resource type="SpriteFrames" uid="uid://dt2kyin8ok6to" path="res://character/sprite_frames/ralsei.tres" id="2_u7dpl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
+size = Vector2(10, 29)
+
+[node name="FollowPlayer" type="CharacterBody2D" unique_id=741606682 node_paths=PackedStringArray("collision_shape_2d", "animated_sprite_2d")]
+z_index = 1
+scale = Vector2(2, 2)
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_u7dpl")
+collision_shape_2d = NodePath("CollisionShape2D")
+speed = 150.0
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=609764124]
+sprite_frames = ExtResource("2_u7dpl")
+animation = &"walk_down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=221018930]
+shape = SubResource("RectangleShape2D_hakx0")

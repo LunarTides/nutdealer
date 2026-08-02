@@ -1,8 +1,10 @@
 extends Node2D
 class_name EncounterPartyMember
 
-signal intro_animation_ended
+signal start_animation_ended
+signal end_animation_ended
 
+# TODO: Load PartyMember data directly instead.
 @export var sprite_frames: SpriteFrames:
 	set(value):
 		sprite_frames = value
@@ -11,7 +13,7 @@ signal intro_animation_ended
 @export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
 
-var index: int = 0
+var index: int
 var data: PartyMember:
 	get:
 		return PartyMembers.party_members[index]
@@ -48,7 +50,8 @@ func _ready() -> void:
 	
 	Encounter.ending.connect(func(tile: Tile, won: bool) -> void:
 		if won:
-			play_victory_animation()
+			# TODO: Align with dark world camera's transform.
+			play_victory_animation(Game.party_members_with_player[index].global_position)
 	)
 
 
@@ -63,11 +66,18 @@ func play_encounter_start_animation() -> void:
 	
 	var tween: Tween = create_tween()
 	tween.tween_interval(0.5)
-	tween.tween_property(self, ^"position", Vector2(150, 150), 0.5)
-	tween.tween_callback(intro_animation_ended.emit)
+	tween.tween_property(self, ^"position", Vector2(150, 150 * (index + 1)), 0.5)
+	tween.tween_callback(start_animation_ended.emit)
 
-func play_victory_animation() -> void:
+func play_victory_animation(end_position: Vector2) -> void:
 	animated_sprite_2d.play(&"battle_victory")
+	await animated_sprite_2d.animation_finished
+	
+	# TODO: Wait until all party members are done with their encounters.
+	var tween: Tween = create_tween()
+	tween.tween_interval(0.5)
+	tween.tween_property(self, ^"position", end_position, 0.5)
+	tween.tween_callback(end_animation_ended.emit)
 
 func play_idle_animation() -> void:
 	animated_sprite_2d.play(&"battle_idle")

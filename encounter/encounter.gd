@@ -201,8 +201,10 @@ func start(tile: Tile) -> void:
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():
 		t.disable()
-	Game.player.set_process_mode.call_deferred(Node.PROCESS_MODE_DISABLED)
 	Game.pause_music()
+	
+	for party_member: WorldPartyMember in Game.party_members_with_player:
+		party_member.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	# Play tension sfx
 	sfx_player.stream = preload("res://assets/audio/battle/tensionhorn.wav")
@@ -216,36 +218,43 @@ func start(tile: Tile) -> void:
 	ui = ENCOUNTER_UI.instantiate()
 	add_child(ui)
 	
-	var player_position: Vector2 = Game.player.get_global_transform_with_canvas().origin
+	for party_member: WorldPartyMember in Game.party_members_with_player:
+		party_member.hide()
 	
-	Game.player.hide()
+	# Create Party Members
+	var last_member: EncounterPartyMember
+	for i: int in range(party_members.size()):
+		# Check if the party member is included in this encounter.
+		if not tile.encounter.party_member_names.has(party_members[i].name):
+			i -= 1
+			continue
+		
+		var world_member: WorldPartyMember = Game.party_members_with_player[i]
+		var member_position: Vector2 = world_member.get_global_transform_with_canvas().origin
+		
+		var party_member: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
+		party_member.index = i
+		party_member.sprite_frames = load("res://character/sprite_frames/%s.tres" % party_members[i].name.to_snake_case())
+		ui.add_child(party_member)
+		party_member.global_position = member_position
+		party_member.play_encounter_start_animation()
+		
+		last_member = party_member
 	
 	# Change camera
 	ui.camera_2d.make_current()
 	
-	# Create lead party member (Kris)
-	var party_member_lead: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
-	party_member_lead.index = 0
-	party_member_lead.sprite_frames = load("res://character/sprite_frames/%s.tres" % party_members[0].name.to_snake_case())
-	ui.add_child(party_member_lead)
-	party_member_lead.global_position = player_position
-	party_member_lead.play_encounter_start_animation()
-	await party_member_lead.intro_animation_ended
-	
 	# Stopping playing while intro animation was playing.
+	await last_member.start_animation_ended
 	if not Game.playing or not in_encounter:
 		return
 	
-	# Create other Party Members
-	for i: int in range(party_members.size() - 1):
-		var party_member: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
-		party_member.index = i + 1
-		party_member.sprite_frames = load("res://character/sprite_frames/%s.tres" % party_members[i + 1].name.to_snake_case())
-		ui.add_child(party_member)
-		party_member.reposition()
+	# Play intro animation.
+	for child: Node in ui.get_children():
+		if child is not EncounterPartyMember:
+			continue
 		
-		party_member.play_intro_animation()
-	party_member_lead.play_intro_animation()
+		child.play_intro_animation()
 	
 	sfx_player.pitch_scale = 1.0
 	sfx_player.stream = preload("res://assets/audio/battle/weaponpull.wav")
@@ -270,9 +279,18 @@ func end(won: bool, skip_anim: bool = false) -> void:
 	print_debug("[Encounter] Encounter ended with %d tp." % tp)
 	ending.emit(encounter_tile, won)
 	
+	# Wait for victory animation.
+	var encounter_party_member: EncounterPartyMember
+	for child: Node in ui.get_children():
+		if child is not EncounterPartyMember:
+			continue
+		
+		encounter_party_member = child
+	
 	if not skip_anim:
 		# Give time for animations and stuff.
-		await get_tree().create_timer(3.0).timeout
+		# TODO: This won't work if the animation lengths are different.
+		await encounter_party_member.end_animation_ended
 	
 	# Setup variables
 	Game.mode = Game.Mode.DarkWorld
@@ -285,9 +303,9 @@ func end(won: bool, skip_anim: bool = false) -> void:
 	
 	# If the encounter ends to to pressing the "Stop Preview" button,
 	# the player doesn't exist.
-	if Game.player:
-		Game.player.show()
-		Game.player.process_mode = Node.PROCESS_MODE_INHERIT
+	for party_member: WorldPartyMember in Game.party_members_with_player:
+		party_member.show()
+		party_member.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Delete all children
 	for child: Node in get_children():
