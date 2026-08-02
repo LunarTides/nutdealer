@@ -78,7 +78,7 @@ func _ready() -> void:
 	sfx_player = AudioStreamPlayer.new()
 	add_child(sfx_player)
 	
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		if in_encounter:
 			end(true, true)
 	)

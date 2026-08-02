@@ -1,7 +1,7 @@
 extends Node
 
-signal play_start
-signal play_end
+signal play_started
+signal play_ended
 signal room_changed(old_room_index: int, new_room_index: int)
 signal mode_changed(old: Mode, new: Mode)
 
@@ -27,9 +27,9 @@ var playing: bool = false:
 			playing = value
 			
 			if playing:
-				play_start.emit()
+				play_started.emit()
 			else:
-				play_end.emit()
+				play_ended.emit()
 var mode: Mode = Mode.DarkWorld:
 	set(value):
 		if mode != value:
@@ -237,7 +237,7 @@ func create_border_tile(coords: Vector2i) -> Tile:
 		if is_instance_valid(tile):
 			tile.queue_free()
 	, ConnectFlags.CONNECT_ONE_SHOT)
-	play_end.connect(func() -> void:
+	play_ended.connect(func() -> void:
 		if is_instance_valid(tile):
 			tile.queue_free()
 	, ConnectFlags.CONNECT_ONE_SHOT)

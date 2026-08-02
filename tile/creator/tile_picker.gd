@@ -13,10 +13,10 @@ var special_tile_amount: int = 2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:	
 	# TODO: Collapse instead of hiding.
-	#Game.play_start.connect(func():
+	#Game.play_started.connect(func():
 		#hide()
 	#)
-	#Game.play_end.connect(func():
+	#Game.play_ended.connect(func():
 		#show()
 	#)
 	

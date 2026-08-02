@@ -38,12 +38,12 @@ func _ready() -> void:
 	
 	visible = enabled
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		# TODO: Play animation of jumping through the veil.
 		hide()
 		target = Vector2.ZERO
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		if not enabled:
 			return
 		

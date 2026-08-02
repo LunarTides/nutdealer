@@ -11,13 +11,13 @@ func _ready() -> void:
 	
 	process_mode = Node.PROCESS_MODE_INHERIT if enabled else Node.PROCESS_MODE_DISABLED
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		if not enabled:
 			return
 		
 		process_mode = Node.PROCESS_MODE_DISABLED
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		if not enabled:
 			return
 		

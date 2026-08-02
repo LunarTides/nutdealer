@@ -32,11 +32,11 @@ func _ready() -> void:
 	feedback_label.queue_free()
 	Creator.dark_world_ui = self
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		grid_hint.hide()
 		camera_2d.enabled = false
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		# Move the camera to the player's position.
 		camera_2d.global_position = Game.player.global_position
 		camera_2d.enabled = true

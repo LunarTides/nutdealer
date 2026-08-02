@@ -45,10 +45,10 @@ func _ready() -> void:
 		queue_redraw()
 	)
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		hide()
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		show()
 	)
 	

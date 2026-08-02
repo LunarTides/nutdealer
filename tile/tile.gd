@@ -126,13 +126,13 @@ func _ready() -> void:
 		regenerate_id()
 	
 	logic.process_mode = Node.PROCESS_MODE_DISABLED
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		if should_hide_during_play:
 			hide()
 		
 		logic.process_mode = Node.PROCESS_MODE_PAUSABLE
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		if should_hide_during_play and not visible:
 			show()
 		
@@ -202,7 +202,7 @@ func touch() -> void:
 		, ConnectFlags.CONNECT_ONE_SHOT)
 		
 		# If you press the End Preview button while in an encounter.
-		Game.play_end.connect(func() -> void:
+		Game.play_ended.connect(func() -> void:
 			# Reset the defeated state when stopped playing.
 			encounter.defeated = false
 			enable()

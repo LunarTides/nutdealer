@@ -9,10 +9,10 @@ extends HBoxContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		preview_button.text = "Stop"
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		preview_button.text = "Preview"
 	)
 	# If the creator becomes dirty, add a star next to the "File" menu button.

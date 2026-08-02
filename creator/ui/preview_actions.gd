@@ -37,13 +37,13 @@ func _ready() -> void:
 	
 	noclip_button.self_modulate = Color.WHITE
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		show()
 		
 		speed_multiplier = 1
 		noclip = false
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		hide()
 	)
 	Game.mode_changed.connect(func(old: Game.Mode, new: Game.Mode) -> void:

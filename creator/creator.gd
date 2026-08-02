@@ -51,12 +51,12 @@ func _ready() -> void:
 	music_player.bus = &"Music"
 	add_child(music_player)
 	
-	Game.play_start.connect(func() -> void:
+	Game.play_started.connect(func() -> void:
 		# Set to normal mode on play/preview.
 		#mode = Mode.Select
 		music_player.stream_paused = true
 	)
-	Game.play_end.connect(func() -> void:
+	Game.play_ended.connect(func() -> void:
 		music_player.stream_paused = false
 	)
 
