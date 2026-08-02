@@ -171,6 +171,9 @@ func _process(delta: float) -> void:
 	pass
 
 func interact() -> void:
+	if not enabled:
+		return
+	
 	logic._interact()
 	
 	if encounter_on_interact:
@@ -179,6 +182,9 @@ func interact() -> void:
 	try_room_transition(TileRoomTransition.Trigger.Interact)
 
 func touch() -> void:
+	if not enabled:
+		return
+	
 	logic._touch()
 	
 	if encounter_on_interact:
@@ -186,8 +192,19 @@ func touch() -> void:
 		Encounter.ended.connect(func(tile: Tile, won: bool) -> void:
 			if tile == self:
 				# Delete so we won't automatically enter the encounter again.
-				queue_free()
-		)
+				if Creator.enabled:
+					disable()
+					
+					# If you press the End Preview button while in an encounter.
+					if Game.playing:
+						Game.play_end.connect(func() -> void:
+							enable()
+						, ConnectFlags.CONNECT_ONE_SHOT)
+					else:
+						enable()
+				else:
+					queue_free()
+		, ConnectFlags.CONNECT_ONE_SHOT)
 	
 	try_room_transition(TileRoomTransition.Trigger.Touch)
 
@@ -197,9 +214,23 @@ func disable() -> void:
 	enabled = false
 
 func enable() -> void:
-	show()
+	infer_visibility()
 	process_mode = Node.PROCESS_MODE_INHERIT
 	enabled = true
+
+## Sets the visibility of the tile to whether or not the tile *thinks*
+## it should be visible.
+## [br][br]
+## Use this instead of `tile.show()` if you aren't sure if the tile *should* be visible given the current game state.
+func infer_visibility() -> void:
+	visible = (
+		# Is inside room.
+		(not Game.playing or Game.current_room == room_index) and
+		# Is a border tile.
+		(not Game.playing or border_tile_for_room_index == -1) and
+		# Is in an encounter.
+		not Encounter.in_encounter
+	)
 
 func clone(new_id: bool = false) -> Tile:
 	var new_tile: Tile = duplicate(DUPLICATE_DEFAULT | DUPLICATE_INTERNAL_STATE)
@@ -316,8 +347,9 @@ func try_room_transition(from: TileRoomTransition.Trigger) -> void:
 	if not is_instance_valid(room_transition) or room_transition.index == -1 or room_transition.trigger != from:
 		return
 	
-	# Do room transition.
-	Game.switch_room(room_transition.index)
+	if room_transition.index != Game.current_room:
+		# Do room transition.
+		Game.switch_room(room_transition.index)
 	
 	if room_transition.coords:
 		Game.player.global_position = Global.coords_to_position(room_transition.coords) + Vector2(32, 32)

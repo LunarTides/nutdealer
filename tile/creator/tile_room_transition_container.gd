@@ -9,7 +9,7 @@ var tile: Tile:
 		tile = value
 		
 		if is_instance_valid(tile.room_transition) and tile.room_transition.index != -1:
-			connect_button.text = "Connected to Room %d (%d, %d)" % [tile.room_transition_index, tile.room_transition_coords.x, tile.room_transition_coords.y]
+			connect_button.text = "Connected to Room %d (%d, %d)" % [tile.room_transition.index, tile.room_transition.coords.x, tile.room_transition.coords.y]
 			option_button.selected = tile.room_transition.trigger
 
 # Called when the node enters the scene tree for the first time.

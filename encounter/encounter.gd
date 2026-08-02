@@ -199,8 +199,7 @@ func start(tile: Tile) -> void:
 	
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():
-		t.process_mode = Node.PROCESS_MODE_DISABLED
-		t.hide()
+		t.disable()
 	Game.player.process_mode = Node.PROCESS_MODE_DISABLED
 	Game.pause_music()
 	
@@ -231,6 +230,10 @@ func start(tile: Tile) -> void:
 	party_member_lead.play_encounter_start_animation()
 	await party_member_lead.intro_animation_ended
 	
+	# Stopping playing while intro animation was playing.
+	if not Game.playing or not in_encounter:
+		return
+	
 	# Create other Party Members
 	for i: int in range(party_members.size() - 1):
 		var party_member: EncounterPartyMember = ENCOUNTER_PARTY_MEMBER.instantiate()
@@ -249,6 +252,10 @@ func start(tile: Tile) -> void:
 	# Preemptively load music while waiting for sfx to finish playing. 
 	music_player.stream = preload("res://assets/audio/music/battle.ogg")
 	await sfx_player.finished
+	
+	# Stopping playing while sfx was playing.
+	if not Game.playing or not in_encounter:
+		return
 	
 	music_player.play()
 	
@@ -272,8 +279,7 @@ func end(won: bool, skip_anim: bool = false) -> void:
 	
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():
-		t.process_mode = Node.PROCESS_MODE_INHERIT
-		t.show()
+		t.enable()
 	
 	# If the encounter ends to to pressing the "Stop Preview" button,
 	# the player doesn't exist.

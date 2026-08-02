@@ -114,9 +114,6 @@ func play_from(room_index: int, position: Vector2 = Vector2.ZERO) -> void:
 	# Enable tiles inside room.
 	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
 		tile.enable()
-		
-		if tile.border_tile_for_room_index != -1:
-			tile.hide()
 	)
 	
 	# Create player.
