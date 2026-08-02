@@ -14,8 +14,8 @@ const PARTY_MEMBER: PackedScene = preload("uid://bhgdjs3lbq3cl")
 			for child: Control in get_children():
 				child.queue_free()
 			
-			for i: int in range(tile.encounter.party_members.size()):
-				var party_member: PartyMember = tile.encounter.party_members[i]
+			for i: int in range(tile.encounter.party_member_names.size()):
+				var party_member: PartyMember = PartyMembers.from_name(tile.encounter.party_member_names[i])
 				
 				var party_member_node: Button = PARTY_MEMBER.instantiate()
 				party_member_node.party_member_index = i

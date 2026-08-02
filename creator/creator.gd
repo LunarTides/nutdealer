@@ -57,7 +57,8 @@ func _ready() -> void:
 		music_player.stream_paused = true
 	)
 	Game.play_ended.connect(func() -> void:
-		music_player.stream_paused = false
+		if enabled:
+			music_player.stream_paused = false
 	)
 
 func start() -> void:
@@ -138,3 +139,7 @@ func stop_preview() -> void:
 	# Show all tiles.
 	for tile: Tile in Game.tiles.get_all():
 		tile.infer_visibility()
+	
+	# Reset party members.
+	for party_member: PartyMember in PartyMembers.party_members:
+		party_member.reset()

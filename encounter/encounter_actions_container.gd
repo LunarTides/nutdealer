@@ -7,7 +7,7 @@ func _ready() -> void:
 	for node: Control in get_children():
 		node.queue_free()
 	
-	for i: int in range(Encounter.party_members.size()):
+	for i: int in range(PartyMembers.party_members.size()):
 		var actions: Control = ACTIONS.instantiate()
 		actions.party_member_index = i
 		add_child(actions)

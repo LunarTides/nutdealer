@@ -335,23 +335,8 @@ func regenerate_id() -> void:
 	Creator.make_dirty()
 
 func load_encounter_party_members() -> void:
-	var kris: PartyMember = PartyMember.new()
-	kris.name = "Kris"
-	kris.health = 100
-	kris.sprite_frames = load("res://character/sprite_frames/kris.tres")
-	encounter.party_members.append(kris)
-	
-	var susie: PartyMember = PartyMember.new()
-	susie.name = "Susie"
-	susie.health = 100
-	susie.sprite_frames = load("res://character/sprite_frames/susie.tres")
-	encounter.party_members.append(susie)
-	
-	var ralsei: PartyMember = PartyMember.new()
-	ralsei.name = "Ralsei"
-	ralsei.health = 100
-	ralsei.sprite_frames = load("res://character/sprite_frames/ralsei.tres")
-	encounter.party_members.append(ralsei)
+	for party_member: PartyMember in PartyMembers.party_members:
+		encounter.party_member_names.append(party_member.name)
 
 func try_room_transition(from: TileRoomTransition.Trigger) -> void:
 	if not is_instance_valid(room_transition) or room_transition.index == -1 or room_transition.trigger != from:

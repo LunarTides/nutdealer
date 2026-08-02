@@ -31,7 +31,9 @@ enum State {
 var in_encounter: bool = false
 var encounter_tile: Tile
 var enemies: Array[EncounterEnemy]
-var party_members: Array[PartyMember]
+var party_members: Array[PartyMember]:
+	get:
+		return PartyMembers.party_members
 var party_member: PartyMember:
 	get:
 		return party_members.get(turn)
@@ -195,7 +197,6 @@ func start(tile: Tile) -> void:
 	in_encounter = true
 	encounter_tile = tile
 	enemies = encounter_tile.encounter.enemies.duplicate_deep()
-	party_members = encounter_tile.encounter.party_members.duplicate_deep()
 	
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():

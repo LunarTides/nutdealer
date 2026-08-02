@@ -14,7 +14,7 @@ signal intro_animation_ended
 var index: int = 0
 var data: PartyMember:
 	get:
-		return Encounter.party_members[index]
+		return PartyMembers.party_members[index]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

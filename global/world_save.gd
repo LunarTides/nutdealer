@@ -245,6 +245,11 @@ func save_world() -> void:
 	DirAccess.make_dir_recursive_absolute("%s/tiles" % path)
 	ResourceSaver.save(tiles, "%s/tiles/tiles.tscn" % path)
 	
+	# Party Members
+	DirAccess.make_dir_recursive_absolute("%s/characters/party_members" % path)
+	for party_member: PartyMember in PartyMembers.party_members:
+		ResourceSaver.save(party_member, "%s/characters/party_members/%s.tres" % [path, party_member.name.to_snake_case()])
+	
 	# Config
 	var config: ConfigFile = ConfigFile.new()
 	config.set_value("world", "engine_version", ProjectSettings.get_setting("application/config/version"))
@@ -309,6 +314,14 @@ func load_world() -> void:
 		tile.owner = null
 		tile.reparent(Game.tiles)
 		tile.owner = Game.tiles
+	
+	# Party Members
+	PartyMembers.party_members = []
+	var party_members_path: String = "%s/characters/party_members" % path
+	for relative_path: String in DirAccess.get_files_at(party_members_path):
+		var party_member_path: String = party_members_path.path_join(relative_path)
+		var party_member: PartyMember = load(party_member_path)
+		PartyMembers.add(party_member)
 	
 	load_ended.emit()
 	

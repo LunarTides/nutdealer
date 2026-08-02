@@ -7,10 +7,10 @@ class_name TileEncounter
 		if enemies != value:
 			enemies = value
 			emit_changed()
-@export var party_members: Array[PartyMember]:
+@export var party_member_names: PackedStringArray = []:
 	set(value):
-		if party_members != value:
-			party_members = value
+		if party_member_names != value:
+			party_member_names = value
 			emit_changed()
 
 var defeated: bool = false

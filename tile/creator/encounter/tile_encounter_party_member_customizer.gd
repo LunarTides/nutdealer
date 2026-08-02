@@ -13,10 +13,10 @@ var party_member: PartyMember:
 		if not is_instance_valid(tile) or not is_instance_valid(tile.encounter):
 			return
 		
-		if tile.encounter.party_members.size() <= party_member_index:
+		if tile.encounter.party_member_names.size() <= party_member_index:
 			return
 		
-		return tile.encounter.party_members[party_member_index]
+		return PartyMembers.from_name(tile.encounter.party_member_names[party_member_index])
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -42,7 +42,7 @@ func _ready() -> void:
 		var from_behind: bool = (
 			new > old and new == party_member_index or
 			# Going from enemy to first party member.
-			party_member_index == 0 and new == 0 and old > Encounter.party_members.size() - 1
+			party_member_index == 0 and new == 0 and old > PartyMembers.party_members.size() - 1
 		)
 		if from_behind:
 			button_index = 0

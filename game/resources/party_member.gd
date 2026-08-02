@@ -6,7 +6,12 @@ class_name PartyMember
 		if name != value:
 			name = value
 			emit_changed()
-@export var health: int:
+@export var max_health: int:
+	set(value):
+		if max_health != value:
+			max_health = value
+			emit_changed()
+@export var health: int = max_health:
 	set(value):
 		if health != value:
 			health = value
@@ -22,3 +27,7 @@ var encounter_intention: Encounter.Intention:
 		if encounter_intention != value:
 			encounter_intention = value
 			emit_changed()
+
+
+func reset() -> void:
+	health = max_health
