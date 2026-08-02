@@ -121,26 +121,7 @@ func _feedback(message: String, feedback_type: Game.FeedbackType) -> void:
 
 func start_preview(room_index: int) -> void:
 	print_debug("Previewing from Room %d" % room_index)
-	
-	# Disable tiles outside room.
-	Game.tiles.call_outside_room(room_index, func(tile: Tile) -> void:
-		tile.disable()
-	)
-	
-	Game.playing = true
-	Game.current_room = room_index
-	
-	# Create player.
-	if is_instance_valid(Game.player):
-		Game.player.queue_free()
-	var player: Player = PLAYER.instantiate()
-	dark_world_ui.add_child(player)
-	player.global_position = dark_world_ui.camera_2d.global_position
-	Game.player = player
-	
-	Game.play_music()
-	Game.constrain_player_to_current_room()
-	Game.constrain_camera_to_current_room()
+	Game.play_from(room_index, dark_world_ui.camera_2d.global_position)
 
 func start_preview_from_camera() -> void:
 	# Get starting room from camera position.
@@ -152,13 +133,4 @@ func start_preview_from_camera() -> void:
 	start_preview(room_index)
 
 func stop_preview() -> void:
-	Game.mode = Game.Mode.DarkWorld
-	
-	# Re-enable disabled tiles outside room.
-	Game.tiles.call_outside_room(Game.current_room, func(tile: Tile) -> void:
-		tile.enable()
-	)
-	
-	Game.playing = false
-	Game.player.queue_free()
-	Game.pause_music()
+	Game.stop_playing(false)

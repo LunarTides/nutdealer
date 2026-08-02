@@ -23,11 +23,11 @@ func _process(delta: float) -> void:
 
 
 func _on_connect_button_pressed() -> void:
-	behavior_ui.force_open = true
-	connect_button.text = "Click a room..."
+	behavior_ui.waiting_for_outside_action = true
+	connect_button.text = "Click somewhere inside a room..."
 	
 	CreatorRoomManipulation.room_clicked.connect(func(room_index: int) -> void:
-		behavior_ui.force_open = false
+		behavior_ui.waiting_for_outside_action = false
 		
 		if not is_instance_valid(tile.room_transition):
 			tile.room_transition = TileRoomTransition.new()

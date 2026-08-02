@@ -22,6 +22,13 @@ var tile: Tile:
 		encounter_container.tile = tile
 		room_transition.tile = tile
 var force_open: bool = false
+var waiting_for_outside_action: bool = false:
+	set(value):
+		waiting_for_outside_action = value
+		
+		force_open = waiting_for_outside_action
+		modulate.a = 0.5 if waiting_for_outside_action else 1.0
+		process_mode = PROCESS_MODE_DISABLED if waiting_for_outside_action else PROCESS_MODE_INHERIT
 var code_intro: String = "extends Node2D
 
 var tile:

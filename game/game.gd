@@ -92,7 +92,7 @@ func feedback(message: String, feedback_type: FeedbackType) -> void:
 	
 	# TODO: Handle error messages without creator.
 
-func play_from(room_index: int) -> void:
+func play_from(room_index: int, position: Vector2 = Vector2.ZERO) -> void:
 	if room_index == -1:
 		feedback("Must start in a room.", FeedbackType.Error)
 		return
@@ -109,18 +109,15 @@ func play_from(room_index: int) -> void:
 	
 	# Disable tiles outside room.
 	tiles.call_outside_room(room_index, func(tile: Tile) -> void:
-		# FIXME: Disables the border tiles for some asinine reason. (Only in creator for some reason.)
 		tile.disable()
 	)
 	# Enable tiles inside room.
 	tiles.call_inside_room(room_index, func(tile: Tile) -> void:
 		tile.enable()
+		
+		if tile.border_tile_for_room_index != -1:
+			tile.hide()
 	)
-	
-	# Create pause menu.
-	if not Creator.enabled and not is_instance_valid(pause_menu):
-		pause_menu = GAME_PAUSE_MENU.instantiate()
-		canvas_layer.add_child(pause_menu)
 	
 	# Create player.
 	if not is_instance_valid(player):
@@ -129,27 +126,50 @@ func play_from(room_index: int) -> void:
 		player = player_scene.instantiate()
 		add_child(player)
 	
-	var success: bool = teleport_player_to_room_start_position()
-	if not success:
-		# No room start position. Position the player in the center of the room.
-		var room_bounds: Rect2i = Room.bounds[current_room]
-		
-		@warning_ignore("integer_division")
-		player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
+	if position == Vector2.ZERO:
+		# Teleport player to room start position.
+		var success: bool = teleport_player_to_room_start_position()
+		if not success:
+			# No room start position. Position the player in the center of the room.
+			var room_bounds: Rect2i = Room.bounds[current_room]
+			
+			@warning_ignore("integer_division")
+			player.global_position = Global.coords_to_position(room_bounds.position + room_bounds.size / 2)
+	else:
+		player.global_position = position
+	
+	# Create pause menu.
+	if not Creator.enabled and not is_instance_valid(pause_menu):
+		pause_menu = GAME_PAUSE_MENU.instantiate()
+		canvas_layer.add_child(pause_menu)
 	
 	play_music()
 	constrain_camera_to_current_room()
 
-func stop_playing() -> void:
+func stop_playing(clear_world: bool = true) -> void:
+	mode = Mode.DarkWorld
 	playing = false
+	
+	# Re-enable disabled tiles outside room.
+	tiles.call_outside_room(current_room, func(tile: Tile) -> void:
+		tile.enable()
+	)
+	# Show border tiles.
+	tiles.call_inside_room(current_room, func(tile: Tile) -> void:
+		if tile.border_tile_for_room_index != -1:
+			tile.show()
+	)
+	
 	player.queue_free()
 	
 	if is_instance_valid(pause_menu):
 		pause_menu.queue_free()
 	
-	# Clear everything.
-	WorldSave.new_world()
 	pause_music()
+	
+	if clear_world:
+		# Clear everything.
+		WorldSave.new_world()
 
 func switch_room(room_index: int) -> void:
 	play_from(room_index)
@@ -225,7 +245,7 @@ func create_border_tile(coords: Vector2i) -> Tile:
 			tile.queue_free()
 	, ConnectFlags.CONNECT_ONE_SHOT)
 	
-	border_tiles.add_child(tile)
+	border_tiles.add_child.call_deferred(tile)
 	tile.global_position = Global.coords_to_position(coords)
 	tile.id = "border"
 	
