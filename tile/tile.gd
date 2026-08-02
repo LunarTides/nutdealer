@@ -187,23 +187,25 @@ func touch() -> void:
 	
 	logic._touch()
 	
-	if encounter_on_interact:
+	if encounter_on_interact and not encounter.defeated:
 		Encounter.start(self)
+		
 		Encounter.ended.connect(func(tile: Tile, won: bool) -> void:
 			if tile == self:
+				encounter.defeated = true
+				
 				# Delete so we won't automatically enter the encounter again.
 				if Creator.enabled:
 					disable()
-					
-					# If you press the End Preview button while in an encounter.
-					if Game.playing:
-						Game.play_end.connect(func() -> void:
-							enable()
-						, ConnectFlags.CONNECT_ONE_SHOT)
-					else:
-						enable()
 				else:
 					queue_free()
+		, ConnectFlags.CONNECT_ONE_SHOT)
+		
+		# If you press the End Preview button while in an encounter.
+		Game.play_end.connect(func() -> void:
+			# Reset the defeated state when stopped playing.
+			encounter.defeated = false
+			enable()
 		, ConnectFlags.CONNECT_ONE_SHOT)
 	
 	try_room_transition(TileRoomTransition.Trigger.Touch)
@@ -223,13 +225,21 @@ func enable() -> void:
 ## [br][br]
 ## Use this instead of `tile.show()` if you aren't sure if the tile *should* be visible given the current game state.
 func infer_visibility() -> void:
+	# If we're not playing (meaning we're in the creator),
+	# it should always show the tile.
+	if not Game.playing:
+		show()
+		return
+	
 	visible = (
 		# Is inside room.
-		(not Game.playing or Game.current_room == room_index) and
+		Game.current_room == room_index and
 		# Is a border tile.
-		(not Game.playing or border_tile_for_room_index == -1) and
+		border_tile_for_room_index == -1 and
 		# Is in an encounter.
-		not Encounter.in_encounter
+		not Encounter.in_encounter and
+		# The tile's encounter has been defeated.
+		not (is_instance_valid(encounter) and encounter.defeated)
 	)
 
 func clone(new_id: bool = false) -> Tile:

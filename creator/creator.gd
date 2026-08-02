@@ -134,3 +134,7 @@ func start_preview_from_camera() -> void:
 
 func stop_preview() -> void:
 	Game.stop_playing(false)
+	
+	# Show all tiles.
+	for tile: Tile in Game.tiles.get_all():
+		tile.infer_visibility()

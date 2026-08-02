@@ -200,11 +200,12 @@ func start(tile: Tile) -> void:
 	# Setup tiles
 	for t: Tile in Game.tiles.get_all():
 		t.disable()
-	Game.player.process_mode = Node.PROCESS_MODE_DISABLED
+	Game.player.set_process_mode.call_deferred(Node.PROCESS_MODE_DISABLED)
 	Game.pause_music()
 	
 	# Play tension sfx
 	sfx_player.stream = preload("res://assets/audio/battle/tensionhorn.wav")
+	sfx_player.pitch_scale = 1.0
 	sfx_player.play()
 	await get_tree().create_timer(0.3).timeout
 	sfx_player.pitch_scale = 1.1

@@ -12,3 +12,5 @@ class_name TileEncounter
 		if party_members != value:
 			party_members = value
 			emit_changed()
+
+var defeated: bool = false

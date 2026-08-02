@@ -20,6 +20,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hakx0"]
 size = Vector2(33, 256)
@@ -49,10 +50,10 @@ tp_bar = NodePath("MarginContainer/TPBar")
 modulate = Color(0.4627451, 0, 0.4509804, 0.5294118)
 z_index = -10
 layout_mode = 0
-offset_left = -213.46724
-offset_top = -213.46724
-offset_right = 1194.5327
-offset_bottom = 682.5328
+offset_left = -135.92346
+offset_top = -135.92346
+offset_right = 1272.0765
+offset_bottom = 760.07654
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
