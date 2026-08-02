@@ -49,39 +49,7 @@ func start() -> void:
 	enabled = true
 	
 	if not has_connected_signal_to_tiles:
-		Game.tiles.child_entered_tree.connect(func(node: Node) -> void:
-			if node is not Tile:
-				return
-			
-			# Add a node to selected when clicking on it.
-			node.clicked.connect(func(button_index: MouseButton) -> void:
-				if Creator.mode != Creator.Mode.Select:
-					return
-				
-				if button_index == MOUSE_BUTTON_LEFT:
-					if Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_CTRL):
-						play_select_sfx()
-						var tile_selected: bool = selected.has(node)
-						if tile_selected:
-							selected.erase(node)
-							selected_changed.emit(selected, selected)
-							return
-						
-						selected.append(node)
-						selected_changed.emit(selected, selected)
-					else:
-						if selected.size() > 1 && selected.has(node):
-							return
-						
-						selected = [node]
-						play_select_sfx()
-			)
-		)
-		Game.tiles.child_exiting_tree.connect(func(node: Node) -> void:
-			if selected.has(node):
-				selected.erase(node)
-		)
-		has_connected_signal_to_tiles = true
+		setup_tile_click_to_select()
 
 func stop() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
@@ -238,3 +206,61 @@ func play_select_sfx() -> void:
 	await sfx_player.finished
 	sfx_player.volume_linear = 1.0
 	sfx_player.pitch_scale = 1.0
+
+func setup_tile_click_to_select() -> void:
+	if has_connected_signal_to_tiles:
+		return
+	
+	has_connected_signal_to_tiles = true
+	
+	# Add select to all existing tiles.
+	for tile: Tile in Game.tiles.get_all():
+		add_tile_select(tile)
+	
+	# Add select to all future tiles.
+	Game.tiles.child_entered_tree.connect(func(node: Node) -> void:
+		if node is not Tile:
+			return
+		
+		add_tile_select(node)
+	)
+	Game.tiles.child_exiting_tree.connect(func(node: Node) -> void:
+		if selected.has(node):
+			selected.erase(node)
+	)
+	
+	# When the tiles node is replaced, set this all up again.
+	Game.tiles.tree_exited.connect(func() -> void:
+		# Normally, the tiles node is immeditately replaced,
+		# so this condition shouldn't happen, but just in case.
+		if not is_instance_valid(Game.tiles):
+			return
+		
+		has_connected_signal_to_tiles = false
+		setup_tile_click_to_select()
+	)
+
+func add_tile_select(tile: Tile) -> void:
+	# Add a node to selected when clicking on it.
+	tile.clicked.connect(func(button_index: MouseButton) -> void:
+		if Creator.mode != Creator.Mode.Select:
+			return
+		
+		if button_index == MOUSE_BUTTON_LEFT:
+			if Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_CTRL):
+				play_select_sfx()
+				var tile_selected: bool = selected.has(tile)
+				if tile_selected:
+					selected.erase(tile)
+					selected_changed.emit(selected, selected)
+					return
+				
+				selected.append(tile)
+				selected_changed.emit(selected, selected)
+			else:
+				if selected.size() > 1 && selected.has(tile):
+					return
+				
+				selected = [tile]
+				play_select_sfx()
+	)
