@@ -2,6 +2,7 @@
 extends Control
 class_name EncounterUI
 
+@export var grid_vector: Vector2 = Vector2(1, -1)
 @export var grid_move_speed: float = 300
 @export var grid_move_repeat_frequency: int = 4
 
@@ -17,11 +18,11 @@ var old_grid_position: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	init_grid()
-	set_tp(true)
 	
 	if Engine.is_editor_hint():
 		return
 	
+	set_tp(true)
 	soul_container.hide()
 	
 	Encounter.state_changed.connect(func(old: Encounter.State, new: Encounter.State) -> void:
@@ -45,16 +46,16 @@ func init_grid() -> void:
 	if not Engine.is_editor_hint():
 		screen_size = Global.screen_size
 	
-	grid.size = screen_size + Vector2(64 * 4, 64 * 4)
+	grid.size = screen_size + Vector2(64 * grid_move_repeat_frequency, 64 * grid_move_repeat_frequency)
+	grid.position = Vector2(0, 0)
 	old_grid_position = Vector2.ZERO
 
 func move_grid(delta: float) -> void:
-	var vector: Vector2 = Vector2.UP + Vector2.RIGHT
-	grid.position += vector * grid_move_speed * delta
+	grid.position += grid_vector.normalized() * grid_move_speed * delta
 	
 	# Move the grid to give an illusion that it's an infinite plane.
-	if grid.position.x >= 0:
-		grid.position = Vector2(-64 * grid_move_repeat_frequency, 0)
+	if grid.position.x <= -64 * grid_move_repeat_frequency:
+		init_grid()
 
 func set_tp(instant: bool) -> void:
 	if instant:

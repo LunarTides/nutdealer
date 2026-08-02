@@ -27,7 +27,7 @@ layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="EncounterGrid" type="TextureRect" parent="Properties" unique_id=1672273597]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+modulate = Color(0.4627451, 0, 0.4509804, 0.5294118)
 custom_maximum_size = Vector2(1024, 768)
 clip_contents = true
 layout_mode = 0
@@ -50,7 +50,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="EncounterGrid" type="TextureRect" parent="Bullet Patterns" unique_id=1569448553]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+modulate = Color(0.4627451, 0, 0.4509804, 0.5294118)
 custom_maximum_size = Vector2(1024, 768)
 clip_contents = true
 layout_mode = 1
@@ -59,6 +59,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -27.0
 offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("1_p28jy")
 stretch_mode = 1

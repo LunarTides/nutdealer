@@ -20,7 +20,7 @@ name_input = NodePath("VBoxContainer/HBoxContainer/NameInput")
 health_input = NodePath("VBoxContainer/HBoxContainer2/HealthInput")
 
 [node name="EncounterGrid" type="TextureRect" parent="." unique_id=1963305938]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+modulate = Color(0.4627451, 0, 0.4509804, 0.5294118)
 custom_maximum_size = Vector2(512, 384)
 layout_mode = 2
 texture = ExtResource("2_3fh6b")

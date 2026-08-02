@@ -73,7 +73,7 @@ script = ExtResource("2_skldr")
 script = ExtResource("3_b6efl")
 
 [node name="GridHint" type="TextureRect" parent="." unique_id=736885869]
-modulate = Color(0.38000557, 0.3800056, 0.38000554, 1)
+modulate = Color(0.38039216, 0.38039216, 0.38039216, 0.6431373)
 z_index = -10
 layout_mode = 0
 offset_right = 1152.0

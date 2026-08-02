@@ -38,20 +38,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dd44b")
-grid_move_speed = 25.0
+grid_vector = Vector2(-1, -1)
+grid_move_speed = 16.0
 grid = NodePath("Grid")
 camera_2d = NodePath("Camera2D")
 soul_container = NodePath("SoulContainer")
 tp_bar = NodePath("MarginContainer/TPBar")
 
 [node name="Grid" type="TextureRect" parent="." unique_id=1906994448]
-modulate = Color(0.039698455, 0.33625436, 1.92523e-07, 1)
+modulate = Color(0.4627451, 0, 0.4509804, 0.5294118)
 z_index = -10
 layout_mode = 0
-offset_left = -215.16617
-offset_top = -40.83334
-offset_right = 1192.8339
-offset_bottom = 855.1667
+offset_left = -213.46724
+offset_top = -213.46724
+offset_right = 1194.5327
+offset_bottom = 682.5328
 mouse_filter = 2
 texture = ExtResource("1_3ians")
 stretch_mode = 1
@@ -194,7 +195,8 @@ theme_override_constants/margin_right = 8
 [node name="TPBar" type="ProgressBar" parent="MarginContainer" unique_id=286813159]
 custom_minimum_size = Vector2(16, 256)
 layout_mode = 2
-theme_override_constants/outline_size = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_r8jri")
 theme_override_styles/fill = SubResource("StyleBoxFlat_6qhs1")
 value = 50.0

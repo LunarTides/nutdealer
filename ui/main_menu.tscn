@@ -552,13 +552,13 @@ grow_vertical = 0
 text = "v0.0.1"
 
 [node name="Grid" type="TextureRect" parent="." unique_id=1500288263]
-modulate = Color(0.38851848, 0.38851848, 0.38851845, 1)
+modulate = Color(0.38039216, 0.38039216, 0.38039216, 0.6431373)
 z_index = -10
 layout_mode = 0
-offset_left = -177.36113
-offset_top = -78.63806
-offset_right = 1230.6389
-offset_bottom = 817.36194
+offset_left = -235.1566
+offset_top = -20.843157
+offset_right = 1172.8434
+offset_bottom = 875.15686
 mouse_filter = 2
 texture = ExtResource("2_fe2o3")
 stretch_mode = 1
